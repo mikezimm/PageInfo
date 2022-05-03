@@ -14,7 +14,10 @@ import {
 
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { IReadonlyTheme } from '@microsoft/sp-component-base';
+import {   
+  ThemeProvider,
+  ThemeChangedEventArgs,
+  IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import { INavLink } from 'office-ui-fabric-react/lib/Nav';
 
@@ -51,10 +54,25 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
   //Copied from AdvancedPagePropertiesWebPart.ts
   private availableProperties: IPropertyPaneDropdownOption[] = [];
+  private _themeProvider: ThemeProvider;
+  private _themeVariant: IReadonlyTheme | undefined;
 
+  private _handleThemeChangedEvent(args: ThemeChangedEventArgs): void {
+    this._themeVariant = args.theme;
+    this.render();
+  }
 
   protected onInit(): Promise<void> {
     this._environmentMessage = this._getEnvironmentMessage();
+
+    // Consume the new ThemeProvider service
+    this._themeProvider = this.context.serviceScope.consume(ThemeProvider.serviceKey);
+
+    // If it exists, get the theme variant
+    this._themeVariant = this._themeProvider.tryGetTheme();
+
+    // Register a handler to be notified if the theme variant changes
+    this._themeProvider.themeChangedEvent.add(this, this._handleThemeChangedEvent);
 
     return super.onInit().then(async _ => {
 
@@ -99,6 +117,13 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         pageNavigator:   {
           description: 'desc passed from main web part',
           anchorLinks: this.anchorLinks,
+        },
+
+        advPageProps: {
+          context: this.context,
+          title: this.properties.title,
+          selectedProperties: this.properties.selectedProperties,
+          themeVariant: this._themeVariant
         }
         
       }
