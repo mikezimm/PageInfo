@@ -66,36 +66,29 @@ export class SPService {
               .replace(/<.+?>/gi, "")
               .replace(/\&.+\;/gi, "");
 
-            headingOrder = parseInt(HTMLString.charAt(HTMLString.search(/<h[1-4]>/g) + 2)) - 1;
+            headingOrder = parseInt(HTMLString.charAt(HTMLString.search(/<h[1-4]>/g) + 2));
 
             const anchorUrl = this.GetAnchorUrl(headingValue);
             this.allUrls.push(anchorUrl);
 
-            // //Create PageNavigatorTitle ( first node )
-            // if (anchorLinks.length === 0 && headingOrder ) {
-            //   let firstAnchor = '';
-            //   if ( jsonData.TopicHeader ) {
-            //     firstAnchor = jsonData.TopicHeader;
-            //   } else if ( jsonData.Title ) {
-            //     firstAnchor = jsonData.Title;
-            //   } else { firstAnchor = 'Page Contents'; }
+            /**
+             * Added this check in case the first header is NOT h1
+             * If the first header is h2, it pushes an object that represents an h1 but uses the page Title  or Topic or whatever as a label
+             * NOTE:  If first header is h3 and the second is an h2, both are at the same level (as if h2 ) under the auto-generated h1
+             */
+            if (anchorLinks.length === 0 && headingOrder > 2 ) {
+              let firstAnchor = '';
+              if ( jsonData.TopicHeader ) {
+                firstAnchor = jsonData.TopicHeader + ' - TopicHeader';
+              } else if ( jsonData.Title ) {
+                firstAnchor = jsonData.Title + ' - Title';
+              } else { firstAnchor = 'Page Contents'; }
 
-            //   anchorLinks.push({ name: firstAnchor, key: 'PageContentsNode0', url: null, links: [], isExpanded: true,  });
-            //   // headingOrder = -1;
-            // }
+              anchorLinks.push({ name: firstAnchor, key: 'PageContentsNode0', url: null, links: [], isExpanded: true,  });
+            }
 
             /* Add links to Nav element */
             if (anchorLinks.length === 0) {
-              // let firstAnchor = '';
-              // if ( jsonData.TopicHeader ) {
-              //   firstAnchor = jsonData.TopicHeader;
-              // } else if ( jsonData.Title ) {
-              //   firstAnchor = jsonData.Title;
-              // } else { firstAnchor = 'Page Contents'; }
-
-              // anchorLinks.push({ name: firstAnchor, key: 'PageContentsNode0', url: null, links: [], isExpanded: true,  });
-              // headingOrder = -1;
-
               anchorLinks.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
             } else {
               if (headingOrder <= prevHeadingOrder) {
@@ -135,7 +128,7 @@ export class SPService {
             prevHeadingOrder = headingOrder;
 
             /* Replace the added header links from the string so they don't get processed again */
-            HTMLString = HTMLString.replace(`<h${headingOrder - 1}>`, '').replace(`</h${headingOrder - 1}>`, '');
+            HTMLString = HTMLString.replace(`<h${headingOrder}>`, '').replace(`</h${headingOrder}>`, '');
           }
         }
       });
