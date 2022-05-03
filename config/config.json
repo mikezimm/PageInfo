@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "fps-page-info-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/fpsPageInfo/FpsPageInfoWebPart.js",
+          "manifest": "./src/webparts/fpsPageInfo/FpsPageInfoWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "FpsPageInfoWebPartStrings": "lib/webparts/fpsPageInfo/loc/{locale}.js"
+  }
+}
