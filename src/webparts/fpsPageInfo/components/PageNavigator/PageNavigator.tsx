@@ -1,3 +1,8 @@
+/**
+ * PageNavigator originally copied from 
+ * https://github.com/pnp/sp-dev-fx-webparts/tree/main/samples/react-page-navigator
+ */
+
 import * as React from 'react';
 import styles from './PageNavigator.module.scss';
 import { IPageNavigatorProps } from './IPageNavigatorProps';

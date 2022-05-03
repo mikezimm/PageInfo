@@ -1,3 +1,8 @@
+/**
+ * AdvancedPageProperties originally copied from 
+ * https://github.com/pnp/sp-dev-fx-webparts/tree/main/samples/react-advanced-page-properties
+ */
+
 import * as React from 'react';
 import styles from './AdvancedPageProperties.module.scss';
 import { IAdvancedPagePropertiesProps } from './IAdvancedPagePropertiesProps';
