@@ -18,11 +18,11 @@
   "preconfiguredEntries": [{
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Other
     "group": { "default": "Other" },
-    "title": { "default": "FPS Page Info" },
-    "description": { "default": "FPS Page Info description" },
-    "officeFabricIconFontName": "Page",
+    "title": { "default": "FPS Page Info - TOC & Props" },
+    "description": { "default": "FPS Page Info incluces both Table of Contents and Page Properties" },
+    "officeFabricIconFontName": "TagUnknown12",
     "properties": {
-      "description": "FPS Page Info",
+      "description": "FPS Page Info - TOC & Props",
       "selectedProperties": []
     }
   }]

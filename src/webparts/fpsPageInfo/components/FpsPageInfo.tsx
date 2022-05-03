@@ -20,7 +20,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, {}> 
     return (
       <section className={`${styles.fpsPageInfo} ${hasTeamsContext ? styles.teams : ''}`}>
         <div>
-          <h3>This is FPS Page Info web part</h3>
+          <h3><mark>Sample Web Part - NOT for production</mark></h3>
           <PageNavigator 
             description={ this.props.pageNavigator.description }
             anchorLinks={ this.props.pageNavigator.anchorLinks }

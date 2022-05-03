@@ -123,7 +123,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           context: this.context,
           title: this.properties.title,
           selectedProperties: this.properties.selectedProperties,
-          themeVariant: this._themeVariant
+          themeVariant: this._themeVariant,
         }
         
       }
