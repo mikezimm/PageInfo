@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './AdvancedPageProperties.module.scss';
 import { IAdvancedPagePropertiesProps } from './IAdvancedPagePropertiesProps';
 import { Log } from '../utilities/Log';
-import * as _ from 'lodash';
+import * as _lodashAPP from 'lodash';
 import { useState, useEffect, useRef } from 'react';
 import { PageProperty } from '../models';
 
@@ -61,10 +61,10 @@ const AdvancedPageProperties: React.FunctionComponent<IAdvancedPagePropertiesPro
           switch (field.TypeAsString) {
             case "UserMulti":
             case "TaxonomyFieldTypeMulti":
-              values = _.clone(allValues[field.InternalName].split(";"));
+              values = _lodashAPP.clone(allValues[field.InternalName].split(";"));
               break;
             case "MultiChoice":
-              values = _.clone(allValues[field.InternalName].split(","));
+              values = _lodashAPP.clone(allValues[field.InternalName].split(","));
               break;
             case "Thumbnail":
               values.push(JSON.parse(allValues[field.InternalName]));
@@ -102,7 +102,7 @@ const AdvancedPageProperties: React.FunctionComponent<IAdvancedPagePropertiesPro
    */
   const RenderPageProperties = () => {
     if (pagePropValues !== undefined && pagePropValues !== null) {
-      var retVal = _.map(pagePropValues, (prop) => {
+      var retVal = _lodashAPP.map(pagePropValues, (prop) => {
         return (
             <>
               <div className={styles.propNameRow}>{prop.info.Title}<span style={{display: 'none'}}> - {prop.info.TypeAsString}</span></div>
@@ -125,7 +125,7 @@ const AdvancedPageProperties: React.FunctionComponent<IAdvancedPagePropertiesPro
    * @returns
    */
    const RenderPagePropValue = (prop: PageProperty) => {
-    var retVal = _.map(prop.values, (val) => {
+    var retVal = _lodashAPP.map(prop.values, (val) => {
       if (val !== null && val !== "") {
         switch (prop.info.TypeAsString) {
           case "URL":

@@ -15,6 +15,6 @@ define([], function() {
     "SelectedPropertiesFieldLabel": "Property",
     "PropPaneAddButtonText": "Add",
     "PropPaneDeleteButtonText": "Delete",
-    "LogAppName": "APP"
+    "LogAppName": "FPS Page Info"
   }
 });
