@@ -1,3 +1,4 @@
+import { IAdvancedPagePropertiesProps } from "./AdvPageProps/components/IAdvancedPagePropertiesProps";
 import { IPageNavigatorProps } from "./PageNavigator/IPageNavigatorProps";
 
 export interface IFpsPageInfoProps {
@@ -8,5 +9,7 @@ export interface IFpsPageInfoProps {
   userDisplayName: string;
 
   pageNavigator: IPageNavigatorProps;
+
+  advPageProps: IAdvancedPagePropertiesProps;
 
 }
