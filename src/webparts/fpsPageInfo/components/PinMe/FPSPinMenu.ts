@@ -52,6 +52,8 @@ export function FPSPinMenu ( domElement: HTMLElement, pinState : IPinMeState, co
     }
   });
 
+  let fixRight = '15px'; //Need to allow for 15px for page scrollbar
+
   //Sets property of target element
   if ( host !== "SharePointFullPage" && thisControlZome ) { 
     if ( pinState === 'pinFull' ) {
@@ -64,9 +66,9 @@ export function FPSPinMenu ( domElement: HTMLElement, pinState : IPinMeState, co
       thisControlZome.style['top'] = '0%';
       // thisControlZome.style['left'] = '0';
       // thisControlZome.style['bottom'] = '0';
-      thisControlZome.style['right'] = '0';
+      thisControlZome.style['right'] = fixRight;
       thisControlZome.style['margin'] = '0';
-      thisControlZome.style['padding'] = '0';
+      thisControlZome.style['padding'] = '0 20px 10px 10px';
       thisControlZome.style['width'] = '400px';
       thisControlZome.style['background-color'] = 'white';
       thisControlZome.style['overflow-y'] = 'hidden';
@@ -122,13 +124,13 @@ export function FPSPinMenu ( domElement: HTMLElement, pinState : IPinMeState, co
       thisControlZome.style['top'] = '0%';
       // thisControlZome.style['left'] = '0';
       // thisControlZome.style['bottom'] = '0';
-      thisControlZome.style['right'] = '0';
+      thisControlZome.style['right'] = fixRight;
       thisControlZome.style['margin'] = '0';
-      thisControlZome.style['padding'] = '0';
+      thisControlZome.style['padding'] = '0 20px 10px 10px';
       thisControlZome.style['width'] = '400px';
       thisControlZome.style['background-color'] = 'white';
       thisControlZome.style['overflow'] = 'hidden';
-      thisControlZome.style['height'] = '60px';
+      thisControlZome.style['height'] = '45px';
 
       // thisControlZome.style['overflow-y'] = 'scroll';
       thisControlZome.style['z-index'] = '12';

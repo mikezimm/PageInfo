@@ -6,7 +6,7 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import { Icon, IIconProps } from 'office-ui-fabric-react/lib/Icon';
 import { DisplayMode, Version } from '@microsoft/sp-core-library';
 
-import { bannerThemes, bannerThemeKeys, makeCSSPropPaneString, createBannerStyleStr, createBannerStyleObj } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/defaults';
+import { bannerThemes, bannerThemeKeys, makeCSSPropPaneString, createBannerStyleStr, createBannerStyleObj, baseBannerCmdStyles } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/defaults';
 
 import PageNavigator from './PageNavigator/PageNavigator';
 
@@ -15,10 +15,20 @@ import AdvancedPageProperties from './AdvPageProps/components/AdvancedPageProper
 import { FPSPinMenu } from './PinMe/FPSPinMenu';
 
 export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFpsPageInfoState> {
+  private baseCmdStyles: React.CSSProperties = createBannerStyleObj( 'corpDark1', 'cmd' );
 
-  private PinFullIcon = <Icon iconName='Pinned' onClick={ this.setPinFull.bind(this) } style={ createBannerStyleObj( 'corpDark1', 'cmd' ) }></Icon>;
-  private PinMinIcon = <Icon iconName='Pin' onClick={ this.setPinMin.bind(this) } style={ createBannerStyleObj( 'corpDark1', 'cmd' )  }></Icon>;
-  private PinDefault = <Icon iconName='Unpin' onClick={ this.setPinDefault.bind(this) } style={ createBannerStyleObj( 'corpDark1', 'cmd' )  }></Icon>;
+  private makeSmallerCmdStyles() {
+    let smaller: React.CSSProperties = JSON.parse(JSON.stringify( this.baseCmdStyles ));
+    smaller.fontSize = 'larger';
+    return smaller;
+  }
+
+  private smallerCmdStyles: React.CSSProperties = this.makeSmallerCmdStyles();
+
+  private PinFullIcon = <Icon title={ 'Pin to top' } iconName='Pinned' onClick={ this.setPinFull.bind(this) } style={ this.smallerCmdStyles }></Icon>;
+  private PinMinIcon = <Icon  title={ 'Minimize' } iconName='CollapseMenu' onClick={ this.setPinMin.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
+  private PinExpandIcon = <Icon  title={ 'Expand' } iconName='DoubleChevronDown' onClick={ this.setPinFull.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
+  private PinDefault = <Icon  title={ 'Set to default' } iconName='ArrowDownRightMirrored8' onClick={ this.setPinDefault.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
  /***
   *     .o88b.  .d88b.  d8b   db .d8888. d888888b d8888b. db    db  .o88b. d888888b  .d88b.  d8888b. 
   *    d8P  Y8 .8P  Y8. 888o  88 88'  YP `~~88~~' 88  `8D 88    88 d8P  Y8 `~~88~~' .8P  Y8. 88  `8D 
@@ -72,13 +82,30 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       userDisplayName
     } = this.props;
 
+
+    const PinMenuIcons: any [] = [];
+
+    // private PinFullIcon = <Icon iconName='Pinned' onClick={ this.setPinFull.bind(this) } style={ this.smallerCmdStyles }></Icon>;
+    // private PinMinIcon = <Icon iconName='CollapseMenu' onClick={ this.setPinMin.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
+    // private PinDefault = <Icon iconName='Unpin' onClick={ this.setPinDefault.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
+
+    if ( this.state.pinState === 'normal' ) {
+      PinMenuIcons.push( this.PinFullIcon );
+
+    } else if ( this.state.pinState === 'pinFull' ) {
+      PinMenuIcons.push( this.PinMinIcon );
+      PinMenuIcons.push( this.PinDefault );
+
+    } else if ( this.state.pinState === 'pinMini' ) {
+      PinMenuIcons.push( this.PinExpandIcon );
+      PinMenuIcons.push( this.PinDefault );
+    }
+
     return (
       <section className={`${styles.fpsPageInfo} ${hasTeamsContext ? styles.teams : ''}`}>
         <div>
           <div style={{ display: 'flex', flexWrap: 'nowrap'}}>
-            { this.PinFullIcon }
-            { this.PinMinIcon }
-            { this.PinDefault }
+            { PinMenuIcons }
           </div>
           <h2><mark>FPS Page Info - Testing only :)</mark></h2>
           <PageNavigator 
