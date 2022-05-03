@@ -12,7 +12,7 @@ import PageNavigator from './PageNavigator/PageNavigator';
 
 import ReactJson from "react-json-view";
 import AdvancedPageProperties from './AdvPageProps/components/AdvancedPageProperties';
-import { FPSPinMenu } from './PinMe/FPSPinMenu';
+import { checkIsInVerticalSection, FPSPinMenu } from './PinMe/FPSPinMenu';
 
 export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFpsPageInfoState> {
   private baseCmdStyles: React.CSSProperties = createBannerStyleObj( 'corpDark1', 'cmd' );
@@ -108,6 +108,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
             { PinMenuIcons }
           </div>
           <h2><mark>FPS Page Info - Testing only :)</mark></h2>
+          <h3>Is Vertical: { checkIsInVerticalSection( this.props.fpsPinMenu.domElement ) === true ? 'True' : 'False' }</h3>
           <PageNavigator 
             description={ this.props.pageNavigator.description }
             anchorLinks={ this.props.pageNavigator.anchorLinks }

@@ -24,6 +24,16 @@ import { updateByClassNameEleChild } from '@mikezimm/npmfunctions/dist/Services/
 
 export type IPinMeState = 'normal' | 'pinFull' | 'pinMini';
 
+export function checkIsInVerticalSection( domElement: HTMLElement ) {
+  //CanvasVerticalSection 
+  let isVertical: boolean = false;
+
+  let verticalSection = findParentElementLikeThis( domElement, 'classList', 'CanvasVerticalSection', 10 , 'contains', false, true );
+  if ( verticalSection ) { isVertical = true; }
+  return isVertical;
+  
+}
+
 export function FPSPinMenu ( domElement: HTMLElement, pinState : IPinMeState, controlStyle: any, alertError: boolean = true, consoleResult: boolean = false, pinMePadding: number, host: ISupportedHost  ) {
 
   let fpsWindowProps: IFPSWindowProps = createFPSWindowProps();
