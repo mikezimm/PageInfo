@@ -26,6 +26,7 @@ import { sp, Views, IViews, ISite } from "@pnp/sp/presets/all";
 //Copied from AdvancedPagePropertiesWebPart.ts
 import * as _lodashAPP from 'lodash';
 
+import { ISupportedHost } from "@mikezimm/npmfunctions/dist/Services/PropPane/FPSInterfaces";
 
 import { SPService } from '../../Service/SPService';
 
@@ -38,6 +39,9 @@ import { Log } from './components/AdvPageProps/utilities/Log';
 
 export interface IFpsPageInfoWebPartProps {
   description: string;
+
+  //Needed for Expandoramic and PinMenu
+  pageLayout: ISupportedHost ;// like SinglePageApp etc... this.context[_pageLayout];
 
   //Copied from AdvancedPagePropertiesWebPart.ts
   title: string;
@@ -95,6 +99,8 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         spfxContext: this.context
       });
 
+      this.properties.pageLayout =  this.context['_pageLayoutType']?this.context['_pageLayoutType'] : this.context['_pageLayoutType'];
+
       //Added from react-page-navigator component
       this.anchorLinks = await SPService.GetAnchorLinks(this.context);
 
@@ -124,6 +130,10 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           title: this.properties.title,
           selectedProperties: this.properties.selectedProperties,
           themeVariant: this._themeVariant,
+        },
+        fpsPinMenu: {
+          domElement: this.context.domElement,
+          pageLayout: this.properties.pageLayout,
         }
         
       }
