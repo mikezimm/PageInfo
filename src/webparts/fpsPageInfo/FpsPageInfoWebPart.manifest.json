@@ -22,7 +22,8 @@
     "description": { "default": "FPS Page Info description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "FPS Page Info"
+      "description": "FPS Page Info",
+      "selectedProperties": []
     }
   }]
 }
