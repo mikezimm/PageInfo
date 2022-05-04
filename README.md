@@ -17,3 +17,6 @@ npm install @pnp/sp@2.11.0 --save
 
 installed this (Same as SecureScript7) - tested and still worked
 npm install @pnp/spfx-property-controls --save --save-exact
+
+NOTES:
+Imported all Banner logic from AlvFinMan project
