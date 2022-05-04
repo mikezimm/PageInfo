@@ -232,8 +232,8 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       if ( this.properties.bannerHoverEffect === undefined ) { this.properties.bannerHoverEffect = false; }
 
       if ( this.context.pageContext.site.serverRelativeUrl.toLowerCase().indexOf( '/sites/lifenet') === 0 ) {
-        if ( !this.properties.bannerStyle ) { this.properties.bannerStyle = createBannerStyleStr( 'corpDark1', 'banner') ; }
-        if ( !this.properties.bannerCmdStyle ) { this.properties.bannerCmdStyle = createBannerStyleStr( 'corpDark1', 'banner') ; }
+        if ( !this.properties.bannerStyle ) { this.properties.bannerStyle = createBannerStyleStr( 'corpWhite1', 'banner') ; }
+        if ( !this.properties.bannerCmdStyle ) { this.properties.bannerCmdStyle = createBannerStyleStr( 'corpWhite1', 'banner') ; }
       }
 
       // DEFAULTS SECTION:  Panel   <<< ================================================================
@@ -568,8 +568,14 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
       } else {
         this.properties.lockStyles = true;
-        this.properties.bannerStyle = createBannerStyleStr( newValue, 'banner' );
-        this.properties.bannerCmdStyle = createBannerStyleStr( newValue, 'cmd' );
+
+        let bannerStyle = createBannerStyleStr( newValue, 'banner' );
+        
+        //Adjust the default size down compared to PinMe buttons which are primary functions in the web part
+        let bannerCmdStyle = createBannerStyleStr( newValue, 'cmd' ).replace('"fontSize":20,', '"fontSize":16,');  
+
+        this.properties.bannerStyle = bannerStyle;
+        this.properties.bannerCmdStyle = bannerCmdStyle;
 
       }
 
