@@ -30,8 +30,9 @@ export function checkIsInVerticalSection( domElement: HTMLElement ) {
 
   let verticalSection = findParentElementLikeThis( domElement, 'classList', 'CanvasVerticalSection', 10 , 'contains', false, true );
   if ( verticalSection ) { isVertical = true; }
-  return isVertical;
   
+  return isVertical;
+
 }
 
 export function FPSPinMenu ( domElement: HTMLElement, pinState : IPinMeState, controlStyle: any, alertError: boolean = true, consoleResult: boolean = false, pinMePadding: number, host: ISupportedHost  ) {
