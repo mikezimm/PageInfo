@@ -74,7 +74,7 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 	private basics= basicsContent( this.props.gitHubRepo );
 	private advanced= advancedContent( this.props.gitHubRepo );
 	private futurePlans= futureContent( this.props.gitHubRepo );
-	private dev= devTable( );
+	private dev= null ; //devTable( );
 	private errors= errorsContent( this.props.gitHubRepo );
 	private tricks= tricksTable( this.props.gitHubRepo );
 	private about= aboutTable( this.props.gitHubRepo, this.props.showRepoLinks );
@@ -479,12 +479,17 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 				let showExport = this.props.showExport === true && this.props.exportProps !== null ? true : false;
 				let showHistory = this.props.webpartHistory ? true : false;
 
+				let panelTitle = this.props.panelTitle;
+				if ( panelTitle && ['hide','ignore','empty'].indexOf( panelTitle.toLowerCase() ) >= 0 ) {
+					panelTitle = this.props.gitHubRepo.desc;
+				  }
+
 				panelContent = <div style={{ paddingBottom: '50px' } }>
 					{ earlyAccess }
 					{ tips }
 					{ webPartLinks }
 					<div style={{display: 'flex', flexWrap: 'nowrap', justifyContent: 'space-between', alignItems: 'center' }}>
-							<h3> { this.props.panelTitle }</h3>
+							<h3> { panelTitle }</h3>
 							<div title={ this.state.panelType === PanelType.medium ? 'Make panel wider' : 'Make panel narrower' }>
 							{ wideIcon }
 						</div>
