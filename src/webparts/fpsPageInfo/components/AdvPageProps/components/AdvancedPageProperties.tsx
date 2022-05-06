@@ -172,7 +172,7 @@ const AdvancedPageProperties: React.FunctionComponent<IAdvancedPagePropertiesPro
    */
   const RenderTitle = () => {
     if (props.title !== '') {
-      return <div className={styles.title}>{props.title}</div>;
+      return <div className={styles.propsTitle}>{props.title}</div>;
     } else {
       return null;
     }
@@ -181,9 +181,11 @@ const AdvancedPageProperties: React.FunctionComponent<IAdvancedPagePropertiesPro
   if ( props.showSomeProps === false ) {
     return ( null );
   } else {
+    // const showPropsStyles = props.defaultExpanded === true ? styles.showProperties : styles.hideProperties;
     return (
-      <div className={`${styles.advancedPageProperties} ${styles.container}`} style={{backgroundColor: semanticColors.bodyBackground, color: semanticColors.bodyText}}>
-        {RenderTitle()}
+      <div className={`${styles.advancedPageProperties} ${styles.container} `} style={{backgroundColor: semanticColors.bodyBackground, color: semanticColors.bodyText}}>
+        {/* Removed RenderTitle because I'm taking care of that in parent component for now */}
+        {/* {RenderTitle()} */}
         {RenderPageProperties()}
       </div>
     );

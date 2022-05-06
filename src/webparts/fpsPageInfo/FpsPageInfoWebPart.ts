@@ -292,6 +292,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       //Added from react-page-navigator component
       this.anchorLinks = await SPService.GetAnchorLinks(this.context);
 
+      if ( this.properties.propsExpanded === undefined || this.properties.propsExpanded === null ) { this.properties.propsExpanded = true; }
       //Have to insure selectedProperties always is an array from AdvancedPagePropertiesWebPart.ts
       // if ( !this.properties.selectedProperties ) { this.properties.selectedProperties = []; }
 
@@ -419,6 +420,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         },
 
         advPageProps: {
+          defaultExpanded: this.properties.propsExpanded,
           showSomeProps: this.properties.showSomeProps,
           context: this.context,
           title: this.properties.propsTitleField,
@@ -541,7 +543,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     super.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
 
 
-
     if (propertyPath.indexOf("selectedProperty") >= 0) {
       Log.Write('Selected Property identified');
       let index: number = _lodashAPP.toInteger(propertyPath.replace("selectedProperty", ""));
@@ -645,6 +646,13 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       disabled: this.properties.showSomeProps === false ? true : false,
     }));
 
+    propDrops.push(PropertyPaneToggle("propsExpanded", {
+      label: "Default visibility",
+      onText: "Expanded",
+      offText: "Collapsed",
+      // disabled: true,
+    }));
+
     propDrops.push(PropertyPaneToggle("showOOTBProps", {
       label: "Show Created/Modified Props",
       onText: "On",
@@ -737,7 +745,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
               ]
             }, //End this group
             {
-              groupName: strings.CustPropsGroupName,
+              groupName: strings.PropertiesGroupName,
               isCollapsed: true,
               groupFields: propDrops
             }, // this group

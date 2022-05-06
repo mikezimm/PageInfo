@@ -11,8 +11,8 @@ define([], function() {
 
     //Copied from AdvancedPagePropertiesWebPart.ts
     "PropertyPaneDescriptionP": "Select the page properties that you want to display on the page",
-    "CustPropsGroupName": "Custom Properties",
-    "PropsTitleFieldLabel": "Custom Properties Title",
+    "PropertiesGroupName": "Properties",
+    "PropsTitleFieldLabel": "Properties Title",
     "SelectedPropertiesFieldLabel": "Property",
     "PropPaneAddButtonText": "Add",
     "PropPaneDeleteButtonText": "Delete",

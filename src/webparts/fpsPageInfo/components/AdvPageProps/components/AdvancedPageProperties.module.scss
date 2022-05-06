@@ -1,5 +1,12 @@
 @import '~office-ui-fabric-react/dist/sass/References.scss';
 
+
+.propsTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
 .advancedPageProperties {
   .container {
     max-width: 700px;
@@ -21,12 +28,6 @@
     display: flex;
     font-size: 12px;
     flex-wrap: wrap;
-  }
-
-  .title {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 20px;
   }
 
   .standardCapsule {
@@ -54,4 +55,30 @@
   .plainValue {
     margin: 4px 4px 4px 4px;
   }
+
 }
+
+  	
+  //Copied from Pivot Tiles showSearch
+  .showProperties {
+    transition:all 0.4s ease;
+    //transition:height 0.4s ease;
+    //transition:padding-bottom 0.4s ease;
+    //transition:transform 0.4s ease;
+    opacity: 1;
+    //max-height: 100px;
+    overflow: hidden;
+    // padding-bottom: 20px;
+    height: auto;
+	}
+  
+  //Copied from Pivot Tiles showSearch
+  .hideProperties {
+		height: 0px;
+		overflow: hidden;
+    background: transparent;
+    opacity: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    transition:all 0.6s ease;
+	}

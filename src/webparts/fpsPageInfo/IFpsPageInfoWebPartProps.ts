@@ -68,6 +68,7 @@ export interface IFpsPageInfoWebPartProps {
   showCustomProps: boolean;
   showOOTBProps: boolean;
   showApprovalProps: boolean;
+  propsExpanded: boolean;
 
 
   uniqueId: string;

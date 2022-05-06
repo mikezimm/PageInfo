@@ -12,6 +12,8 @@ import PageNavigator from './PageNavigator/PageNavigator';
 
 import ReactJson from "react-json-view";
 import AdvancedPageProperties from './AdvPageProps/components/AdvancedPageProperties';
+
+import stylesA from './AdvPageProps/components/AdvancedPageProperties.module.scss';
 import { checkIsInVerticalSection, FPSPinMenu } from './PinMe/FPSPinMenu';
 
 import WebpartBanner from "./HelpPanel/banner/onLocal/component";
@@ -60,13 +62,23 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     return smaller;
   }
 
+  private makeExpandPropsCmdStyles() {
+    let propsCmdCSS: React.CSSProperties = JSON.parse(JSON.stringify( this.props.bannerProps.bannerCmdReactCSS ));
+    propsCmdCSS.backgroundColor = 'transparent';
+    propsCmdCSS.marginLeft = '30px';
+    return propsCmdCSS;
+  }
+
   private smallerCmdStyles: React.CSSProperties = this.makeSmallerCmdStyles();
+  private propsExpandCmdStyles: React.CSSProperties = this.makeExpandPropsCmdStyles();
 
   private PinFullIcon = <Icon title={ 'Pin to top' } iconName='Pinned' onClick={ this.setPinFull.bind(this) } style={ this.smallerCmdStyles }></Icon>;
   private PinMinIcon = <Icon  title={ 'Minimize' } iconName='CollapseMenu' onClick={ this.setPinMin.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
   private PinExpandIcon = <Icon  title={ 'Expand' } iconName='DoubleChevronDown' onClick={ this.setPinFull.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
   private PinDefault = <Icon  title={ 'Set to default' } iconName='ArrowDownRightMirrored8' onClick={ this.setPinDefault.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
 
+  private PropsExpand = <Icon  title={ 'Expand Properties' } iconName='ChevronDownMed' style={ this.propsExpandCmdStyles  }></Icon>;
+  private PropsCollapse = <Icon  title={ 'Collapse Properties' } iconName='ChevronUpMed' style={ this.propsExpandCmdStyles  }></Icon>;
 
  /***
   *     .o88b.  .d88b.  d8b   db .d8888. d888888b d8888b. db    db  .o88b. d888888b  .d88b.  d8888b. 
@@ -87,6 +99,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       pinState: this.props.fpsPinMenu.defPinState ? this.props.fpsPinMenu.defPinState : 'normal',
       showDevHeader: false,
       lastStateChange: '',
+      propsExpanded: this.props.advPageProps.defaultExpanded,
     };
 
 
@@ -246,6 +259,31 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
     ></WebpartBanner>;
 
+
+    let advPropsAccordion = !this.props.advPageProps.showSomeProps || !this.props.advPageProps.title ? null : 
+      <div className={ stylesA.propsTitle } style={{ display: 'flex', flexWrap: 'nowrap' }} onClick={ this.toggleAdvAccordion.bind(this) }>
+        <div style={{ cursor: 'pointer' }} title={'Show or Collapse Properties'}>{ this.props.advPageProps.title }</div>
+        { this.state.propsExpanded === true ? this.PropsCollapse : this.PropsExpand }
+      </div> ;
+
+    const showPropsStyles = this.state.propsExpanded === true || !this.props.advPageProps.title ? stylesA.showProperties : stylesA.hideProperties;
+
+    const advancedProps = <div>
+      { advPropsAccordion }
+      <div className={ showPropsStyles }>
+        <AdvancedPageProperties 
+          defaultExpanded = { this.state.propsExpanded }
+          showSomeProps = { this.props.advPageProps.showSomeProps}
+          context = { this.props.advPageProps.context}
+          title = { this.props.advPageProps.title}
+          selectedProperties = { this.props.advPageProps.selectedProperties}
+          themeVariant = { this.props.advPageProps.themeVariant}
+        >
+        </AdvancedPageProperties>
+      </div>
+    </div>;
+
+
     let devHeader = this.state.showDevHeader === true ? <div><b>Props: </b> { 'this.props.lastPropChange' + ', ' + 'this.props.lastPropDetailChange' } - <b>State: lastStateChange: </b> { this.state.lastStateChange  } </div> : null ;
     
 
@@ -262,14 +300,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
             anchorLinks={ this.props.pageNavigator.anchorLinks }
           >
           </PageNavigator>
-          <AdvancedPageProperties 
-            showSomeProps = { this.props.advPageProps.showSomeProps}
-            context = { this.props.advPageProps.context}
-            title = { this.props.advPageProps.title}
-            selectedProperties = { this.props.advPageProps.selectedProperties}
-            themeVariant = { this.props.advPageProps.themeVariant}
-          >
-          </AdvancedPageProperties>
+          { advancedProps }
         </div>
       </section>
     );
@@ -277,21 +308,23 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
   private setPinFull() {
     // setExpandoRamicMode( this.props.domElement, newMode, this.props.expandoStyle,  this.props.expandAlert, this.props.expandConsole, this.props.expandoPadding, this.props.pageLayout );
-
     FPSPinMenu( this.props.fpsPinMenu.domElement, 'pinFull', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     this.setState({ pinState: 'pinFull' });
-
   }
 
   private setPinMin() {
-
     FPSPinMenu( this.props.fpsPinMenu.domElement, 'pinMini', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     this.setState({ pinState: 'pinMini' });
   }
-  private setPinDefault() {
 
+  private setPinDefault() {
     FPSPinMenu( this.props.fpsPinMenu.domElement, 'normal', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     this.setState({ pinState: 'normal' });
+  }
+
+  private toggleAdvAccordion() {
+    let newState = this.state.propsExpanded === true ? false : true;
+    this.setState( { propsExpanded: newState });
   }
 
 }

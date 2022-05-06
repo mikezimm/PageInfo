@@ -11,7 +11,7 @@ declare interface IFpsPageInfoWebPartStrings {
   //Copied from AdvancedPagePropertiesWebPart.ts
   PropertyPaneDescriptionP: string;
   OOTBPropGroupName: string;
-  CustPropsGroupName: string;
+  PropertiesGroupName: string;
   PropsTitleFieldLabel: string;
   SelectedPropertiesFieldLabel: string;
   PropPaneAddButtonText: string;

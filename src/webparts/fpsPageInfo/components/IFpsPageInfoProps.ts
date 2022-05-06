@@ -56,5 +56,7 @@ export interface IFpsPageInfoState {
 
   showDevHeader: boolean;
   lastStateChange: string;
+
+  propsExpanded: boolean;
   
 }
