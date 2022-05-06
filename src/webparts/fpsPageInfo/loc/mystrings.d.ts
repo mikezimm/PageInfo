@@ -1,6 +1,6 @@
 declare interface IFpsPageInfoWebPartStrings {
   PropertyPaneDescription: string;
-  BasicGroupName: string;
+  TOCGroupName: string;
   PinMeGroupName: string;
   DescriptionFieldLabel: string;
   AppLocalEnvironmentSharePoint: string;
@@ -11,8 +11,8 @@ declare interface IFpsPageInfoWebPartStrings {
   //Copied from AdvancedPagePropertiesWebPart.ts
   PropertyPaneDescriptionP: string;
   OOTBPropGroupName: string;
-  SelectionGroupName: string;
-  TitleFieldLabel: string;
+  CustPropsGroupName: string;
+  PropsTitleFieldLabel: string;
   SelectedPropertiesFieldLabel: string;
   PropPaneAddButtonText: string;
   PropPaneDeleteButtonText: string;

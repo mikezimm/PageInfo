@@ -8,6 +8,7 @@ import { IExpandAudiences } from "@mikezimm/npmfunctions/dist/Services/PropPane/
 
 import { IWebpartHistory, IWebpartHistoryItem2, } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistoryInterface';
 import { IPinMeState } from "./components/PinMe/FPSPinMenu";
+import { IMinHeading } from "./components/PageNavigator/IPageNavigatorProps";
 
 
 export const changeExpando = [ 
@@ -58,13 +59,17 @@ export interface IFpsPageInfoWebPartProps {
 
   defPinState: IPinMeState;
 
-  showEditorProps: boolean;
+  showTOC: boolean;
+  minHeadingToShow: IMinHeading;
+  description: string;
+  TOCTitleField: string;
+
+  showSomeProps: boolean;
+  showCustomProps: boolean;
+  showOOTBProps: boolean;
   showApprovalProps: boolean;
 
 
-  description: string;
-
-  
   uniqueId: string;
   showBannerGear: boolean; // Not in Prop Pane
 
@@ -72,7 +77,7 @@ export interface IFpsPageInfoWebPartProps {
   pageLayout: ISupportedHost ;// like SinglePageApp etc... this.context[_pageLayout];
 
   //Copied from AdvancedPagePropertiesWebPart.ts
-  title: string;
+  propsTitleField: string;
   selectedProperties: string[];
 
   //2022-02-17:  Added these for expandoramic mode

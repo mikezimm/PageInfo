@@ -11,6 +11,7 @@ import {
   IPropertyPaneDropdownProps,
   PropertyPaneButton,
   PropertyPaneButtonType,
+  PropertyPaneToggle,
 
 
 } from '@microsoft/sp-property-pane';
@@ -95,6 +96,13 @@ import { Log } from './components/AdvPageProps/utilities/Log';
 import { IFpsPageInfoWebPartProps } from './IFpsPageInfoWebPartProps';
 import { exportIgnoreProps, importBlockProps, } from './IFpsPageInfoWebPartProps';
 
+
+//export type IMinHeading = 'h3' | 'h2' | 'h1' ;
+export const MinHeadingOptions = [
+  { index: 0, key: '3', text: "h3" },
+  { index: 1, key: '2', text: "h2" },
+  { index: 2, key: '1', text: "h1" },
+];
 
 //export type IPinMeState = 'normal' | 'pinFull' | 'pinMini';
 export const PinMeLocations = [
@@ -238,10 +246,23 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
       if ( this.properties.bannerHoverEffect === undefined ) { this.properties.bannerHoverEffect = false; }
 
+      let defBannerTheme = 'corpDark1';
       if ( this.context.pageContext.site.serverRelativeUrl.toLowerCase().indexOf( '/sites/lifenet') === 0 ) {
-        if ( !this.properties.bannerStyle ) { this.properties.bannerStyle = createBannerStyleStr( 'corpWhite1', 'banner') ; }
-        if ( !this.properties.bannerCmdStyle ) { this.properties.bannerCmdStyle = createBannerStyleStr( 'corpWhite1', 'banner') ; }
-      }
+          defBannerTheme = 'corpWhite1'; }
+
+      if ( !this.properties.bannerStyle ) { this.properties.bannerStyle = createBannerStyleStr( defBannerTheme, 'banner') ; }
+
+      if ( !this.properties.bannerCmdStyle ) { 
+
+        //Adjust the default size down compared to PinMe buttons which are primary functions in the web part
+        let bannerCmdStyle = createBannerStyleStr( defBannerTheme, 'cmd').replace('"fontSize":20,', '"fontSize":16,') ;
+        bannerCmdStyle = bannerCmdStyle.replace('"marginRight":"9px"', '"marginRight":"0px"') ;
+        bannerCmdStyle = bannerCmdStyle.replace('"padding":"7px"', '"padding":"7px 4px"') ;
+
+        this.properties.bannerCmdStyle = bannerCmdStyle;
+
+
+       }
 
       // DEFAULTS SECTION:  Panel   <<< ================================================================
       if ( !this.properties.fullPanelAudience || this.properties.fullPanelAudience.length === 0 ) {
@@ -279,6 +300,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
   public render(): void {
 
+    this.properties.showSomeProps = this.properties.showOOTBProps === true || this.properties.showCustomProps === true || this.properties.showApprovalProps === true  ? true : false;
     this._unqiueId = this.context.instanceId;
 
     // quickRefresh is used for SecureScript for when caching html file.  <<< ================================================================
@@ -389,16 +411,21 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         webpartHistory: this.properties.webpartHistory,
 
         pageNavigator:   {
-          description: 'desc passed from main web part',
+          minHeadingToShow: this.properties.minHeadingToShow,
+          showTOC: this.properties.showTOC,
+          description: this.properties.TOCTitleField,
           anchorLinks: this.anchorLinks,
+          themeVariant: this._themeVariant,
         },
 
         advPageProps: {
+          showSomeProps: this.properties.showSomeProps,
           context: this.context,
-          title: this.properties.title,
+          title: this.properties.propsTitleField,
           selectedProperties: this.properties.selectedProperties,
           themeVariant: this._themeVariant,
         },
+
         fpsPinMenu: {
           defPinState: this.properties.defPinState,
           domElement: this.context.domElement,
@@ -581,6 +608,8 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         
         //Adjust the default size down compared to PinMe buttons which are primary functions in the web part
         let bannerCmdStyle = createBannerStyleStr( newValue, 'cmd' ).replace('"fontSize":20,', '"fontSize":16,');  
+        bannerCmdStyle = bannerCmdStyle.replace('"marginRight":"9px"', '"marginRight":"0px"') ;
+        bannerCmdStyle = bannerCmdStyle.replace('"padding":"7px"', '"padding":"7px 4px"') ;
 
         this.properties.bannerStyle = bannerStyle;
         this.properties.bannerCmdStyle = bannerCmdStyle;
@@ -609,9 +638,36 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
     // Initialize with the Title entry
     var propDrops: IPropertyPaneField<any>[] = [];
-    propDrops.push(PropertyPaneTextField('title', {
-      label: strings.TitleFieldLabel
+    const disableCustomProps = this.properties.showCustomProps === false ? true : false;
+
+    propDrops.push(PropertyPaneTextField('propsTitleField', {
+      label: strings.PropsTitleFieldLabel,
+      disabled: this.properties.showSomeProps === false ? true : false,
     }));
+
+    propDrops.push(PropertyPaneToggle("showOOTBProps", {
+      label: "Show Created/Modified Props",
+      onText: "On",
+      offText: "Off",
+      // disabled: true,
+    }));
+
+    propDrops.push(PropertyPaneToggle("showApprovalProps", {
+      label: "Show Approval Status Props",
+      onText: "On",
+      offText: "Off",
+      // disabled: true,
+    }));
+
+    propDrops.push( PropertyPaneToggle("showCustomProps", {
+      label: "Show Custom Props",
+      onText: "On",
+      offText: "Off",
+      // disabled: true,
+    }));
+
+
+
     propDrops.push(PropertyPaneHorizontalRule());
     // Determine how many page property dropdowns we currently have
     this.properties.selectedProperties.forEach((prop, index) => {
@@ -620,6 +676,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           label: strings.SelectedPropertiesFieldLabel,
           options: this.availableProperties,
           selectedKey: prop,
+          disabled: disableCustomProps,
         }));
       // Every drop down gets its own delete button
       propDrops.push(PropertyPaneButton(`deleteButton${index.toString()}`,
@@ -649,24 +706,39 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           displayGroupsAsAccordion: true, //DONT FORGET THIS IF PROP PANE GROUPS DO NOT EXPAND
           groups: [
             {
-              groupName: strings.BasicGroupName,
-              groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
-                })
-              ]
-            }, //End this group
-            {
               groupName: strings.PinMeGroupName,
               groupFields: [
                 PropertyPaneDropdown('defPinState', <IPropertyPaneDropdownProps>{
-                  label: 'Default Location',
-                  options: PinMeLocations,
+                  label: 'Default Location - "Pin Expanded" updates after save',
+                  options: PinMeLocations, //MinHeadingOptions
+                }),
+              ]
+            }, //End this group  
+            {
+              groupName: strings.TOCGroupName,
+              isCollapsed: true,
+              groupFields: [
+                //showTOC
+                PropertyPaneToggle("showTOC", {
+                  label: "Show Table of Contents",
+                  onText: "On",
+                  offText: "Off",
+                  // disabled: true,
+                }),
+                PropertyPaneTextField('TOCTitleField', {
+                  label: strings.DescriptionFieldLabel,
+                  disabled: this.properties.showTOC === false ? true : false,
+                }),
+                PropertyPaneDropdown('minHeadingToShow', <IPropertyPaneDropdownProps>{
+                  label: 'Min heading to show',
+                  options: MinHeadingOptions, //MinHeadingOptions
+                  disabled: this.properties.showTOC === false ? true : false,
                 }),
               ]
             }, //End this group
             {
-              groupName: strings.SelectionGroupName,
+              groupName: strings.CustPropsGroupName,
+              isCollapsed: true,
               groupFields: propDrops
             }, // this group
 

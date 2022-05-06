@@ -8,8 +8,10 @@ import styles from './PageNavigator.module.scss';
 import { IPageNavigatorProps } from './IPageNavigatorProps';
 import { IPageNavigatorState } from './IPageNavigatorState';
 import { Nav, INavLink } from 'office-ui-fabric-react/lib/Nav';
+import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 export default class PageNavigator extends React.Component<IPageNavigatorProps, IPageNavigatorState> {
+
   constructor(props: IPageNavigatorProps) {
     super(props);
 
@@ -36,23 +38,32 @@ export default class PageNavigator extends React.Component<IPageNavigatorProps, 
   }
 
   public render(): React.ReactElement<IPageNavigatorProps> {
-    return (
-      <div className={styles.pageNavigator}>
-        <div className={styles.container}>
-          <div className={styles.row}>
-            <div className={styles.column}>
-              <Nav selectedKey={this.state.selectedKey}
-                onLinkClick={this.onLinkClick}
-                groups={[
-                  {
-                    links: this.state.anchorLinks
-                  }
-                ]}
-              />
+
+    const { semanticColors }: IReadonlyTheme = this.props.themeVariant;
+
+    if ( this.props.showTOC === false ) {
+      return ( null );
+    } else { //If there is a null value, it will just show it
+      return (
+        <div className={styles.pageNavigator}>
+          <div className={styles.container}>
+            <div className={styles.row}>
+              <div className={styles.column}>
+                <div style={{ fontSize: '20px', fontWeight: 600, backgroundColor: semanticColors.defaultStateBackground, color: semanticColors.bodyText}}>{ this.props.description ? this.props.description : null }</div>
+                <Nav selectedKey={this.state.selectedKey}
+                  onLinkClick={this.onLinkClick}
+                  groups={[
+                    {
+                      links: this.state.anchorLinks
+                    }
+                  ]}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
+
   }
 }

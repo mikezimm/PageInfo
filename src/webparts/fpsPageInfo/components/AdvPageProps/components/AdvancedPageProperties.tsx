@@ -178,12 +178,17 @@ const AdvancedPageProperties: React.FunctionComponent<IAdvancedPagePropertiesPro
     }
   };
 
-  return (
-    <div className={`${styles.advancedPageProperties} ${styles.container}`} style={{backgroundColor: semanticColors.bodyBackground, color: semanticColors.bodyText}}>
-      {RenderTitle()}
-      {RenderPageProperties()}
-    </div>
-  );
+  if ( props.showSomeProps === false ) {
+    return ( null );
+  } else {
+    return (
+      <div className={`${styles.advancedPageProperties} ${styles.container}`} style={{backgroundColor: semanticColors.bodyBackground, color: semanticColors.bodyText}}>
+        {RenderTitle()}
+        {RenderPageProperties()}
+      </div>
+    );
+  }
+
 };
 
 export default AdvancedPageProperties;

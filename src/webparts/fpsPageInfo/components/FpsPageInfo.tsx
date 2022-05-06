@@ -111,6 +111,14 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
   public componentDidUpdate(prevProps){
     let refresh = false;
+    const defPinState = this.props.fpsPinMenu.defPinState;
+    if ( defPinState !== prevProps.fpsPinMenu.defPinState ) {
+      refresh = true;
+    }
+    if ( refresh === true ) {
+      FPSPinMenu( this.props.fpsPinMenu.domElement, defPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
+      this.setState({ pinState: defPinState });
+    }
 
   }
 
@@ -247,11 +255,15 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
           { devHeader }
           { Banner }
           <PageNavigator 
+            themeVariant={ this.props.pageNavigator.themeVariant }
+            minHeadingToShow={ this.props.pageNavigator.minHeadingToShow }
+            showTOC={ this.props.pageNavigator.showTOC }
             description={ this.props.pageNavigator.description }
             anchorLinks={ this.props.pageNavigator.anchorLinks }
           >
           </PageNavigator>
           <AdvancedPageProperties 
+            showSomeProps = { this.props.advPageProps.showSomeProps}
             context = { this.props.advPageProps.context}
             title = { this.props.advPageProps.title}
             selectedProperties = { this.props.advPageProps.selectedProperties}
