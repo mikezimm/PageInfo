@@ -293,6 +293,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       this.anchorLinks = await SPService.GetAnchorLinks(this.context);
 
       if ( this.properties.propsExpanded === undefined || this.properties.propsExpanded === null ) { this.properties.propsExpanded = true; }
+      if ( this.properties.propsTitleField === undefined || this.properties.propsTitleField === null ) { this.properties.propsTitleField = 'Page Properties'; }
       //Have to insure selectedProperties always is an array from AdvancedPagePropertiesWebPart.ts
       // if ( !this.properties.selectedProperties ) { this.properties.selectedProperties = []; }
 
@@ -389,6 +390,12 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
     console.log('mainWebPart: createElement ~ 357',   );
 
+    const OOTBProps = this.properties.showOOTBProps === true ? ['ID', 'Modified', 'Editor' , 'Created', 'Author' ] : [];
+    const ApprovalProps = []; //this.properties.showApprovalProps === true ? ['ID', 'Created', 'Modified'] : [];
+    const CustomProps = this.properties.showCustomProps ?  this.properties.selectedProperties : [];
+
+    // let selectedProperties = [ ...CustomProps, ...OOTBProps, ...ApprovalProps ];
+    let selectedProperties = [ ...CustomProps ];
 
     const element: React.ReactElement<IFpsPageInfoProps> = React.createElement(
       FpsPageInfo,
@@ -422,9 +429,10 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         advPageProps: {
           defaultExpanded: this.properties.propsExpanded,
           showSomeProps: this.properties.showSomeProps,
+          showOOTBProps: this.properties.showOOTBProps,
           context: this.context,
           title: this.properties.propsTitleField,
-          selectedProperties: this.properties.selectedProperties,
+          selectedProperties: selectedProperties,
           themeVariant: this._themeVariant,
         },
 
@@ -541,7 +549,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
   // protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
   protected async onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any) {
     super.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
-
 
     if (propertyPath.indexOf("selectedProperty") >= 0) {
       Log.Write('Selected Property identified');
@@ -664,7 +671,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       label: "Show Approval Status Props",
       onText: "On",
       offText: "Off",
-      // disabled: true,
+      disabled: true, //Not sure what props will be for this.
     }));
 
     propDrops.push( PropertyPaneToggle("showCustomProps", {

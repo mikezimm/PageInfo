@@ -66,6 +66,8 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     let propsCmdCSS: React.CSSProperties = JSON.parse(JSON.stringify( this.props.bannerProps.bannerCmdReactCSS ));
     propsCmdCSS.backgroundColor = 'transparent';
     propsCmdCSS.marginLeft = '30px';
+    propsCmdCSS.color = null; //Make sure icon is always visible
+
     return propsCmdCSS;
   }
 
@@ -259,7 +261,6 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
     ></WebpartBanner>;
 
-
     let advPropsAccordion = !this.props.advPageProps.showSomeProps || !this.props.advPageProps.title ? null : 
       <div className={ stylesA.propsTitle } style={{ display: 'flex', flexWrap: 'nowrap' }} onClick={ this.toggleAdvAccordion.bind(this) }>
         <div style={{ cursor: 'pointer' }} title={'Show or Collapse Properties'}>{ this.props.advPageProps.title }</div>
@@ -274,12 +275,27 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
         <AdvancedPageProperties 
           defaultExpanded = { this.state.propsExpanded }
           showSomeProps = { this.props.advPageProps.showSomeProps}
+          showOOTBProps = { this.props.advPageProps.showOOTBProps}
           context = { this.props.advPageProps.context}
           title = { this.props.advPageProps.title}
           selectedProperties = { this.props.advPageProps.selectedProperties}
           themeVariant = { this.props.advPageProps.themeVariant}
         >
         </AdvancedPageProperties>
+        {
+          this.props.advPageProps.showOOTBProps !== true ? null :
+            <AdvancedPageProperties
+              defaultExpanded = { this.state.propsExpanded }
+              showSomeProps = { this.props.advPageProps.showSomeProps}
+              showOOTBProps = { this.props.advPageProps.showOOTBProps}
+              context = { this.props.advPageProps.context}
+              title = { this.props.advPageProps.title}
+              selectedProperties = { ['ID', 'Modified', 'Editor' , 'Created', 'Author' ] }
+              themeVariant = { this.props.advPageProps.themeVariant}
+            >
+            </AdvancedPageProperties>
+        }
+
       </div>
     </div>;
 
