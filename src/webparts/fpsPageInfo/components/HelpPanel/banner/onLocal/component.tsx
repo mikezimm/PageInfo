@@ -264,7 +264,7 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 			let moreInfoText: string = this.props.infoElement ? this.props.infoElement : 'More Information';
 
 			
-			let bannerTitleText = this.props.title && this.props.title.length > 0 ? this.props.title : 'FPS Webpart';
+			let bannerTitleText = this.props.title && this.props.title.length > 0 ? this.props.title.trim() : 'FPS Webpart';
 			let textWidth = ( moreInfoText.length + bannerTitleText.length ) * 19 + 40; //characters * 19px + 40 padding
 
 			if ( bannerTitleText && ['hide','ignore','empty'].indexOf( bannerTitleText.toLowerCase() ) >= 0 ) {
