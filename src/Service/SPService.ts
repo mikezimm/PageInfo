@@ -62,73 +62,77 @@ export class SPService {
             /* The Header Text value */
             // .replace(/<.+?>/gi, "") replaces in the headingValue any html tags like <strong> </strong>
             // .replace(/&.+;/gi, "") replaces in the headingValue any &****; tags like &nbsp;
-            const headingValue = HTMLString.substring(HTMLString.search(/<h[1-4]>/g) + 4, HTMLString.search(/<\/h[1-4]>/g))
+            let headingValue = HTMLString.substring(HTMLString.search(/<h[1-4]>/g) + 4, HTMLString.search(/<\/h[1-4]>/g))
               .replace(/<.+?>/gi, "")
               .replace(/\&.+\;/gi, "");
 
-            headingOrder = parseInt(HTMLString.charAt(HTMLString.search(/<h[1-4]>/g) + 2));
+              headingOrder = parseInt(HTMLString.charAt(HTMLString.search(/<h[1-4]>/g) + 2));
 
-            const anchorUrl = this.GetAnchorUrl(headingValue);
-            this.allUrls.push(anchorUrl);
-
-            /**
-             * Added this check in case the first header is NOT h1
-             * If the first header is h2, it pushes an object that represents an h1 but uses the page Title  or Topic or whatever as a label
-             * NOTE:  If first header is h3 and the second is an h2, both are at the same level (as if h2 ) under the auto-generated h1
-             */
-            if (anchorLinks.length === 0 && headingOrder > 2 ) {
-              let firstAnchor = '';
-              if ( jsonData.TopicHeader ) {
-                firstAnchor = jsonData.TopicHeader + ' - TopicHeader';
-              } else if ( jsonData.Title ) {
-                firstAnchor = jsonData.Title + ' - Title';
-              } else { firstAnchor = 'Page Contents'; }
-
-              anchorLinks.push({ name: firstAnchor, key: 'PageContentsNode0', url: null, links: [], isExpanded: true,  });
-            }
-
-            /* Add links to Nav element */
-            if (anchorLinks.length === 0) {
-              anchorLinks.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
-            } else {
-              if (headingOrder <= prevHeadingOrder) {
-                /* Adding or Promoting links */
-                switch (headingOrder) {
-                  case 2:
-                    anchorLinks.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
-                    headingIndex++;
-                    subHeadingIndex = -1;
-                    break;
-                  case 4:
+              const anchorUrl = this.GetAnchorUrl(headingValue);
+              this.allUrls.push(anchorUrl);
+              if ( !headingValue ) { 
+                headingValue = 'Header Text is missing :(' ;
+                console.log( headingValue, HTMLString );
+               }
+              /**
+               * Added this check in case the first header is NOT h1
+               * If the first header is h2, it pushes an object that represents an h1 but uses the page Title  or Topic or whatever as a label
+               * NOTE:  If first header is h3 and the second is an h2, both are at the same level (as if h2 ) under the auto-generated h1
+               */
+              if (anchorLinks.length === 0 && headingOrder > 2 ) {
+                let firstAnchor = '';
+                if ( jsonData.TopicHeader ) {
+                  firstAnchor = jsonData.TopicHeader + ' - TopicHeader';
+                } else if ( jsonData.Title ) {
+                  firstAnchor = jsonData.Title + ' - Title';
+                } else { firstAnchor = 'Page Contents'; }
+  
+                anchorLinks.push({ name: firstAnchor, key: 'PageContentsNode0', url: null, links: [], isExpanded: true,  });
+              }
+  
+              /* Add links to Nav element */
+              if (anchorLinks.length === 0) {
+                anchorLinks.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
+              } else {
+                if (headingOrder <= prevHeadingOrder) {
+                  /* Adding or Promoting links */
+                  switch (headingOrder) {
+                    case 2:
+                      anchorLinks.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
+                      headingIndex++;
+                      subHeadingIndex = -1;
+                      break;
+                    case 4:
+                      if (subHeadingIndex > -1) {
+                        anchorLinks[headingIndex].links[subHeadingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
+                      } else {
+                        anchorLinks[headingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
+                      }
+                      break;
+                    default:
+                      anchorLinks[headingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
+                      subHeadingIndex = anchorLinks[headingIndex].links.length - 1;
+                      break;
+                  }
+                } else {
+                  /* Making sub links */
+                  if (headingOrder === 3) {
+                    anchorLinks[headingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
+                    subHeadingIndex = anchorLinks[headingIndex].links.length - 1;
+                  } else {
                     if (subHeadingIndex > -1) {
                       anchorLinks[headingIndex].links[subHeadingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
                     } else {
                       anchorLinks[headingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
                     }
-                    break;
-                  default:
-                    anchorLinks[headingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
-                    subHeadingIndex = anchorLinks[headingIndex].links.length - 1;
-                    break;
-                }
-              } else {
-                /* Making sub links */
-                if (headingOrder === 3) {
-                  anchorLinks[headingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
-                  subHeadingIndex = anchorLinks[headingIndex].links.length - 1;
-                } else {
-                  if (subHeadingIndex > -1) {
-                    anchorLinks[headingIndex].links[subHeadingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
-                  } else {
-                    anchorLinks[headingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
                   }
                 }
               }
-            }
-            prevHeadingOrder = headingOrder;
-
-            /* Replace the added header links from the string so they don't get processed again */
-            HTMLString = HTMLString.replace(`<h${headingOrder}>`, '').replace(`</h${headingOrder}>`, '');
+              prevHeadingOrder = headingOrder;
+  
+              /* Replace the added header links from the string so they don't get processed again */
+              HTMLString = HTMLString.replace(`<h${headingOrder}>`, '').replace(`</h${headingOrder}>`, '');
+            // }
           }
         }
       });
