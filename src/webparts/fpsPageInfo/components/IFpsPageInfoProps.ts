@@ -58,5 +58,6 @@ export interface IFpsPageInfoState {
   lastStateChange: string;
 
   propsExpanded: boolean;
+  tocExpanded: boolean;
   
 }

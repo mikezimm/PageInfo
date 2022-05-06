@@ -25,17 +25,19 @@
       "description": "FPS Page Info - TOC & Props",
 
       "showTOC": true,
-      "TOCTitleField": "",
+      "TOCTitleField": "Table of Contents",
+
+      "propsTitleField":  "Page Properties",
 
       "selectedProperties": [],
       "minHeadingToShow": "h2",
 
       "showCustomProps": true,
+      "propsExpanded": true,
       "showOOTBProps": true,
       "showApprovalProps": false,
 
       "defPinState": "normal",
-
 
       "infoElementChoice": "IconName=Unknown",
       "infoElementText": "Question mark circle"

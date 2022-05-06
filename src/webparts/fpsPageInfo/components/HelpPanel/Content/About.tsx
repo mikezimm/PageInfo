@@ -33,7 +33,7 @@ export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
      */
 
 
-    table.rows.push( createAboutRow('2022-05-85',"1.0.0.04","#9, #10, #13, #16, #17, #18 ", showRepoLinks === true ? repoLinks : null ) );
+    table.rows.push( createAboutRow('2022-05-85',"1.0.0.04","#9, #10, #13, #16, #17, #18, #19 ", showRepoLinks === true ? repoLinks : null ) );
     table.rows.push( createAboutRow('2022-05-05',"1.0.0.03","#5 - Add FPS Banner ", showRepoLinks === true ? repoLinks : null ) );
     table.rows.push( createAboutRow('2022-05-03',"1.0.0.02","#2, #3, initial test release", showRepoLinks === true ? repoLinks : null ) );
     

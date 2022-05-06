@@ -28,9 +28,17 @@ export default class PageNavigator extends React.Component<IPageNavigatorProps, 
   }
 
   public componentDidUpdate(prevProps: IPageNavigatorProps) {
+
     if (JSON.stringify(prevProps.anchorLinks) !== JSON.stringify(this.props.anchorLinks)) {
       this.setState({ anchorLinks: this.props.anchorLinks, selectedKey: this.props.anchorLinks[0] ? this.props.anchorLinks[0].key : '' });
+
+    } else if (prevProps.showTOC !== this.props.showTOC) { //Force component update in case it was not previously rendered
+      this.setState({ selectedKey: this.state.selectedKey });
+
+    } else if (prevProps.tocExpanded !== this.props.tocExpanded) { //Force component update in case it was not previously rendered
+      this.setState({ selectedKey: this.state.selectedKey });
     }
+
   }
 
   private onLinkClick(ev: React.MouseEvent<HTMLElement>, item?: INavLink) {
@@ -49,7 +57,7 @@ export default class PageNavigator extends React.Component<IPageNavigatorProps, 
           <div className={styles.container}>
             <div className={styles.row}>
               <div className={styles.column}>
-                <div style={{ fontSize: '20px', fontWeight: 600, backgroundColor: semanticColors.defaultStateBackground, color: semanticColors.bodyText}}>{ this.props.description ? this.props.description : null }</div>
+                {/* <div style={{ fontSize: '20px', fontWeight: 600, backgroundColor: semanticColors.defaultStateBackground, color: semanticColors.bodyText}}>{ this.props.description ? this.props.description : null }</div> */}
                 <Nav selectedKey={this.state.selectedKey}
                   onLinkClick={this.onLinkClick}
                   groups={[

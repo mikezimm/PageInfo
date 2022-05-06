@@ -63,13 +63,13 @@ export interface IFpsPageInfoWebPartProps {
   minHeadingToShow: IMinHeading;
   description: string;
   TOCTitleField: string;
+  tocExpanded: boolean;
 
   showSomeProps: boolean;
   showCustomProps: boolean;
   showOOTBProps: boolean;
   showApprovalProps: boolean;
   propsExpanded: boolean;
-
 
   uniqueId: string;
   showBannerGear: boolean; // Not in Prop Pane

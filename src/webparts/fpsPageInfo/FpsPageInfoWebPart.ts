@@ -376,7 +376,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
     let bannerSetup = buildBannerProps( this.properties , this.FPSUser, buildBannerSettings, showTricks, renderAsReader );
     if ( !this.properties.bannerTitle || this.properties.bannerTitle === '' ) { bannerSetup.bannerProps.title = 'hide' ; }
-    
+
     errMessage = bannerSetup.errMessage;
     this.bannerProps = bannerSetup.bannerProps;
     let expandoErrorObj = bannerSetup.errorObjArray;
@@ -426,6 +426,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           description: this.properties.TOCTitleField,
           anchorLinks: this.anchorLinks,
           themeVariant: this._themeVariant,
+          tocExpanded: this.properties.tocExpanded,
         },
 
         advPageProps: {
@@ -656,7 +657,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     }));
 
     propDrops.push(PropertyPaneToggle("propsExpanded", {
-      label: "Default visibility",
+      label: "Default state",
       onText: "Expanded",
       offText: "Collapsed",
       // disabled: true,
@@ -746,6 +747,14 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
                   label: strings.DescriptionFieldLabel,
                   disabled: this.properties.showTOC === false ? true : false,
                 }),
+                
+                PropertyPaneToggle("tocExpanded", {
+                  label: "Default state",
+                  onText: "Expanded",
+                  offText: "Collapsed",
+                  // disabled: true,
+                }),
+
                 PropertyPaneDropdown('minHeadingToShow', <IPropertyPaneDropdownProps>{
                   label: 'Min heading to show',
                   options: MinHeadingOptions, //MinHeadingOptions

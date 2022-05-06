@@ -3,7 +3,7 @@ define([], function() {
     "PropertyPaneDescription": "Description",
     "TOCGroupName": "Table of Contents",
     "PinMeGroupName": "Pin Me",
-    "DescriptionFieldLabel": "Description Field",
+    "DescriptionFieldLabel": "TOC Heading",
     "AppLocalEnvironmentSharePoint": "The app is running on your local environment as SharePoint web part",
     "AppLocalEnvironmentTeams": "The app is running on your local environment as Microsoft Teams app",
     "AppSharePointEnvironment": "The app is running on SharePoint page",

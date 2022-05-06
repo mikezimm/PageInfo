@@ -82,6 +82,9 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
   private PropsExpand = <Icon  title={ 'Expand Properties' } iconName='ChevronDownMed' style={ this.propsExpandCmdStyles  }></Icon>;
   private PropsCollapse = <Icon  title={ 'Collapse Properties' } iconName='ChevronUpMed' style={ this.propsExpandCmdStyles  }></Icon>;
 
+  private TOCExpand = <Icon  title={ 'Expand Table of Contents' } iconName='ChevronDownMed' style={ this.propsExpandCmdStyles  }></Icon>;
+  private TOCCollapse = <Icon  title={ 'Collapse Table of Contents' } iconName='ChevronUpMed' style={ this.propsExpandCmdStyles  }></Icon>;
+
  /***
   *     .o88b.  .d88b.  d8b   db .d8888. d888888b d8888b. db    db  .o88b. d888888b  .d88b.  d8888b. 
   *    d8P  Y8 .8P  Y8. 888o  88 88'  YP `~~88~~' 88  `8D 88    88 d8P  Y8 `~~88~~' .8P  Y8. 88  `8D 
@@ -102,6 +105,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       showDevHeader: false,
       lastStateChange: '',
       propsExpanded: this.props.advPageProps.defaultExpanded,
+      tocExpanded: this.props.pageNavigator.tocExpanded,
     };
 
 
@@ -300,6 +304,30 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     </div>;
 
 
+    let tocAccordion = !this.props.pageNavigator.showTOC || !this.props.pageNavigator.description ? null : 
+    <div className={ stylesA.propsTitle } style={{ display: 'flex', flexWrap: 'nowrap', paddingTop: '20px' }} onClick={ this.toggleTOC.bind(this) }>
+      <div style={{ cursor: 'pointer' }} title={'Show or Collapse Table of Contents'}>{ this.props.pageNavigator.description }</div>
+      { this.state.tocExpanded === true ? this.TOCCollapse : this.TOCExpand }
+    </div> ;
+
+    const showTOCStyles = this.state.tocExpanded === true || !this.props.pageNavigator.description ? stylesA.showProperties : stylesA.hideProperties;
+
+    const tocComponent = <div>
+    { tocAccordion }
+    <div className={ showTOCStyles }>
+      <PageNavigator 
+
+          themeVariant={ this.props.pageNavigator.themeVariant }
+          minHeadingToShow={ this.props.pageNavigator.minHeadingToShow }
+          showTOC={ this.props.pageNavigator.showTOC }
+          tocExpanded={ this.props.pageNavigator.tocExpanded }
+          description={ this.props.pageNavigator.description }
+          anchorLinks={ this.props.pageNavigator.anchorLinks }
+        >
+      </PageNavigator>
+    </div>
+    </div>;
+
     let devHeader = this.state.showDevHeader === true ? <div><b>Props: </b> { 'this.props.lastPropChange' + ', ' + 'this.props.lastPropDetailChange' } - <b>State: lastStateChange: </b> { this.state.lastStateChange  } </div> : null ;
     
 
@@ -308,14 +336,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
         <div>
           { devHeader }
           { Banner }
-          <PageNavigator 
-            themeVariant={ this.props.pageNavigator.themeVariant }
-            minHeadingToShow={ this.props.pageNavigator.minHeadingToShow }
-            showTOC={ this.props.pageNavigator.showTOC }
-            description={ this.props.pageNavigator.description }
-            anchorLinks={ this.props.pageNavigator.anchorLinks }
-          >
-          </PageNavigator>
+          { tocComponent }
           { advancedProps }
         </div>
       </section>
@@ -341,6 +362,11 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
   private toggleAdvAccordion() {
     let newState = this.state.propsExpanded === true ? false : true;
     this.setState( { propsExpanded: newState });
+  }
+
+  private toggleTOC() {
+    let newState = this.state.tocExpanded === true ? false : true;
+    this.setState( { tocExpanded: newState });
   }
 
 }
