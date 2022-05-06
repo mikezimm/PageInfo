@@ -7,6 +7,7 @@ import { ISupportedHost } from "@mikezimm/npmfunctions/dist/Services/PropPane/FP
 import { IExpandAudiences } from "@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsExpando";
 
 import { IWebpartHistory, IWebpartHistoryItem2, } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistoryInterface';
+import { IPinMeState } from "./components/PinMe/FPSPinMenu";
 
 
 export const changeExpando = [ 
@@ -54,90 +55,97 @@ export const changeExpando = [
   //  export type IExpandAudiences = 'Site Admins' | 'Site Owners' | 'Page Editors' | 'WWWone';
 
 export interface IFpsPageInfoWebPartProps {
-    description: string;
 
-    
-    uniqueId: string;
-    showBannerGear: boolean; // Not in Prop Pane
+  defPinState: IPinMeState;
 
-    //Needed for Expandoramic and PinMenu
-    pageLayout: ISupportedHost ;// like SinglePageApp etc... this.context[_pageLayout];
-
-    //Copied from AdvancedPagePropertiesWebPart.ts
-    title: string;
-    selectedProperties: string[];
-
-    //2022-02-17:  Added these for expandoramic mode
-    enableExpandoramic: boolean;
-    expandoDefault: boolean;
-    expandoStyle: any;
-    expandoPadding: number;
-    expandoAudience: IExpandAudiences;
-
-    // expandAlert: boolean;
-    // expandConsole: boolean;
-    //2022-02-17:  END additions for expandoramic mode
-
-    // Section 15
-    //General settings for Banner Options group
-    // export interface IWebpartBannerProps {
-
-    //[ 'showBanner', 'bannerTitle', 'showGoToHome', 'showGoToParent', 'homeParentGearAudience', 'bannerStyleChoice', 'bannerStyle', 'bannerCmdStyle', 'bannerHoverEffect', 'showRepoLinks', 'showExport' ];
-    showBanner: boolean;
-    bannerTitle: string;
-
-    infoElementChoice: string;
-    infoElementText: string;
-
-    showGoToHome: boolean;  //defaults to true
-    showGoToParent: boolean;  //defaults to true
-    homeParentGearAudience: IExpandAudiences;
-
-    bannerStyleChoice: string;
-    bannerStyle: string;
-    bannerCmdStyle: string;
-    lockStyles: boolean;
-
-    bannerHoverEffect: boolean;
-    showRepoLinks: boolean;
-    showExport: boolean;
-
-    fpsImportProps: string;
-
-    fullPanelAudience : IExpandAudiences;
-    replacePanelHTML : any;  //This is the jsx sent to panel for User controled information (aka what reader will see when clicking 'info' button)
-
-    //These are added for the minimum User Panel component ( which turns into the replacePanelHTML component )
-    panelMessageDescription1: string; //
-    panelMessageSupport: string;
-    panelMessageDocumentation: string;
-    panelMessageIfYouStill: string;
-    documentationLinkDesc: string;
-    documentationLinkUrl: string;
-    documentationIsValid: boolean;
-    supportContacts: IPropertyFieldGroupOrPerson[];
-
-    //ADDED FOR WEBPART HISTORY:  
-    webpartHistory: IWebpartHistory;
+  showEditorProps: boolean;
+  showApprovalProps: boolean;
 
 
-    showTricks: boolean;
+  description: string;
 
-    // }
+  
+  uniqueId: string;
+  showBannerGear: boolean; // Not in Prop Pane
 
-    //Section 16 - FPS Options group
-    searchShow: boolean;
-    fpsPageStyle: string;
-    fpsContainerMaxWidth: string;
-    quickLaunchHide: boolean;
+  //Needed for Expandoramic and PinMenu
+  pageLayout: ISupportedHost ;// like SinglePageApp etc... this.context[_pageLayout];
 
-    //FPS Options part II
-    pageHeaderHide: boolean;
-    allSectionMaxWidthEnable: boolean;
-    allSectionMaxWidth: number;
-    allSectionMarginEnable: boolean;
-    allSectionMargin: number;
-    toolBarHide: boolean;
+  //Copied from AdvancedPagePropertiesWebPart.ts
+  title: string;
+  selectedProperties: string[];
+
+  //2022-02-17:  Added these for expandoramic mode
+  enableExpandoramic: boolean;
+  expandoDefault: boolean;
+  expandoStyle: any;
+  expandoPadding: number;
+  expandoAudience: IExpandAudiences;
+
+  // expandAlert: boolean;
+  // expandConsole: boolean;
+  //2022-02-17:  END additions for expandoramic mode
+
+  // Section 15
+  //General settings for Banner Options group
+  // export interface IWebpartBannerProps {
+
+  //[ 'showBanner', 'bannerTitle', 'showGoToHome', 'showGoToParent', 'homeParentGearAudience', 'bannerStyleChoice', 'bannerStyle', 'bannerCmdStyle', 'bannerHoverEffect', 'showRepoLinks', 'showExport' ];
+  showBanner: boolean;
+  bannerTitle: string;
+
+  infoElementChoice: string;
+  infoElementText: string;
+
+  showGoToHome: boolean;  //defaults to true
+  showGoToParent: boolean;  //defaults to true
+  homeParentGearAudience: IExpandAudiences;
+
+  bannerStyleChoice: string;
+  bannerStyle: string;
+  bannerCmdStyle: string;
+  lockStyles: boolean;
+
+  bannerHoverEffect: boolean;
+  showRepoLinks: boolean;
+  showExport: boolean;
+
+  fpsImportProps: string;
+
+  fullPanelAudience : IExpandAudiences;
+  replacePanelHTML : any;  //This is the jsx sent to panel for User controled information (aka what reader will see when clicking 'info' button)
+
+  //These are added for the minimum User Panel component ( which turns into the replacePanelHTML component )
+  panelMessageDescription1: string; //
+  panelMessageSupport: string;
+  panelMessageDocumentation: string;
+  panelMessageIfYouStill: string;
+  documentationLinkDesc: string;
+  documentationLinkUrl: string;
+  documentationIsValid: boolean;
+  supportContacts: IPropertyFieldGroupOrPerson[];
+
+  //ADDED FOR WEBPART HISTORY:  
+  webpartHistory: IWebpartHistory;
+
+
+  showTricks: boolean;
+
+  // }
+
+  //Section 16 - FPS Options group
+  searchShow: boolean;
+  fpsPageStyle: string;
+  fpsContainerMaxWidth: string;
+  quickLaunchHide: boolean;
+
+  //FPS Options part II
+  pageHeaderHide: boolean;
+  allSectionMaxWidthEnable: boolean;
+  allSectionMaxWidth: number;
+  allSectionMarginEnable: boolean;
+  allSectionMargin: number;
+  toolBarHide: boolean;
 
 }
   

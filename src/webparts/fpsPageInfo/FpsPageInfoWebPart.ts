@@ -96,6 +96,13 @@ import { IFpsPageInfoWebPartProps } from './IFpsPageInfoWebPartProps';
 import { exportIgnoreProps, importBlockProps, } from './IFpsPageInfoWebPartProps';
 
 
+//export type IPinMeState = 'normal' | 'pinFull' | 'pinMini';
+export const PinMeLocations = [
+  { index: 0, key: 'normal', text: "normal" },
+  { index: 1, key: 'pinFull', text: "Pin Expanded" },
+  { index: 2, key: 'pinMini', text: "Pin Collapsed" },
+];
+
 export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageInfoWebPartProps> {
 
   private _isDarkTheme: boolean = false;
@@ -393,6 +400,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           themeVariant: this._themeVariant,
         },
         fpsPinMenu: {
+          defPinState: this.properties.defPinState,
           domElement: this.context.domElement,
           pageLayout: this.properties.pageLayout,
         }
@@ -595,11 +603,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     this.context.propertyPane.refresh();
   }
 
-
-
-
-
-
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
 
     Log.Write(`getPropertyPaneConfiguration`);
@@ -651,6 +654,15 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
                 PropertyPaneTextField('description', {
                   label: strings.DescriptionFieldLabel
                 })
+              ]
+            }, //End this group
+            {
+              groupName: strings.PinMeGroupName,
+              groupFields: [
+                PropertyPaneDropdown('defPinState', <IPropertyPaneDropdownProps>{
+                  label: 'Default Location',
+                  options: PinMeLocations,
+                }),
               ]
             }, //End this group
             {

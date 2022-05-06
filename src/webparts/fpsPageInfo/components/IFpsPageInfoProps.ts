@@ -15,6 +15,7 @@ import { IPageNavigatorProps } from "./PageNavigator/IPageNavigatorProps";
 import { IPinMeState } from "./PinMe/FPSPinMenu";
 
 export interface IFPSPinMenu {
+  defPinState: IPinMeState;
   domElement: HTMLElement;
   pageLayout: ISupportedHost ;// like SinglePageApp etc... this.context[_pageLayout];
 }

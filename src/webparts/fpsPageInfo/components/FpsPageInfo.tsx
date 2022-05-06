@@ -84,15 +84,16 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     super(props);
 
     this.state = {
-      pinState: 'normal',
+      pinState: this.props.fpsPinMenu.defPinState ? this.props.fpsPinMenu.defPinState : 'normal',
       showDevHeader: false,
       lastStateChange: '',
     };
+
+
   }
 
-
   public componentDidMount() {
-
+    FPSPinMenu( this.props.fpsPinMenu.domElement, this.state.pinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
   }
 
 
@@ -265,19 +266,19 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
   private setPinFull() {
     // setExpandoRamicMode( this.props.domElement, newMode, this.props.expandoStyle,  this.props.expandAlert, this.props.expandConsole, this.props.expandoPadding, this.props.pageLayout );
 
-    FPSPinMenu( this.props.fpsPinMenu.domElement, 'pinFull', null,  false, true, null, this.props.fpsPinMenu.pageLayout );
+    FPSPinMenu( this.props.fpsPinMenu.domElement, 'pinFull', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     this.setState({ pinState: 'pinFull' });
 
   }
 
   private setPinMin() {
 
-    FPSPinMenu( this.props.fpsPinMenu.domElement, 'pinMini', null,  false, true, null, this.props.fpsPinMenu.pageLayout );
+    FPSPinMenu( this.props.fpsPinMenu.domElement, 'pinMini', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     this.setState({ pinState: 'pinMini' });
   }
   private setPinDefault() {
 
-    FPSPinMenu( this.props.fpsPinMenu.domElement, 'normal', null,  false, true, null, this.props.fpsPinMenu.pageLayout );
+    FPSPinMenu( this.props.fpsPinMenu.domElement, 'normal', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     this.setState({ pinState: 'normal' });
   }
 

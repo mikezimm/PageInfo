@@ -2,6 +2,7 @@ define([], function() {
   return {
     "PropertyPaneDescription": "Description",
     "BasicGroupName": "Group Name",
+    "PinMeGroupName": "Pin Me",
     "DescriptionFieldLabel": "Description Field",
     "AppLocalEnvironmentSharePoint": "The app is running on your local environment as SharePoint web part",
     "AppLocalEnvironmentTeams": "The app is running on your local environment as Microsoft Teams app",
@@ -9,8 +10,9 @@ define([], function() {
     "AppTeamsTabEnvironment": "The app is running in Microsoft Teams",
 
     //Copied from AdvancedPagePropertiesWebPart.ts
+    "OOTBPropGroupName": "Other Properties",
     "PropertyPaneDescriptionP": "Select the page properties that you want to display on the page",
-    "SelectionGroupName": "",
+    "SelectionGroupName": "Custom Properties",
     "TitleFieldLabel": "Title",
     "SelectedPropertiesFieldLabel": "Property",
     "PropPaneAddButtonText": "Add",

@@ -21,6 +21,7 @@ import { IFPSBasicToggleSetting, IFPSExpandoAudience, ISupportedHost } from '@mi
 
 import { findParentElementLikeThis } from '@mikezimm/npmfunctions/dist/Services/DOM/domSearch';
 import { updateByClassNameEleChild } from '@mikezimm/npmfunctions/dist/Services/DOM/otherDOMAttempts';
+import { DisplayMode } from '@microsoft/sp-core-library';
 
 export type IPinMeState = 'normal' | 'pinFull' | 'pinMini';
 
@@ -35,7 +36,7 @@ export function checkIsInVerticalSection( domElement: HTMLElement ) {
 
 }
 
-export function FPSPinMenu ( domElement: HTMLElement, pinState : IPinMeState, controlStyle: any, alertError: boolean = true, consoleResult: boolean = false, pinMePadding: number, host: ISupportedHost  ) {
+export function FPSPinMenu ( domElement: HTMLElement, pinState : IPinMeState, controlStyle: any, alertError: boolean = true, consoleResult: boolean = false, pinMePadding: number, host: ISupportedHost, displayMode:  DisplayMode  ) {
 
   let fpsWindowProps: IFPSWindowProps = createFPSWindowProps();
 
@@ -67,7 +68,7 @@ export function FPSPinMenu ( domElement: HTMLElement, pinState : IPinMeState, co
 
   //Sets property of target element
   if ( host !== "SharePointFullPage" && thisControlZome ) { 
-    if ( pinState === 'pinFull' ) {
+    if ( displayMode !== DisplayMode.Edit && pinState === 'pinFull' ) {
 
       domElement.style.padding = `${pinMePadding}px`;
 
@@ -129,7 +130,7 @@ export function FPSPinMenu ( domElement: HTMLElement, pinState : IPinMeState, co
 
       }
 
-    } else if ( pinState === 'pinMini' ) {
+    } else if ( ( displayMode === DisplayMode.Edit && pinState === 'pinFull' ) || pinState === 'pinMini' ) {
       // thisControlZome.style['display'] = 'inline-block';
       thisControlZome.style['position'] = 'fixed';
       thisControlZome.style['top'] = '0%';
