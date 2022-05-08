@@ -1,0 +1,49 @@
+.pinMeWebPartDefault {
+
+    transition:all 0.4s ease;
+}
+
+.pinMeFull {
+
+    position: fixed;
+    height: auto;
+    top: 0%;
+    right: 15px;
+    margin: 0;
+    padding: 0 20px 10px 10px;
+    width: 400px;
+    background-color: white;
+    overflow-y: hidden;
+    z-index: 12;
+
+}
+
+.pinMeNormal {
+
+    position: null;
+    height: null;
+    top: null;
+    right: null;
+    margin: null;
+    padding: null;
+    width: null;
+    background-color: null;
+    overflow-y: null;
+    z-index: null;
+}
+
+.pinMeMini {
+
+    position: fixed;
+    height: 45px;
+    top: 0%;
+    right: 15px;
+    margin: 0;
+    padding: 0 20px 10px 10px;
+    width: 400px;
+    background-color: white;
+    overflow: hidden;
+    z-index: 12;
+
+}
+

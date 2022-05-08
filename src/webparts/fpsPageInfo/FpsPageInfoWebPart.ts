@@ -83,6 +83,7 @@ import { ISupportedHost } from "@mikezimm/npmfunctions/dist/Services/PropPane/FP
 export const repoLink: IRepoLinks = links.gitRepoPageInfoSmall;
 
 require('./GrayPropPaneAccordions.css');
+require('./FPSPinMe.css');
 
 
 import { SPService } from '../../Service/SPService';
