@@ -66,24 +66,27 @@ export function FPSPinMeTest ( domElement: HTMLElement, pinState : IPinMeState, 
   }
 
   if ( displayMode !== DisplayMode.Edit && pinState === 'pinFull' ) {
+    thisControlZome.classList.add( 'pinMeTop' ) ;
     thisControlZome.classList.add( 'pinMeFull' ) ;
     thisControlZome.classList.remove( 'pinMeMini' ) ;
-    thisControlZome.classList.remove( 'pinMeNormal' ) ;
+    // thisControlZome.classList.remove( 'pinMeNormal' ) ;
 
   } else if ( ( displayMode === DisplayMode.Edit && pinState === 'pinFull' ) || pinState === 'pinMini' ) {
+    thisControlZome.classList.add( 'pinMeTop' ) ;
     thisControlZome.classList.add( 'pinMeMini' ) ;
     thisControlZome.classList.remove( 'pinMeFull' ) ;
     thisControlZome.classList.remove( 'pinMeNormal' ) ;
 
   } else if ( pinState === 'normal' ) {
-    thisControlZome.classList.add( 'pinMeNormal' ) ;
+    // thisControlZome.classList.add( 'pinMeNormal' ) ;
+    thisControlZome.classList.remove( 'pinMeTop' ) ;
     thisControlZome.classList.remove( 'pinMeMini' ) ;
     thisControlZome.classList.remove( 'pinMeFull' ) ;
 
   }
 
   console.log( 'classList af = ', thisControlZome.classList );
-  
+
 }
 
 

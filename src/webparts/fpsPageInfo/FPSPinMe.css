@@ -1,7 +1,51 @@
 .pinMeWebPartDefault {
 
-    transition:all 0.4s ease;
+    transition:all 0.4s ease !important;
 }
+
+.pinMeTop {
+    position: fixed !important;
+    height: auto !important;
+    top: 0% !important;
+    right: 15px !important;
+    margin: 0 !important;
+    padding: 0 20px 10px 10px !important;
+    width: 400px !important;
+    background-color: white !important;
+    overflow-y: hidden !important;
+    z-index: 12 !important;
+    transition:all 0.4s ease !important;
+
+}
+
+.pinMeFull {
+    height: auto !important;
+    transition:all 0.4s ease !important;
+}
+
+.pinMeMini {
+    height: 45px !important;
+    transition:all 0.4s ease !important;
+}
+
+
+.pinMeNormal {
+    /* 
+        position: null;
+        height: null;
+        top: null;
+        right: null;
+        margin: null;
+        padding: null;
+        width: null;
+        background-color: null;
+        overflow-y: null;
+        z-index: null;
+        transition:all 0.4s ease; */
+    
+    }
+
+/* 
 
 .pinMeFull {
 
@@ -15,6 +59,7 @@
     background-color: white;
     overflow-y: hidden;
     z-index: 12;
+    transition:all 0.4s ease;
 
 }
 
@@ -30,6 +75,8 @@
     background-color: null;
     overflow-y: null;
     z-index: null;
+    transition:all 0.4s ease;
+
 }
 
 .pinMeMini {
@@ -44,6 +91,6 @@
     background-color: white;
     overflow: hidden;
     z-index: 12;
+    transition:all 0.4s ease;
 
-}
-
+} */
