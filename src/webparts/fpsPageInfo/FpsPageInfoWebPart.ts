@@ -384,6 +384,10 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
     this.bannerProps.enableExpandoramic = false; //Hard code this option for FPS PageInfo web part only because of PinMe option
 
+    //Add this to force a title because when pinned by default, users may not know it's there.
+    if ( this.properties.forcePinState === true && this.properties.defPinState !== 'normal' ) {
+      if ( !this.properties.bannerTitle ) { this.bannerProps.title = 'Page Contents' ; }
+    }
     // if ( this.bannerProps.showBeAUserIcon === true ) { this.bannerProps.beAUserFunction = this.beAUserFunction.bind(this); }
 
     // console.log('mainWebPart: visitorPanelInfo ~ 311',   );
