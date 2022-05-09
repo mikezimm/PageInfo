@@ -442,6 +442,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
         fpsPinMenu: {
           defPinState: this.properties.defPinState,
+          forcePinState: this.properties.forcePinState,
           domElement: this.context.domElement,
           pageLayout: this.properties.pageLayout,
         }
@@ -730,6 +731,13 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
                 PropertyPaneDropdown('defPinState', <IPropertyPaneDropdownProps>{
                   label: 'Default Location - "Pin Expanded" updates after save',
                   options: PinMeLocations, //MinHeadingOptions
+                }),
+                //
+                PropertyPaneToggle("forcePinState", {
+                  label: "Force Pin State",
+                  onText: "Enforce - No toggle",
+                  offText: "Let user change",
+                  // disabled: true,
                 }),
               ]
             }, //End this group  

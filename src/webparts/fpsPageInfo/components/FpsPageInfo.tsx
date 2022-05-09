@@ -134,6 +134,8 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     const defPinState = this.props.fpsPinMenu.defPinState;
     if ( defPinState !== prevProps.fpsPinMenu.defPinState ) {
       refresh = true;
+    } else if ( prevProps.fpsPinMenu.forcePinState !== this.props.fpsPinMenu.forcePinState ) {
+      refresh = true;
     }
     if ( refresh === true ) {
       // FPSPinMenu( this.props.fpsPinMenu.domElement, defPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
@@ -173,17 +175,19 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     );
   }
 
-  if ( this.state.pinState === 'normal' ) {
-    farBannerElementsArray.push( this.PinFullIcon );
-
-  } else if ( this.state.pinState === 'pinFull' ) {
-    farBannerElementsArray.push( this.PinMinIcon );
-    farBannerElementsArray.push( this.PinDefault );
-
-  } else if ( this.state.pinState === 'pinMini' ) {
-    farBannerElementsArray.push( this.PinExpandIcon );
-    farBannerElementsArray.push( this.PinDefault );
-  }
+  // if ( this.props.fpsPinMenu.forcePinState !== true ) {
+    if ( this.props.fpsPinMenu.forcePinState !== true && this.state.pinState === 'normal' ) {
+      farBannerElementsArray.push( this.PinFullIcon );
+  
+    } else if ( this.state.pinState === 'pinFull' ) {
+      farBannerElementsArray.push( this.PinMinIcon );
+      if ( this.props.fpsPinMenu.forcePinState !== true ) farBannerElementsArray.push( this.PinDefault );
+  
+    } else if ( this.state.pinState === 'pinMini' ) {
+      farBannerElementsArray.push( this.PinExpandIcon );
+      if ( this.props.fpsPinMenu.forcePinState !== true ) farBannerElementsArray.push( this.PinDefault );
+    }
+  // }
 
   /***
    *    d8888b.  .d8b.  d8b   db d8b   db d88888b d8888b. 
@@ -340,7 +344,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
         <div>
           { devHeader }
           { Banner }
-          <div style={{ paddingBottom: '20px' }}>
+          <div style={{ paddingBottom: '20px', backgroundColor: '#d3d3d3' }}>
             { tocComponent }
             { advancedProps }
           </div>

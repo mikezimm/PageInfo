@@ -58,6 +58,7 @@ export const changeExpando = [
 export interface IFpsPageInfoWebPartProps {
 
   defPinState: IPinMeState;
+  forcePinState: boolean;
 
   showTOC: boolean;
   minHeadingToShow: IMinHeading;

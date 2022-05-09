@@ -17,6 +17,7 @@ import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 export interface IFPSPinMenu {
   defPinState: IPinMeState;
+  forcePinState: boolean;
   domElement: HTMLElement;
   pageLayout: ISupportedHost ;// like SinglePageApp etc... this.context[_pageLayout];
 }
