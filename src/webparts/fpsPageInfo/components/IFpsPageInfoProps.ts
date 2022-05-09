@@ -14,12 +14,14 @@ import { IAdvancedPagePropertiesProps } from "./AdvPageProps/components/IAdvance
 import { IPageNavigatorProps } from "./PageNavigator/IPageNavigatorProps";
 import { IPinMeState } from "./PinMe/FPSPinMenu";
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
+import * as React from 'react';
 
 export interface IFPSPinMenu {
   defPinState: IPinMeState;
   forcePinState: boolean;
   domElement: HTMLElement;
   pageLayout: ISupportedHost ;// like SinglePageApp etc... this.context[_pageLayout];
+
 }
 
 export interface IFpsPageInfoProps {
@@ -30,6 +32,8 @@ export interface IFpsPageInfoProps {
   userDisplayName: string;
 
   themeVariant: IReadonlyTheme | undefined;
+
+  pageInfoStyle: React.CSSProperties;
 
   //FPS Banner and Options props
   displayMode: DisplayMode;
@@ -63,5 +67,7 @@ export interface IFpsPageInfoState {
 
   propsExpanded: boolean;
   tocExpanded: boolean;
+
+
   
 }

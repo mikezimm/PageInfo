@@ -60,6 +60,10 @@ export interface IFpsPageInfoWebPartProps {
   defPinState: IPinMeState;
   forcePinState: boolean;
 
+  pageInfoStyle: string;
+  tocStyle: string;
+  propsStyle: string;
+
   showTOC: boolean;
   minHeadingToShow: IMinHeading;
   description: string;

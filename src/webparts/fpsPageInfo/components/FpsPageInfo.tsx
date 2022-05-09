@@ -271,6 +271,9 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
     ></WebpartBanner>;
 
+    // bannerStyle = createStyleFromString( this.props.styleString, { background: 'green' }, 'bannerStyle in banner/component.tsx ~ 81' );
+
+
     let advPropsAccordion = !this.props.advPageProps.showSomeProps || !this.props.advPageProps.title ? null : 
       <div className={ stylesA.propsTitle } style={{ display: 'flex', flexWrap: 'nowrap' }} onClick={ this.toggleAdvAccordion.bind(this) }>
         <div style={{ cursor: 'pointer' }} title={'Show or Collapse Properties'}>{ this.props.advPageProps.title }</div>
@@ -281,7 +284,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
     const fadeMeClass = this.state.pinState === 'pinMini' ? `pinMeFadeContent` : `pinMeContent`;
 
-    const advancedProps = <div className = {`${fadeMeClass}`}>
+    const advancedProps = <div className = {`${fadeMeClass}`} style={ this.props.advPageProps.propsStyle}>
       { advPropsAccordion }
       <div className={ showPropsStyles }>
         <AdvancedPageProperties 
@@ -292,6 +295,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
           title = { this.props.advPageProps.title}
           selectedProperties = { this.props.advPageProps.selectedProperties}
           themeVariant = { this.props.advPageProps.themeVariant}
+          propsStyle = { this.props.advPageProps.propsStyle}
         >
         </AdvancedPageProperties>
         {
@@ -304,6 +308,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
               title = { this.props.advPageProps.title}
               selectedProperties = { ['ID', 'Modified', 'Editor' , 'Created', 'Author' ] }
               themeVariant = { this.props.advPageProps.themeVariant}
+              propsStyle = { this.props.advPageProps.propsStyle}
             >
             </AdvancedPageProperties>
         }
@@ -320,7 +325,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
     const showTOCStyles = this.state.tocExpanded === true || !this.props.pageNavigator.description ? stylesA.showProperties : stylesA.hideProperties;
 
-    const tocComponent = <div className = {`${fadeMeClass}`}>
+    const tocComponent = <div className = {`${fadeMeClass}`} style={ this.props.pageNavigator.tocStyle}>
     { tocAccordion }
     <div className={ showTOCStyles }>
       <PageNavigator 
@@ -331,6 +336,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
           tocExpanded={ this.props.pageNavigator.tocExpanded }
           description={ this.props.pageNavigator.description }
           anchorLinks={ this.props.pageNavigator.anchorLinks }
+          tocStyle={ this.props.pageNavigator.tocStyle }
         >
       </PageNavigator>
     </div>
@@ -344,7 +350,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
         <div>
           { devHeader }
           { Banner }
-          <div style={{ paddingBottom: '20px', backgroundColor: '#d3d3d3' }}>
+          <div style={ this.props.pageInfoStyle }>
             { tocComponent }
             { advancedProps }
           </div>

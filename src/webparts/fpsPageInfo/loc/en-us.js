@@ -2,6 +2,7 @@ define([], function() {
   return {
     "PropertyPaneDescription": "Description",
     "TOCGroupName": "Table of Contents",
+    "PIStyleGroupName": "Webpart styles - IT Only",
     "PinMeGroupName": "Pin Me",
     "DescriptionFieldLabel": "TOC Heading",
     "AppLocalEnvironmentSharePoint": "The app is running on your local environment as SharePoint web part",

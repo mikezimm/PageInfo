@@ -38,6 +38,7 @@
       "showApprovalProps": false,
 
       "defPinState": "normal",
+      "forcePinState": false,
 
       "infoElementChoice": "IconName=Unknown",
       "infoElementText": "Question mark circle"

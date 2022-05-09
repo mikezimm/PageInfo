@@ -96,6 +96,7 @@ import { IFpsPageInfoProps } from './components/IFpsPageInfoProps';
 import { Log } from './components/AdvPageProps/utilities/Log';
 import { IFpsPageInfoWebPartProps } from './IFpsPageInfoWebPartProps';
 import { exportIgnoreProps, importBlockProps, } from './IFpsPageInfoWebPartProps';
+import { createStyleFromString } from '@mikezimm/npmfunctions/dist/Services/PropPane/StringToReactCSS';
 
 
 //export type IMinHeading = 'h3' | 'h2' | 'h1' ;
@@ -262,7 +263,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
         this.properties.bannerCmdStyle = bannerCmdStyle;
 
-
        }
 
       // DEFAULTS SECTION:  Panel   <<< ================================================================
@@ -286,9 +286,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         thisInstance: this.thisHistoryInstance,
         history: priorHistory,
       };
-
-
-
 
       //Added from react-page-navigator component
       this.anchorLinks = await SPService.GetAnchorLinks(this.context);
@@ -386,7 +383,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
     //Add this to force a title because when pinned by default, users may not know it's there.
     if ( this.properties.forcePinState === true && this.properties.defPinState !== 'normal' ) {
-      if ( !this.properties.bannerTitle ) { this.bannerProps.title = 'Page Contents' ; }
+      if ( !this.properties.bannerTitle || this.properties.bannerTitle.length < 3 ) { this.bannerProps.title = 'Page Contents' ; }
     }
     // if ( this.bannerProps.showBeAUserIcon === true ) { this.bannerProps.beAUserFunction = this.beAUserFunction.bind(this); }
 
@@ -404,6 +401,13 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     // let selectedProperties = [ ...CustomProps, ...OOTBProps, ...ApprovalProps ];
     let selectedProperties = [ ...CustomProps ];
 
+    // else if ( this.props.styleString ) { bannerStyle = createStyleFromString( this.props.styleString, { background: 'green' }, 'bannerStyle in banner/component.tsx ~ 81' ); }
+
+    let pageInfoStyle: React.CSSProperties = createStyleFromString( this.properties.pageInfoStyle, { background: '#d3d3d3' }, 'FPSPageInfoWP in ~ 406' );
+    let tocStyle: React.CSSProperties = createStyleFromString( this.properties.tocStyle, null, 'FPSPageInfoWP in ~ 407' );
+    let propsStyle: React.CSSProperties = createStyleFromString( this.properties.propsStyle, null, 'FPSPageInfoWP in ~ 408' );
+
+
     const element: React.ReactElement<IFpsPageInfoProps> = React.createElement(
       FpsPageInfo,
       {
@@ -420,6 +424,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         urlVars: getUrlVars(),
         displayMode: this.displayMode,
 
+        pageInfoStyle: pageInfoStyle,
         //Banner related props
         errMessage: 'any',
         bannerProps: this.bannerProps,
@@ -432,6 +437,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           anchorLinks: this.anchorLinks,
           themeVariant: this._themeVariant,
           tocExpanded: this.properties.tocExpanded,
+          tocStyle: tocStyle,
         },
 
         advPageProps: {
@@ -442,6 +448,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           title: this.properties.propsTitleField,
           selectedProperties: selectedProperties,
           themeVariant: this._themeVariant,
+          propsStyle: propsStyle,
         },
 
         fpsPinMenu: {
@@ -628,8 +635,14 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         bannerCmdStyle = bannerCmdStyle.replace('"marginRight":"9px"', '"marginRight":"0px"') ;
         bannerCmdStyle = bannerCmdStyle.replace('"padding":"7px"', '"padding":"7px 4px"') ;
 
+
         this.properties.bannerStyle = bannerStyle;
         this.properties.bannerCmdStyle = bannerCmdStyle;
+
+        //Reset main web part styles to defaults
+        this.properties.pageInfoStyle = '"paddingBottom":"20px","backgroundColor":"#d3d3d3"';
+        this.properties.tocStyle = "";
+        this.properties.propsStyle = "";
 
       }
 
@@ -779,7 +792,66 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
               groupName: strings.PropertiesGroupName,
               isCollapsed: true,
               groupFields: propDrops
-            }, // this group
+            }, //End this group  
+            {
+              groupName: strings.PIStyleGroupName,
+              isCollapsed: true,
+              groupFields: [
+
+                PropertyPaneTextField('pageInfoStyle', {
+                    label: 'Page Info Style options',
+                    description: 'React.CSSProperties format like:  "fontSize":"larger","color":"red"',
+                    disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
+                    multiline: true,
+                    }),
+
+                PropertyPaneTextField('tocStyle', {
+                    label: 'Table of Contents Style options',
+                    description: 'React.CSSProperties format like:  "fontSize":"larger","color":"red"',
+                    disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
+                    multiline: true,
+                    }),
+
+                PropertyPaneTextField('propsStyle', {
+                    label: 'Properties Style options',
+                    description: 'React.CSSProperties format like:  "fontSize":"larger","color":"red"',
+                    disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
+                    multiline: true,
+                    }),
+              ]
+            }, //End this group
+
+
+//  pageInfoStyle: string;
+// tocStyle: string;
+// propsStyle: string;
+
+
+// PropertyPaneDropdown('bannerStyleChoice', <IPropertyPaneDropdownProps>{
+//   label: 'Banner Theme',
+//   options: bannerThemeChoicesWSiteTheme,
+//   disabled: modifyBannerStyle !== true || showBanner !== true ? true : false,
+// }) );
+
+// // if ( lockStyles !== true ) {
+// fields.push(
+//   PropertyPaneTextField('bannerStyle', {
+//       label: 'Style options',
+//       description: 'React.CSSProperties format like:  "fontSize":"larger","color":"red"',
+//       disabled: modifyBannerStyle !== true || showBanner !== true || lockStyles === true ? true : false,
+//       multiline: true,
+//       }) );
+// // }
+
+// // if ( lockStyles !== true ) {
+// fields.push(
+//   PropertyPaneTextField('bannerCmdStyle', {
+//       label: 'Button Style options',
+//       description: 'React.CSSProperties format like:  "fontSize":"larger","color":"red"',
+//       disabled: modifyBannerStyle !== true || showBanner !== true || lockStyles === true ? true : false,
+//       multiline: true,
+//       }) );
+
 
             {
               groupName: 'Visitor Help Info (required)',

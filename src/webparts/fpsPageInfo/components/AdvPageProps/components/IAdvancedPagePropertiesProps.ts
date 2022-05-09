@@ -1,5 +1,6 @@
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import { WebPartContext } from "@microsoft/sp-webpart-base";
+import * as React from 'react';
 
 export interface IAdvancedPagePropertiesProps {
   showSomeProps: boolean;
@@ -9,4 +10,7 @@ export interface IAdvancedPagePropertiesProps {
   defaultExpanded: boolean;
   selectedProperties: string[];
   themeVariant: IReadonlyTheme | undefined;
+
+  propsStyle: React.CSSProperties;
+
 }
