@@ -403,7 +403,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
     // else if ( this.props.styleString ) { bannerStyle = createStyleFromString( this.props.styleString, { background: 'green' }, 'bannerStyle in banner/component.tsx ~ 81' ); }
 
-    let pageInfoStyle: React.CSSProperties = createStyleFromString( this.properties.pageInfoStyle, { background: '#d3d3d3' }, 'FPSPageInfoWP in ~ 406' );
+    let pageInfoStyle: React.CSSProperties = createStyleFromString( this.properties.pageInfoStyle, { paddingBottom: '20px', background: '#d3d3d3' }, 'FPSPageInfoWP in ~ 406' );
     let tocStyle: React.CSSProperties = createStyleFromString( this.properties.tocStyle, null, 'FPSPageInfoWP in ~ 407' );
     let propsStyle: React.CSSProperties = createStyleFromString( this.properties.propsStyle, null, 'FPSPageInfoWP in ~ 408' );
 
