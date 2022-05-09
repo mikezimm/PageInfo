@@ -13,6 +13,7 @@ import { IWebpartHistory, IWebpartHistoryItem2, } from '@mikezimm/npmfunctions/d
 import { IAdvancedPagePropertiesProps } from "./AdvPageProps/components/IAdvancedPagePropertiesProps";
 import { IPageNavigatorProps } from "./PageNavigator/IPageNavigatorProps";
 import { IPinMeState } from "./PinMe/FPSPinMenu";
+import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 export interface IFPSPinMenu {
   defPinState: IPinMeState;
@@ -26,6 +27,8 @@ export interface IFpsPageInfoProps {
   environmentMessage: string;
   hasTeamsContext: boolean;
   userDisplayName: string;
+
+  themeVariant: IReadonlyTheme | undefined;
 
   //FPS Banner and Options props
   displayMode: DisplayMode;

@@ -275,7 +275,9 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
     const showPropsStyles = this.state.propsExpanded === true || !this.props.advPageProps.title ? stylesA.showProperties : stylesA.hideProperties;
 
-    const advancedProps = <div>
+    const fadeMeClass = this.state.pinState === 'pinMini' ? `pinMeFadeContent` : `pinMeContent`;
+
+    const advancedProps = <div className = {`${fadeMeClass}`}>
       { advPropsAccordion }
       <div className={ showPropsStyles }>
         <AdvancedPageProperties 
@@ -314,7 +316,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
     const showTOCStyles = this.state.tocExpanded === true || !this.props.pageNavigator.description ? stylesA.showProperties : stylesA.hideProperties;
 
-    const tocComponent = <div>
+    const tocComponent = <div className = {`${fadeMeClass}`}>
     { tocAccordion }
     <div className={ showTOCStyles }>
       <PageNavigator 
@@ -338,8 +340,10 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
         <div>
           { devHeader }
           { Banner }
-          { tocComponent }
-          { advancedProps }
+          <div style={{ paddingBottom: '20px' }}>
+            { tocComponent }
+            { advancedProps }
+          </div>
         </div>
       </section>
     );

@@ -408,7 +408,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
-
+        themeVariant: this._themeVariant,
         
         //Environement props
         // pageContext: this.context.pageContext, //This can be found in the bannerProps now

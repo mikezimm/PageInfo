@@ -66,22 +66,22 @@ export function FPSPinMeTest ( domElement: HTMLElement, pinState : IPinMeState, 
   }
 
   if ( displayMode !== DisplayMode.Edit && pinState === 'pinFull' ) {
-    thisControlZome.classList.add( 'pinMeTop' ) ;
-    thisControlZome.classList.add( 'pinMeFull' ) ;
-    thisControlZome.classList.remove( 'pinMeMini' ) ;
+    if ( !thisControlZome.classList.contains( 'pinMeTop' ) ) thisControlZome.classList.add( 'pinMeTop' ) ;
+    if ( !thisControlZome.classList.contains( 'pinMeFull' ) ) thisControlZome.classList.add( 'pinMeFull' ) ;
+    if ( thisControlZome.classList.contains( 'pinMeMini' ) ) thisControlZome.classList.remove( 'pinMeMini' ) ;
     // thisControlZome.classList.remove( 'pinMeNormal' ) ;
 
   } else if ( ( displayMode === DisplayMode.Edit && pinState === 'pinFull' ) || pinState === 'pinMini' ) {
-    thisControlZome.classList.add( 'pinMeTop' ) ;
-    thisControlZome.classList.add( 'pinMeMini' ) ;
-    thisControlZome.classList.remove( 'pinMeFull' ) ;
-    thisControlZome.classList.remove( 'pinMeNormal' ) ;
+    if ( !thisControlZome.classList.contains( 'pinMeTop' ) ) thisControlZome.classList.add( 'pinMeTop' ) ;
+    if ( !thisControlZome.classList.contains( 'pinMeMini' ) ) thisControlZome.classList.add( 'pinMeMini' ) ;
+    if ( thisControlZome.classList.contains( 'pinMeFull' ) ) thisControlZome.classList.remove( 'pinMeFull' ) ;
+    if ( thisControlZome.classList.contains( 'pinMeNormal' ) ) thisControlZome.classList.remove( 'pinMeNormal' ) ;
 
   } else if ( pinState === 'normal' ) {
     // thisControlZome.classList.add( 'pinMeNormal' ) ;
-    thisControlZome.classList.remove( 'pinMeTop' ) ;
-    thisControlZome.classList.remove( 'pinMeMini' ) ;
-    thisControlZome.classList.remove( 'pinMeFull' ) ;
+    if ( thisControlZome.classList.contains( 'pinMeTop' ) ) thisControlZome.classList.remove( 'pinMeTop' ) ;
+    if ( thisControlZome.classList.contains( 'pinMeMini' ) ) thisControlZome.classList.remove( 'pinMeMini' ) ;
+    if ( thisControlZome.classList.contains( 'pinMeFull' ) )  thisControlZome.classList.remove( 'pinMeFull' ) ;
 
   }
 
