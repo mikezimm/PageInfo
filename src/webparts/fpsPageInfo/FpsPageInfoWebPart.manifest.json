@@ -23,7 +23,26 @@
     "officeFabricIconFontName": "TagUnknown12",
     "properties": {
       "description": "FPS Page Info - TOC & Props",
-      "selectedProperties": []
+
+      "showTOC": true,
+      "TOCTitleField": "Table of Contents",
+
+      "propsTitleField":  "Page Properties",
+
+      "selectedProperties": [],
+      "minHeadingToShow": "h2",
+
+      "showCustomProps": true,
+      "propsExpanded": true,
+      "showOOTBProps": true,
+      "showApprovalProps": false,
+
+      "defPinState": "normal",
+      "forcePinState": false,
+
+      "infoElementChoice": "IconName=Unknown",
+      "infoElementText": "Question mark circle"
+
     }
   }]
 }

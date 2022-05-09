@@ -1,0 +1,114 @@
+.pinMeWebPartDefault {
+    transition:all 0.4s ease;
+    /* padding: 0 20px 10px 10px; */
+    position: relative;
+    top: 0%;
+    /* width: 100%; */
+    max-height: 100%;
+
+}
+
+.pinMeWebPartDefault .pinMeContent {
+    opacity: 1;
+    padding: 0 1.5em;
+}
+
+.pinMeWebPartDefault .pinMeFadeContent {
+    transition:all 0.4s ease !important;
+    opacity: 0 !important;
+    padding: 0 1.5em;
+}
+
+.pinMeTop {
+    transition:all 0.4s ease !important;
+    position: fixed !important;
+    /* max-height: auto !important; */
+    top: 0% !important;
+    right: 0px !important;
+    margin: 0 !important;
+    width: 400px !important;
+    background-color: white !important;
+    overflow-y: hidden !important;
+    z-index: 12 !important;
+
+}
+
+.pinMeFull {
+    transition:all 0.4s ease !important;
+    right: 15px !important;
+    max-height: 100% !important;
+
+}
+
+.pinMeMini {
+    transition:all 0.4s ease !important;
+    max-height: 45px !important;
+
+}
+
+
+.pinMeNormal {
+    /* 
+        position: null;
+        height: null;
+        top: null;
+        right: null;
+        margin: null;
+        padding: null;
+        width: null;
+        background-color: null;
+        overflow-y: null;
+        z-index: null;
+        transition:all 0.4s ease; */
+    
+    }
+
+/* 
+
+.pinMeFull {
+
+    position: fixed;
+    height: auto;
+    top: 0%;
+    right: 15px;
+    margin: 0;
+    padding: 0 20px 10px 10px;
+    width: 400px;
+    background-color: white;
+    overflow-y: hidden;
+    z-index: 12;
+    transition:all 0.4s ease;
+
+}
+
+.pinMeNormal {
+
+    position: null;
+    height: null;
+    top: null;
+    right: null;
+    margin: null;
+    padding: null;
+    width: null;
+    background-color: null;
+    overflow-y: null;
+    z-index: null;
+    transition:all 0.4s ease;
+
+}
+
+.pinMeMini {
+
+    position: fixed;
+    height: 45px;
+    top: 0%;
+    right: 15px;
+    margin: 0;
+    padding: 0 20px 10px 10px;
+    width: 400px;
+    background-color: white;
+    overflow: hidden;
+    z-index: 12;
+    transition:all 0.4s ease;
+
+} */

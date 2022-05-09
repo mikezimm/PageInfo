@@ -1,8 +1,10 @@
 define([], function() {
   return {
     "PropertyPaneDescription": "Description",
-    "BasicGroupName": "Group Name",
-    "DescriptionFieldLabel": "Description Field",
+    "TOCGroupName": "Table of Contents",
+    "PIStyleGroupName": "Webpart styles - IT Only",
+    "PinMeGroupName": "Pin Me",
+    "DescriptionFieldLabel": "TOC Heading",
     "AppLocalEnvironmentSharePoint": "The app is running on your local environment as SharePoint web part",
     "AppLocalEnvironmentTeams": "The app is running on your local environment as Microsoft Teams app",
     "AppSharePointEnvironment": "The app is running on SharePoint page",
@@ -10,8 +12,8 @@ define([], function() {
 
     //Copied from AdvancedPagePropertiesWebPart.ts
     "PropertyPaneDescriptionP": "Select the page properties that you want to display on the page",
-    "SelectionGroupName": "",
-    "TitleFieldLabel": "Title",
+    "PropertiesGroupName": "Properties",
+    "PropsTitleFieldLabel": "Properties Title",
     "SelectedPropertiesFieldLabel": "Property",
     "PropPaneAddButtonText": "Add",
     "PropPaneDeleteButtonText": "Delete",
