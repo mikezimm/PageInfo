@@ -17,7 +17,7 @@ export class SPService {
     // .replace(/'|?|\|/| |&/g, "-") replaces any blanks and special characters (list is for sure not complete) with "-"
     // .replace(/--+/g, "-") replaces any additional - with only one -; e.g. --- get replaced with -, -- get replaced with - etc.
     let anchorUrl = `#${headingValue
-      .replace(/[^a-zA-Z0-9.,()\- ]/g, "")
+      .replace(/[^a-zA-Z0-9.,()\- ]/g, "") //https://github.com/mikezimm/PageInfo/issues/20
       .replace(/\'|\?|\\|\/| |\&/g, "-")
       .replace(/--+/g, "-")}`.toLowerCase();
     let urlSuffix = 1;
