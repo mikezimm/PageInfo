@@ -14,35 +14,36 @@
 }
 
 .pinMeWebPartDefault .pinMeFadeContent {
-    transition:all 0.4s ease !important;
-    opacity: 0 !important;
+    transition:all 0.4s ease ;
+    opacity: 0 ;
     padding: 0 1.5em;
 }
 
 .pinMeTop {
-    transition:all 0.4s ease !important;
-    position: fixed !important;
-    /* max-height: auto !important; */
-    top: 0% !important;
-    right: 0px !important;
-    margin: 0 !important;
-    width: 400px !important;
-    background-color: white !important;
-    overflow-y: hidden !important;
-    z-index: 12 !important;
+    transition:all 0.4s ease ;
+    position: fixed ;
+    /* max-height: auto ; */
+    top: 0% ;
+    right: 0px ;
+    margin: 0 ;
+    width: 400px ;
+    background-color: white;
+    overflow-y: overlay;
+    z-index: 12 ;
 
 }
 
 .pinMeFull {
-    transition:all 0.4s ease !important;
-    right: 15px !important;
-    max-height: 100% !important;
+    transition:all 0.4s ease ;
+    /* right: 15px ; */
+    max-height: 100% ;
 
 }
 
 .pinMeMini {
-    transition:all 0.4s ease !important;
-    max-height: 45px !important;
+    transition:all 0.4s ease ;
+    max-height: 45px ;
+    overflow-y: hidden;
 
 }
 
