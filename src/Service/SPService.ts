@@ -13,9 +13,11 @@ export class SPService {
    */
   private static GetAnchorUrl(headingValue: string): string {
     let urlExists = true;
+    // .replace(/[^a-zA-Z0-9.,()\- ]/g, "") replaces chars except a - z, 0 - 9 , ( ) and a . with ""
     // .replace(/'|?|\|/| |&/g, "-") replaces any blanks and special characters (list is for sure not complete) with "-"
     // .replace(/--+/g, "-") replaces any additional - with only one -; e.g. --- get replaced with -, -- get replaced with - etc.
     let anchorUrl = `#${headingValue
+      .replace(/[^a-zA-Z0-9.,()\- ]/g, "")
       .replace(/\'|\?|\\|\/| |\&/g, "-")
       .replace(/--+/g, "-")}`.toLowerCase();
     let urlSuffix = 1;
@@ -27,6 +29,16 @@ export class SPService {
       }
     }
     return anchorUrl;
+  }
+  
+  /**
+   * Returns the decoded html string
+   * @param input the html string
+   * @returns decoded string
+   */
+  private static htmlDecode(input: string) {
+    var doc = new DOMParser().parseFromString(input, "text/html");
+    return doc.documentElement.textContent;
   }
 
   /**
@@ -58,81 +70,58 @@ export class SPService {
         if (webPart.innerHTML) {
           let HTMLString: string = webPart.innerHTML;
 
-          while (HTMLString.search(/<h[1-4]>/g) !== -1) {
+          while (HTMLString.search(/<h[1-4](.*?)>/g) !== -1) {
+            const lengthFirstOccurence = HTMLString.match(/<h[1-4](.*?)>/g)[0].length;
             /* The Header Text value */
-            // .replace(/<.+?>/gi, "") replaces in the headingValue any html tags like <strong> </strong>
-            // .replace(/&.+;/gi, "") replaces in the headingValue any &****; tags like &nbsp;
-            let headingValue = HTMLString.substring(HTMLString.search(/<h[1-4]>/g) + 4, HTMLString.search(/<\/h[1-4]>/g))
-              .replace(/<.+?>/gi, "")
-              .replace(/\&.+\;/gi, "");
+            const headingValue = this.htmlDecode(HTMLString.substring(HTMLString.search(/<h[1-4](.*?)>/g) + lengthFirstOccurence, HTMLString.search(/<\/h[1-4]>/g)));
 
-              headingOrder = parseInt(HTMLString.charAt(HTMLString.search(/<h[1-4]>/g) + 2));
+            headingOrder = parseInt(HTMLString.charAt(HTMLString.search(/<h[1-4](.*?)>/g) + 2));
 
-              const anchorUrl = this.GetAnchorUrl(headingValue);
-              this.allUrls.push(anchorUrl);
-              if ( !headingValue ) { 
-                headingValue = 'Header Text is missing :(' ;
-                console.log( headingValue, HTMLString );
-               }
-              /**
-               * Added this check in case the first header is NOT h1
-               * If the first header is h2, it pushes an object that represents an h1 but uses the page Title  or Topic or whatever as a label
-               * NOTE:  If first header is h3 and the second is an h2, both are at the same level (as if h2 ) under the auto-generated h1
-               */
-              if (anchorLinks.length === 0 && headingOrder > 2 ) {
-                let firstAnchor = '';
-                if ( jsonData.TopicHeader ) {
-                  firstAnchor = jsonData.TopicHeader + ' - TopicHeader';
-                } else if ( jsonData.Title ) {
-                  firstAnchor = jsonData.Title + ' - Title';
-                } else { firstAnchor = 'Page Contents'; }
-  
-                anchorLinks.push({ name: firstAnchor, key: 'PageContentsNode0', url: null, links: [], isExpanded: true,  });
-              }
-  
-              /* Add links to Nav element */
-              if (anchorLinks.length === 0) {
-                anchorLinks.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
-              } else {
-                if (headingOrder <= prevHeadingOrder) {
-                  /* Adding or Promoting links */
-                  switch (headingOrder) {
-                    case 2:
-                      anchorLinks.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
-                      headingIndex++;
-                      subHeadingIndex = -1;
-                      break;
-                    case 4:
-                      if (subHeadingIndex > -1) {
-                        anchorLinks[headingIndex].links[subHeadingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
-                      } else {
-                        anchorLinks[headingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
-                      }
-                      break;
-                    default:
-                      anchorLinks[headingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
-                      subHeadingIndex = anchorLinks[headingIndex].links.length - 1;
-                      break;
-                  }
-                } else {
-                  /* Making sub links */
-                  if (headingOrder === 3) {
-                    anchorLinks[headingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
-                    subHeadingIndex = anchorLinks[headingIndex].links.length - 1;
-                  } else {
+            const anchorUrl = this.GetAnchorUrl(headingValue);
+            this.allUrls.push(anchorUrl);
+
+            /* Add links to Nav element */
+            if (anchorLinks.length === 0) {
+              anchorLinks.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
+            } else {
+              if (headingOrder <= prevHeadingOrder) {
+                /* Adding or Promoting links */
+                switch (headingOrder) {
+                  case 2:
+                    anchorLinks.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
+                    headingIndex++;
+                    subHeadingIndex = -1;
+                    break;
+                  case 4:
                     if (subHeadingIndex > -1) {
                       anchorLinks[headingIndex].links[subHeadingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
                     } else {
                       anchorLinks[headingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
                     }
+                    break;
+                  default:
+                    anchorLinks[headingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
+                    subHeadingIndex = anchorLinks[headingIndex].links.length - 1;
+                    break;
+                }
+              } else {
+                /* Making sub links */
+                if (headingOrder === 3) {
+                  anchorLinks[headingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
+                  subHeadingIndex = anchorLinks[headingIndex].links.length - 1;
+                } else {
+                  if (subHeadingIndex > -1) {
+                    anchorLinks[headingIndex].links[subHeadingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
+                  } else {
+                    anchorLinks[headingIndex].links.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: true });
                   }
                 }
               }
-              prevHeadingOrder = headingOrder;
-  
-              /* Replace the added header links from the string so they don't get processed again */
-              HTMLString = HTMLString.replace(`<h${headingOrder}>`, '').replace(`</h${headingOrder}>`, '');
-            // }
+            }
+            prevHeadingOrder = headingOrder;
+
+            /* Replace the added header links from the string so they don't get processed again */
+            HTMLString = HTMLString.replace(/<h[1-4](.*?)>/, '').replace(`</h${headingOrder}>`, '');
           }
         }
       });
