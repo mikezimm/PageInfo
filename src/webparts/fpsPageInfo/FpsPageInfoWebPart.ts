@@ -292,6 +292,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
       if ( this.properties.propsExpanded === undefined || this.properties.propsExpanded === null ) { this.properties.propsExpanded = true; }
       if ( this.properties.propsTitleField === undefined || this.properties.propsTitleField === null ) { this.properties.propsTitleField = 'Page Properties'; }
+
       //Have to insure selectedProperties always is an array from AdvancedPagePropertiesWebPart.ts
       // if ( !this.properties.selectedProperties ) { this.properties.selectedProperties = []; }
 
@@ -301,6 +302,11 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
   public render(): void {
 
     this.properties.showSomeProps = this.properties.showOOTBProps === true || this.properties.showCustomProps === true || this.properties.showApprovalProps === true  ? true : false;
+    
+    //Preset infoElement to question mark circle for this particular web part if it's not specificed - due to pin icon being important and usage in pinned location
+    if ( !this.properties.infoElementChoice ) { this.properties.infoElementChoice = 'IconName=Unknown'; }
+    if ( !this.properties.infoElementText ) { this.properties.infoElementText = 'Question mark circle'; }
+
     this._unqiueId = this.context.instanceId;
 
     // quickRefresh is used for SecureScript for when caching html file.  <<< ================================================================
