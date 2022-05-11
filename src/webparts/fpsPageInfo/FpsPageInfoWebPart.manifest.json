@@ -24,16 +24,19 @@
     "properties": {
       "description": "FPS Page Info - TOC & Props",
 
+      "bannerTitle": "Page Info",
+
       "showTOC": true,
       "TOCTitleField": "Table of Contents",
-
+      "tocExpanded": true,
+      
       "propsTitleField":  "Page Properties",
 
       "selectedProperties": [],
       "minHeadingToShow": "h2",
 
       "showCustomProps": true,
-      "propsExpanded": true,
+      "propsExpanded": false,
       "showOOTBProps": true,
       "showApprovalProps": false,
 

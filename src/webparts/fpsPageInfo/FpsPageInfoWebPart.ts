@@ -291,7 +291,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       this.anchorLinks = await SPService.GetAnchorLinks(this.context);
 
       if ( this.properties.propsExpanded === undefined || this.properties.propsExpanded === null ) { this.properties.propsExpanded = true; }
-      if ( this.properties.propsTitleField === undefined || this.properties.propsTitleField === null ) { this.properties.propsTitleField = 'Page Properties'; }
+      if ( this.properties.propsTitleField === undefined || this.properties.propsTitleField === null ) { this.properties.propsTitleField = strings.bannerTitle; }
 
       //Have to insure selectedProperties always is an array from AdvancedPagePropertiesWebPart.ts
       // if ( !this.properties.selectedProperties ) { this.properties.selectedProperties = []; }
@@ -379,7 +379,15 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     this.properties.showBannerGear = verifyAudienceVsUser( this.FPSUser , showTricks, this.properties.homeParentGearAudience, null, renderAsReader );
 
     let bannerSetup = buildBannerProps( this.properties , this.FPSUser, buildBannerSettings, showTricks, renderAsReader );
-    if ( !this.properties.bannerTitle || this.properties.bannerTitle === '' ) { bannerSetup.bannerProps.title = 'hide' ; }
+    if ( !this.properties.bannerTitle || this.properties.bannerTitle === '' ) { 
+      if ( this.properties.defPinState !== 'normal' ) {
+        bannerSetup.bannerProps.title = strings.bannerTitle ;
+      } else {
+        bannerSetup.bannerProps.title = 'hide' ;
+      }
+
+    
+    }
 
     errMessage = bannerSetup.errMessage;
     this.bannerProps = bannerSetup.bannerProps;
