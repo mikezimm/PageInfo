@@ -35,6 +35,8 @@ export interface IFpsPageInfoProps {
 
   pageInfoStyle: React.CSSProperties;
 
+  feedbackEmail: string;
+
   //FPS Banner and Options props
   displayMode: DisplayMode;
 
@@ -55,6 +57,7 @@ export interface IFpsPageInfoProps {
   advPageProps: IAdvancedPagePropertiesProps;
 
   fpsPinMenu: IFPSPinMenu;
+
 
 }
 

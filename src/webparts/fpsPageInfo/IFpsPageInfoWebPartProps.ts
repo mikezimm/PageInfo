@@ -76,6 +76,8 @@ export interface IFpsPageInfoWebPartProps {
   showApprovalProps: boolean;
   propsExpanded: boolean;
 
+  feedbackEmail: string;
+
   uniqueId: string;
   showBannerGear: boolean; // Not in Prop Pane
 

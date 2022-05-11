@@ -446,6 +446,8 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         displayMode: this.displayMode,
 
         pageInfoStyle: pageInfoStyle,
+
+        feedbackEmail: this.properties.feedbackEmail ? this.properties.feedbackEmail : '',
         //Banner related props
         errMessage: 'any',
         bannerProps: this.bannerProps,
@@ -725,6 +727,13 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     }));
 
 
+    let banner3BasicGroup = FPSBanner3BasicGroup( this.forceBanner , this.modifyBannerTitle, this.properties.showBanner, this.properties.infoElementChoice === 'Text' ? true : false );
+    banner3BasicGroup.groupFields.push(
+      PropertyPaneTextField('feedbackEmail', {
+          label: 'Feedback email',
+          description: 'Adds Feedback icon in the banner.',
+          disabled: this.properties.showBanner !== true ? true : false,
+      }) );
 
     propDrops.push(PropertyPaneHorizontalRule());
     // Determine how many page property dropdowns we currently have
@@ -935,7 +944,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
               // FPSBanner3Group( this.forceBanner , this.modifyBannerTitle, this.modifyBannerStyle, this.properties.showBanner, null, true, this.properties.lockStyles, this.properties.infoElementChoice === 'Text' ? true : false ),
 
-              FPSBanner3BasicGroup( this.forceBanner , this.modifyBannerTitle, this.properties.showBanner, this.properties.infoElementChoice === 'Text' ? true : false ),
+              banner3BasicGroup,
               FPSBanner3NavGroup(), 
               FPSBanner3ThemeGroup( this.modifyBannerStyle, this.properties.showBanner, this.properties.lockStyles, ),
 
@@ -977,6 +986,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       const siteContacts : any[] = [sampleId];
           //These are added for the minimum User Panel component ( which turns into the replacePanelHTML component )
 
+      this.properties.feedbackEmail = 'Update.this.email@before.launch';
       this.properties.panelMessageDescription1 = 'Finance Manual Help and Contact';
       this.properties.panelMessageSupport = 'Contact RE for Finance Manual content';
       this.properties.panelMessageDocumentation = 'Contact MZ for Web part questions';

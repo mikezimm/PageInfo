@@ -62,19 +62,19 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     return smaller;
   }
 
-  private makeExpandPropsCmdStyles() {
+  private makeExpandPropsCmdStyles( withLeftMargin: boolean ) {
     let propsCmdCSS: React.CSSProperties = JSON.parse(JSON.stringify( this.props.bannerProps.bannerCmdReactCSS ));
     propsCmdCSS.backgroundColor = 'transparent';
-    propsCmdCSS.marginLeft = '30px';
+    if ( withLeftMargin === true ) propsCmdCSS.marginLeft = '30px';
     propsCmdCSS.color = null; //Make sure icon is always visible
 
     return propsCmdCSS;
   }
 
   private smallerCmdStyles: React.CSSProperties = this.makeSmallerCmdStyles();
-  private propsExpandCmdStyles: React.CSSProperties = this.makeExpandPropsCmdStyles();
+  private propsExpandCmdStyles: React.CSSProperties = this.makeExpandPropsCmdStyles( true );
 
-  private FeedbackIcon = <Icon title={ 'Submit Feedback' } iconName='Feedback' onClick={ this.sendFeedback.bind(this) } style={ this.smallerCmdStyles }></Icon>;
+  private FeedbackIcon = <Icon title={ 'Submit Feedback' } iconName='Feedback' onClick={ this.sendFeedback.bind(this) } style={ this.makeExpandPropsCmdStyles( false ) }></Icon>;
 
   private PinFullIcon = <Icon title={ 'Pin to top' } iconName='Pinned' onClick={ this.setPinFull.bind(this) } style={ this.smallerCmdStyles }></Icon>;
   private PinMinIcon = <Icon  title={ 'Minimize' } iconName='CollapseMenu' onClick={ this.setPinMin.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
@@ -189,6 +189,8 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       farBannerElementsArray.push( this.PinExpandIcon );
       if ( this.props.fpsPinMenu.forcePinState !== true ) farBannerElementsArray.push( this.PinDefault );
     }
+
+    if ( this.props.feedbackEmail ) farBannerElementsArray.push( this.FeedbackIcon );
   // }
 
   /***
@@ -391,16 +393,17 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
   private sendFeedback() {
 
-
     const lbreak = '%0D%0A';
     let pageName = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
-    let mailTemplate = `mailto:${contact.email}`;
+    let mailTemplate = `mailto:${this.props.feedbackEmail}`;
+    // let mailTemplate = `mailto:${`UpdateEmail@someday.com`}`;
     mailTemplate += `?subject=FPS Page Properties Webpart Question or Issue on PAGE: ${ pageName }`;
     mailTemplate += `&body=Add your question or comment here: ${ lbreak }${ lbreak }${ lbreak }`;
     mailTemplate += `Page Name: ${ pageName }${ lbreak }${ lbreak }`;
     mailTemplate += `Link to page:${ lbreak }${ window.location.href }${ lbreak }${ lbreak }`;
     mailTemplate += `Best Regards, ${ lbreak }${ lbreak }`;
-    
+
+    window.open( mailTemplate );
   }
 
 }
