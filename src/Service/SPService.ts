@@ -2,6 +2,22 @@ import { INavLink } from 'office-ui-fabric-react/lib/Nav';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { SPHttpClient } from '@microsoft/sp-http';
 
+import { HTMLRegEx, IHTMLRegExKeys, IRegExTag } from './htmlTags';
+//This should go into npmFunctions v1.0.231 ish
+// export const RegexHeading14StartG = HTMLRegEx.h14.openG;
+// export const RegexHeading14StartN = /<h[1-4](.*?)>/;
+// export const RegexHeading14EndG = /<\/h[1-4]>/g;
+
+// export const RegexHeading13StartG = /<h[1-3](.*?)>/g;
+// export const RegexHeading13StartN = /<h[1-3](.*?)>/;
+// export const RegexHeading13EndG = /<\/h[1-3]>/g;
+
+// export const RegexHeading12StartG = /<h[1-2](.*?)>/g;
+// export const RegexHeading12StartN = /<h[1-2](.*?)>/;
+// export const RegexHeading12EndG = /<\/h[1-2]>/g;
+
+
+
 export class SPService {
   /* Array to store all unique anchor URLs */
   private static allUrls: string[] = [];
@@ -41,12 +57,21 @@ export class SPService {
     return doc.documentElement.textContent;
   }
 
+
+  
+
+
   /**
    * Returns the Anchor Links for Nav element
    * @param context Web part context
    * @returns anchorLinks
    */
-  public static async GetAnchorLinks(context: WebPartContext) {
+
+  public static async GetAnchorLinks(context: WebPartContext, anchors: IHTMLRegExKeys = 'h14' ) {
+
+    //This gets all the required regex expressions for finding the requested anchors
+    const regObj :IRegExTag = HTMLRegEx[ anchors ];
+
     const anchorLinks: INavLink[] = [];
 
     try {
@@ -70,12 +95,12 @@ export class SPService {
         if (webPart.innerHTML) {
           let HTMLString: string = webPart.innerHTML;
 
-          while (HTMLString.search(/<h[1-4](.*?)>/g) !== -1) {
-            const lengthFirstOccurence = HTMLString.match(/<h[1-4](.*?)>/g)[0].length;
+          while (HTMLString.search(regObj.openG) !== -1) {
+            const lengthFirstOccurence = HTMLString.match(regObj.openG)[0].length;
             /* The Header Text value */
-            const headingValue = this.htmlDecode(HTMLString.substring(HTMLString.search(/<h[1-4](.*?)>/g) + lengthFirstOccurence, HTMLString.search(/<\/h[1-4]>/g)));
+            const headingValue = this.htmlDecode(HTMLString.substring(HTMLString.search(regObj.openG) + lengthFirstOccurence, HTMLString.search(regObj.closeG)));
 
-            headingOrder = parseInt(HTMLString.charAt(HTMLString.search(/<h[1-4](.*?)>/g) + 2));
+            headingOrder = parseInt(HTMLString.charAt(HTMLString.search(regObj.openG) + 2));
 
             const anchorUrl = this.GetAnchorUrl(headingValue);
             this.allUrls.push(anchorUrl);
@@ -121,7 +146,7 @@ export class SPService {
             prevHeadingOrder = headingOrder;
 
             /* Replace the added header links from the string so they don't get processed again */
-            HTMLString = HTMLString.replace(/<h[1-4](.*?)>/, '').replace(`</h${headingOrder}>`, '');
+            HTMLString = HTMLString.replace(regObj.open, '').replace(`</h${headingOrder}>`, '');
           }
         }
       });

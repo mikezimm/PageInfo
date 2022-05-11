@@ -88,7 +88,7 @@ export const repoLink: IRepoLinks = links.gitRepoPageInfoSmall;
 
 require('./GrayPropPaneAccordions.css');
 require('./FPSPinMe.css');
-
+require('./components/HeadingCSS/FPSHeadings.css');
 
 import { SPService } from '../../Service/SPService';
 
@@ -102,6 +102,8 @@ import { Log } from './components/AdvPageProps/utilities/Log';
 import { IFpsPageInfoWebPartProps } from './IFpsPageInfoWebPartProps';
 import { exportIgnoreProps, importBlockProps, } from './IFpsPageInfoWebPartProps';
 import { createStyleFromString } from '@mikezimm/npmfunctions/dist/Services/PropPane/StringToReactCSS';
+import { FPSApplyHeadingCSS, FPSApplyHeadingStyle } from './components/HeadingCSS/FPSHeadingsFunctions';
+import { HTMLRegEx } from '../../Service/htmlTags';
 
 
 //export type IMinHeading = 'h3' | 'h2' | 'h1' ;
@@ -207,6 +209,9 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         spfxContext: this.context
       });
 
+      //NEED TO APPLY THIS HERE as well as follow-up in render for it to not visibly change
+      FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h14, [ 'heavyTopBotBorder'], true, true, null );
+
       this.properties.pageLayout =  this.context['_pageLayoutType']?this.context['_pageLayoutType'] : this.context['_pageLayoutType'];
 
 
@@ -308,8 +313,11 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
   public render(): void {
 
+    FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h14, [ 'heavyTopBotBorder'], true, true, null );
+    // FPSApplyHeadingStyle( window.document as any, HTMLRegEx.h14, 'color: green', true, true, null );
+
     this.properties.showSomeProps = this.properties.showOOTBProps === true || this.properties.showCustomProps === true || this.properties.showApprovalProps === true  ? true : false;
-    
+
     //Preset infoElement to question mark circle for this particular web part if it's not specificed - due to pin icon being important and usage in pinned location
     if ( !this.properties.infoElementChoice ) { this.properties.infoElementChoice = 'IconName=Unknown'; }
     if ( !this.properties.infoElementText ) { this.properties.infoElementText = 'Question mark circle'; }

@@ -1,0 +1,16 @@
+/* Common heading styles */
+
+
+.dottedBorder { border-style: dotted ; }
+.dashedBorder { border-style: dashed ; }
+.solidBorder { border-style: solid ; }
+.doubleBorder { border-style: double ; }
+.ridgeBorder { border-style: ridge ; }
+.insetBorder { border-style: inset ; }
+.outsetBorder { border-style: outset ; }
+
+.textCenter { text-align: center ; }
+
+.heavyTopBotBorder { border-top-style: solid ; border-bottom-style: solid ; border-width: 5px ;}
+.dottedTopBotBorder { border-top-style: dotted ; border-bottom-style: dotted ; border-width: 5px ;}
+
