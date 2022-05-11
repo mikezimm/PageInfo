@@ -15,6 +15,10 @@ import {
 
 
 } from '@microsoft/sp-property-pane';
+
+
+import { IPropertyFieldGroupOrPerson } from "@pnp/spfx-property-controls/lib/PropertyFieldPeoplePicker";
+
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import {   
   ThemeProvider,
@@ -88,6 +92,7 @@ require('./FPSPinMe.css');
 
 import { SPService } from '../../Service/SPService';
 
+import { visitorPanelInfo } from './components/VisitorPanel/PanelComponent';
 import * as strings from 'FpsPageInfoWebPartStrings';
 import FpsPageInfo from './components/FpsPageInfo';
 import { IFpsPageInfoProps } from './components/IFpsPageInfoProps';
@@ -296,6 +301,8 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       //Have to insure selectedProperties always is an array from AdvancedPagePropertiesWebPart.ts
       // if ( !this.properties.selectedProperties ) { this.properties.selectedProperties = []; }
 
+      this.presetCollectionDefaults();
+
     });
   }
 
@@ -401,10 +408,10 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     }
     // if ( this.bannerProps.showBeAUserIcon === true ) { this.bannerProps.beAUserFunction = this.beAUserFunction.bind(this); }
 
-    // console.log('mainWebPart: visitorPanelInfo ~ 311',   );
-    // this.properties.replacePanelHTML = visitorPanelInfo( this.properties, this.fetchInfo.performance ? this.fetchInfo.performance : null );
+    console.log('mainWebPart: visitorPanelInfo ~ 405',   );
+    this.properties.replacePanelHTML = visitorPanelInfo( this.properties, );
 
-    // this.bannerProps.replacePanelHTML = this.properties.replacePanelHTML;
+    this.bannerProps.replacePanelHTML = this.properties.replacePanelHTML;
 
     console.log('mainWebPart: createElement ~ 357',   );
 
@@ -949,5 +956,37 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         }
       ]
     };
+  }
+
+  private presetCollectionDefaults() {
+
+    // return ;
+    if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf('/sites/financemanual/') > -1 ) {
+
+      const sampleId: IPropertyFieldGroupOrPerson = {
+        id: '1',
+        description: 'Financial Manual Support - desc',
+        fullName: 'Financial Manual Support - full',
+        login: 'Financial Manual Support - Login',
+        email: 'support@testing.com',
+        // jobTitle?: string;
+        // initials?: string;
+        // imageUrl?: string;
+      };
+
+      const siteContacts : any[] = [sampleId];
+          //These are added for the minimum User Panel component ( which turns into the replacePanelHTML component )
+
+      this.properties.panelMessageDescription1 = 'Finance Manual Help and Contact';
+      this.properties.panelMessageSupport = 'Contact RE for Finance Manual content';
+      this.properties.panelMessageDocumentation = 'Contact MZ for Web part questions';
+      this.properties.panelMessageIfYouStill = '';
+      this.properties.documentationLinkDesc = 'Finance Manual Help site';
+      this.properties.documentationLinkUrl = '/sites/FinanceManual/Help';
+      this.properties.documentationIsValid = true;
+      if ( !this.properties.supportContacts || this.properties.supportContacts.length === 0 ) this.properties.supportContacts = siteContacts;
+
+    }
+
   }
 }

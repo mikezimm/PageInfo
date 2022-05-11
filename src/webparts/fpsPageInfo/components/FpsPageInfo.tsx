@@ -74,6 +74,8 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
   private smallerCmdStyles: React.CSSProperties = this.makeSmallerCmdStyles();
   private propsExpandCmdStyles: React.CSSProperties = this.makeExpandPropsCmdStyles();
 
+  private FeedbackIcon = <Icon title={ 'Submit Feedback' } iconName='Feedback' onClick={ this.sendFeedback.bind(this) } style={ this.smallerCmdStyles }></Icon>;
+
   private PinFullIcon = <Icon title={ 'Pin to top' } iconName='Pinned' onClick={ this.setPinFull.bind(this) } style={ this.smallerCmdStyles }></Icon>;
   private PinMinIcon = <Icon  title={ 'Minimize' } iconName='CollapseMenu' onClick={ this.setPinMin.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
   private PinExpandIcon = <Icon  title={ 'Expand' } iconName='DoubleChevronDown' onClick={ this.setPinFull.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
@@ -343,7 +345,6 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     </div>;
 
     let devHeader = this.state.showDevHeader === true ? <div><b>Props: </b> { 'this.props.lastPropChange' + ', ' + 'this.props.lastPropDetailChange' } - <b>State: lastStateChange: </b> { this.state.lastStateChange  } </div> : null ;
-    
 
     return (
       <section className={`${styles.fpsPageInfo} ${hasTeamsContext ? styles.teams : ''}`}>
@@ -386,6 +387,20 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
   private toggleTOC() {
     let newState = this.state.tocExpanded === true ? false : true;
     this.setState( { tocExpanded: newState });
+  }
+
+  private sendFeedback() {
+
+
+    const lbreak = '%0D%0A';
+    let pageName = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
+    let mailTemplate = `mailto:${contact.email}`;
+    mailTemplate += `?subject=FPS Page Properties Webpart Question or Issue on PAGE: ${ pageName }`;
+    mailTemplate += `&body=Add your question or comment here: ${ lbreak }${ lbreak }${ lbreak }`;
+    mailTemplate += `Page Name: ${ pageName }${ lbreak }${ lbreak }`;
+    mailTemplate += `Link to page:${ lbreak }${ window.location.href }${ lbreak }${ lbreak }`;
+    mailTemplate += `Best Regards, ${ lbreak }${ lbreak }`;
+    
   }
 
 }
