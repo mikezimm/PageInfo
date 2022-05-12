@@ -104,6 +104,7 @@ import { exportIgnoreProps, importBlockProps, } from './IFpsPageInfoWebPartProps
 import { createStyleFromString } from '@mikezimm/npmfunctions/dist/Services/PropPane/StringToReactCSS';
 import { FPSApplyHeadingCSS, FPSApplyHeadingStyle } from './components/HeadingCSS/FPSHeadingsFunctions';
 import { HTMLRegEx } from '../../Service/htmlTags';
+import { css } from 'office-ui-fabric-react';
 
 
 //export type IMinHeading = 'h3' | 'h2' | 'h1' ;
@@ -125,6 +126,9 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
 
+  private h1 = {  classes: [],  css: '',  };
+  private h2 = {  classes: [],  css: '',  };
+  private h3 = {  classes: [],  css: '',  };
 
   //Common FPS variables
   private _unqiueId;
@@ -210,7 +214,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       });
 
       //NEED TO APPLY THIS HERE as well as follow-up in render for it to not visibly change
-      FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h14, [ 'heavyTopBotBorder'], true, true, null );
+     this.applyHeadingCSS();
 
       this.properties.pageLayout =  this.context['_pageLayoutType']?this.context['_pageLayoutType'] : this.context['_pageLayoutType'];
 
@@ -313,8 +317,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
   public render(): void {
 
-    FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h14, [ 'heavyTopBotBorder'], true, true, null );
-    // FPSApplyHeadingStyle( window.document as any, HTMLRegEx.h14, 'color: green', true, true, null );
+    this.applyHeadingCSS();
 
     this.properties.showSomeProps = this.properties.showOOTBProps === true || this.properties.showCustomProps === true || this.properties.showApprovalProps === true  ? true : false;
 
@@ -674,6 +677,9 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         this.properties.pageInfoStyle = '"paddingBottom":"20px","backgroundColor":"#d3d3d3"';
         this.properties.tocStyle = "";
         this.properties.propsStyle = "";
+        this.properties.h1Style = "";
+        this.properties.h2Style = "";
+        this.properties.h3Style = "";
 
       }
 
@@ -835,6 +841,27 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
               groupName: strings.PIStyleGroupName,
               isCollapsed: true,
               groupFields: [
+
+                PropertyPaneTextField('h1Style', {
+                  label: 'Heading 1 Styles',
+                  description: '; separated classNames or straight css like:  color: red',
+                  disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
+                  multiline: true,
+                  }),
+
+                PropertyPaneTextField('h2Style', {
+                  label: 'Heading 2 Styles',
+                  description: '; separated classNames or straight css like:  color: red',
+                  disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
+                  multiline: true,
+                  }),
+
+                PropertyPaneTextField('h3Style', {
+                  label: 'Heading 3 Styles',
+                  description: '; separated classNames or straight css like:  color: red',
+                  disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
+                  multiline: true,
+                  }),
 
                 PropertyPaneTextField('pageInfoStyle', {
                     label: 'Page Info Style options',
@@ -1006,5 +1033,50 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
     }
 
+  }
+
+  private applyHeadingCSS() {
+
+    if ( this.properties.h1Style ) {
+      let pieces = this.properties.h1Style.split(';');
+      let classes = [];
+      let cssStyles = [];
+      pieces.map( piece => {
+        piece = piece.trim();
+        if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
+      });
+
+      if ( classes.length > 0 ) FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h2, classes, true, true, null );
+      if ( cssStyles.length > 0 ) FPSApplyHeadingStyle( window.document as any, HTMLRegEx.h2, cssStyles.join( ';' ) , true, true, null );
+
+    }
+
+    if ( this.properties.h2Style ) {
+      let pieces = this.properties.h2Style.split(';');
+      let classes = [];
+      let cssStyles = [];
+      pieces.map( piece => {
+        piece = piece.trim();
+        if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
+      });
+
+      if ( classes.length > 0 ) FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h3, classes, true, true, null );
+      if ( cssStyles.length > 0 ) FPSApplyHeadingStyle( window.document as any, HTMLRegEx.h3, cssStyles.join( ';' ) , true, true, null );
+
+    }
+
+    if ( this.properties.h3Style ) {
+      let pieces = this.properties.h3Style.split(';');
+      let classes = [];
+      let cssStyles = [];
+      pieces.map( piece => {
+        piece = piece.trim();
+        if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
+      });
+
+      if ( classes.length > 0 ) FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h4, classes, true, true, null );
+      if ( cssStyles.length > 0 ) FPSApplyHeadingStyle( window.document as any, HTMLRegEx.h4, cssStyles.join( ';' ) , true, true, null );
+
+    }
   }
 }

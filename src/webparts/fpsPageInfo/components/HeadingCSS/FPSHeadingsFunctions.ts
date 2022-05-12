@@ -3,7 +3,7 @@ import { ISupportedHost } from '@mikezimm/npmfunctions/dist/Services/PropPane/FP
 
 import { IRegExTag } from '../../../../Service/htmlTags';
 
-export type IFPSHeadingClass = 'dottedBorder' | 'dashedBorder' | 'solidBorder' | 'doubleBorder' | 'ridgeBorder' | 'insetBorder' | 'outsetBorder' | 'textCenter' | 'heavyTopBotBorder' | 'dottedTopBotBorder';
+export type IFPSHeadingClass = 'dottedBorder' | 'dashedBorder' | 'solidBorder' | 'doubleBorder' | 'ridgeBorder' | 'insetBorder' | 'outsetBorder' | 'textCenter' | 'heavyTopBotBorder' | 'dottedTopBotBorder' | 'gradiant1';
 
 export function FPSApplyHeadingCSS ( domElement: HTMLElement, applyTag: IRegExTag, applyClass : IFPSHeadingClass[], alertError: boolean = true, consoleResult: boolean = false, host: ISupportedHost,  ) {
   const startTime = new Date();

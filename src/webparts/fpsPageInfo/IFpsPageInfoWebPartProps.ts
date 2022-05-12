@@ -63,6 +63,9 @@ export interface IFpsPageInfoWebPartProps {
   pageInfoStyle: string;
   tocStyle: string;
   propsStyle: string;
+  h1Style: string;
+  h2Style: string;
+  h3Style: string;
 
   showTOC: boolean;
   minHeadingToShow: IMinHeading;
