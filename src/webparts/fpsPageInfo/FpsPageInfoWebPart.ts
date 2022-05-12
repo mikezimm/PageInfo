@@ -102,7 +102,7 @@ import { Log } from './components/AdvPageProps/utilities/Log';
 import { IFpsPageInfoWebPartProps } from './IFpsPageInfoWebPartProps';
 import { exportIgnoreProps, importBlockProps, } from './IFpsPageInfoWebPartProps';
 import { createStyleFromString } from '@mikezimm/npmfunctions/dist/Services/PropPane/StringToReactCSS';
-import { FPSApplyHeadingCSS, FPSApplyHeadingStyle } from './components/HeadingCSS/FPSHeadingsFunctions';
+import { FPSApplyHeadingCSS, FPSApplyHeadingCSSAndStyles, FPSApplyHeadingStyle } from './components/HeadingCSS/FPSHeadingsFunctions';
 import { HTMLRegEx } from '../../Service/htmlTags';
 import { css } from 'office-ui-fabric-react';
 
@@ -1046,9 +1046,9 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
       });
 
-      if ( classes.length > 0 ) FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h2, classes, true, true, null );
-      if ( cssStyles.length > 0 ) FPSApplyHeadingStyle( window.document as any, HTMLRegEx.h2, cssStyles.join( ';' ) , true, true, null );
-
+      // if ( classes.length > 0 ) FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h2, classes, true, true, null );
+      // if ( cssStyles.length > 0 ) FPSApplyHeadingStyle( window.document as any, HTMLRegEx.h2, cssStyles.join( ';' ) , true, true, null );
+      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyHeadingCSSAndStyles( window.document as any, HTMLRegEx.h2, cssStyles.join( ';' ) , classes, true, true, null );
     }
 
     if ( this.properties.h2Style ) {
@@ -1060,8 +1060,9 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
       });
 
-      if ( classes.length > 0 ) FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h3, classes, true, true, null );
-      if ( cssStyles.length > 0 ) FPSApplyHeadingStyle( window.document as any, HTMLRegEx.h3, cssStyles.join( ';' ) , true, true, null );
+      // if ( classes.length > 0 ) FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h3, classes, true, true, null );
+      // if ( cssStyles.length > 0 ) FPSApplyHeadingStyle( window.document as any, HTMLRegEx.h3, cssStyles.join( ';' ) , true, true, null );
+      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyHeadingCSSAndStyles( window.document as any, HTMLRegEx.h3, cssStyles.join( ';' ) , classes, true, true, null );
 
     }
 
@@ -1074,8 +1075,9 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
       });
 
-      if ( classes.length > 0 ) FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h4, classes, true, true, null );
-      if ( cssStyles.length > 0 ) FPSApplyHeadingStyle( window.document as any, HTMLRegEx.h4, cssStyles.join( ';' ) , true, true, null );
+      // if ( classes.length > 0 ) FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h4, classes, true, true, null );
+      // if ( cssStyles.length > 0 ) FPSApplyHeadingStyle( window.document as any, HTMLRegEx.h4, cssStyles.join( ';' ) , true, true, null );
+      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyHeadingCSSAndStyles( window.document as any, HTMLRegEx.h4, cssStyles.join( ';' ) , classes, true, true, null );
 
     }
   }
