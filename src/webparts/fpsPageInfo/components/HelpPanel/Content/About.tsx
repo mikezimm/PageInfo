@@ -34,7 +34,7 @@ export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
 
 
     table.rows.push( createAboutRow('2022-05-12',"1.0.0.05","#33, #20 - special chars in headings, #28 - scroll", showRepoLinks === true ? repoLinks : null ) );
-    table.rows.push( createAboutRow('',"","#8, #12, #26, #27, #29, #30, #34, #35, ", showRepoLinks === true ? repoLinks : null ) );
+    table.rows.push( createAboutRow('',"","#8, #12, #14, #26, #27, #29, #30, #32, #34, #35, ", showRepoLinks === true ? repoLinks : null ) );
     table.rows.push( createAboutRow('',"","#36 - style headings", showRepoLinks === true ? repoLinks : null ) );
     
     table.rows.push( createAboutRow('2022-05-09',"1.0.0.04","#21, #22, #23", showRepoLinks === true ? repoLinks : null ) );
