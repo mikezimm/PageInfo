@@ -29,11 +29,11 @@
       "showTOC": true,
       "TOCTitleField": "Table of Contents",
       "tocExpanded": true,
+      "minHeadingToShow": "h3",
       
       "propsTitleField":  "Page Properties",
 
       "selectedProperties": [],
-      "minHeadingToShow": "h2",
 
       "showCustomProps": true,
       "propsExpanded": false,

@@ -103,15 +103,15 @@ import { IFpsPageInfoWebPartProps } from './IFpsPageInfoWebPartProps';
 import { exportIgnoreProps, importBlockProps, } from './IFpsPageInfoWebPartProps';
 import { createStyleFromString } from '@mikezimm/npmfunctions/dist/Services/PropPane/StringToReactCSS';
 import { FPSApplyHeadingCSS, FPSApplyHeadingCSSAndStyles, FPSApplyHeadingStyle } from './components/HeadingCSS/FPSHeadingsFunctions';
-import { HTMLRegEx } from '../../Service/htmlTags';
+import { HTMLRegEx, IHTMLRegExKeys } from '../../Service/htmlTags';
 import { css } from 'office-ui-fabric-react';
 
 
 //export type IMinHeading = 'h3' | 'h2' | 'h1' ;
 export const MinHeadingOptions = [
-  { index: 0, key: '3', text: "h3" },
-  { index: 1, key: '2', text: "h2" },
-  { index: 2, key: '1', text: "h1" },
+  { index: 0, key: 'h3', text: "h3" },
+  { index: 1, key: 'h2', text: "h2" },
+  { index: 2, key: 'h1', text: "h1" },
 ];
 
 //export type IPinMeState = 'normal' | 'pinFull' | 'pinMini';
@@ -302,7 +302,15 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       };
 
       //Added from react-page-navigator component
-      this.anchorLinks = await SPService.GetAnchorLinks(this.context);
+      let tags : IHTMLRegExKeys = 'h14';
+      if ( this.properties.minHeadingToShow === 'h2' ) {
+        tags = 'h13';
+      } else if ( this.properties.minHeadingToShow === 'h1' ) {
+        tags = 'h12';
+      }
+
+      this.anchorLinks = await SPService.GetAnchorLinks( this.context, tags );
+
 
       if ( this.properties.propsExpanded === undefined || this.properties.propsExpanded === null ) { this.properties.propsExpanded = true; }
       if ( this.properties.propsTitleField === undefined || this.properties.propsTitleField === null ) { this.properties.propsTitleField = strings.bannerTitle; }
@@ -817,7 +825,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
                   label: strings.DescriptionFieldLabel,
                   disabled: this.properties.showTOC === false ? true : false,
                 }),
-                
+
                 PropertyPaneToggle("tocExpanded", {
                   label: "Default state",
                   onText: "Expanded",
@@ -826,9 +834,10 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
                 }),
 
                 PropertyPaneDropdown('minHeadingToShow', <IPropertyPaneDropdownProps>{
-                  label: 'Min heading to show',
+                  label: 'Min heading to show - refresh required',
                   options: MinHeadingOptions, //MinHeadingOptions
                   disabled: this.properties.showTOC === false ? true : false,
+
                 }),
               ]
             }, //End this group

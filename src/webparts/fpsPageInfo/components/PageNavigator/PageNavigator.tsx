@@ -58,6 +58,7 @@ export default class PageNavigator extends React.Component<IPageNavigatorProps, 
         </div> :
           <Nav selectedKey={this.state.selectedKey}
           onLinkClick={this.onLinkClick}
+          styles={{  groupContent: { marginBottom: '10px' }}}
           groups={[
             {
               links: this.state.anchorLinks
