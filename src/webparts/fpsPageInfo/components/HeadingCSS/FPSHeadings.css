@@ -52,8 +52,8 @@
   }
 
   /* \2605 -star  \0021 - Exclaimation point */
-  .starBlack:before { content: "\2605"; padding-right: 20px;}
-  .starWhite:before { content: "\2606"; padding-right: 20px;}
+  .fpsStarBlack:before { content: "\2605"; padding-right: 20px;}
+  .fpsStarWhite:before { content: "\2606"; padding-right: 20px;}
 
   /* see -Code column in this page for reference:  https://en.wikipedia.org/wiki/List_of_Unicode_characters */
   .fpsSect:before { content: "\00A7"; padding-right: 20px;}
