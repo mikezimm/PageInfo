@@ -5,7 +5,7 @@ import { IRegExTag } from '../../../../Service/htmlTags';
 
 export type IFPSHeadingClass = 'dottedBorder' | 'dashedBorder' | 'solidBorder' | 'doubleBorder' | 'ridgeBorder' | 'insetBorder' | 'outsetBorder' | 'textCenter' | 'heavyTopBotBorder' | 'dottedTopBotBorder' | 'gradiant1';
 
-export function FPSApplyHeadingCSSAndStyles ( domElement: HTMLElement, applyTag: IRegExTag, cssText : string, applyClass : IFPSHeadingClass[], alertError: boolean = true, consoleResult: boolean = false, host: ISupportedHost,  ) {
+export function FPSApplyHeadingCSSAndStyles ( applyTag: IRegExTag, cssText : string, applyClass : IFPSHeadingClass[], alertError: boolean = true, consoleResult: boolean = false,  ) {
   const startTime = new Date();
   let classChanges: any[] = [];
 
@@ -17,7 +17,7 @@ export function FPSApplyHeadingCSSAndStyles ( domElement: HTMLElement, applyTag:
 
       //Get all elements with this tag
       let nodeList = document.getElementsByTagName( tag );
-      if ( consoleResult && iteration === 0 ) console.log( 'FPSApplyHeadingCSS found Elements:', tag, nodeList );
+      if ( consoleResult && iteration === 0 ) console.log( 'FPSApplyHeadingCSSAndStyles found Elements:', tag, nodeList );
 
       //Loop through all elements for this tag
       if ( nodeList && nodeList.length > 0 ) {
@@ -45,7 +45,7 @@ export function FPSApplyHeadingCSSAndStyles ( domElement: HTMLElement, applyTag:
 
 }
 
-export function FPSApplyHeadingCSS ( domElement: HTMLElement, applyTag: IRegExTag, applyClass : IFPSHeadingClass[], alertError: boolean = true, consoleResult: boolean = false, host: ISupportedHost,  ) {
+export function FPSApplyHeadingCSS ( applyTag: IRegExTag, applyClass : IFPSHeadingClass[], alertError: boolean = true, consoleResult: boolean = false  ) {
   const startTime = new Date();
   let classChanges: any[] = [];
 
@@ -79,7 +79,7 @@ export function FPSApplyHeadingCSS ( domElement: HTMLElement, applyTag: IRegExTa
 
 }
 
-export function FPSApplyHeadingStyle ( domElement: HTMLElement, applyTag: IRegExTag, cssText : string, alertError: boolean = true, consoleResult: boolean = false, host: ISupportedHost,  ) {
+export function FPSApplyHeadingStyle ( applyTag: IRegExTag, cssText : string, alertError: boolean = true, consoleResult: boolean = false ) {
   const startTime = new Date();
   let classChanges: any[] = [];
 

@@ -1057,7 +1057,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
       // if ( classes.length > 0 ) FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h2, classes, true, true, null );
       // if ( cssStyles.length > 0 ) FPSApplyHeadingStyle( window.document as any, HTMLRegEx.h2, cssStyles.join( ';' ) , true, true, null );
-      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyHeadingCSSAndStyles( window.document as any, HTMLRegEx.h2, cssStyles.join( ';' ) , classes, true, true, null );
+      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyHeadingCSSAndStyles( HTMLRegEx.h2, cssStyles.join( ';' ) , classes, true, true, );
     }
 
     if ( this.properties.h2Style ) {
@@ -1071,7 +1071,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
       // if ( classes.length > 0 ) FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h3, classes, true, true, null );
       // if ( cssStyles.length > 0 ) FPSApplyHeadingStyle( window.document as any, HTMLRegEx.h3, cssStyles.join( ';' ) , true, true, null );
-      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyHeadingCSSAndStyles( window.document as any, HTMLRegEx.h3, cssStyles.join( ';' ) , classes, true, true, null );
+      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyHeadingCSSAndStyles( HTMLRegEx.h3, cssStyles.join( ';' ) , classes, true, true, );
 
     }
 
@@ -1086,7 +1086,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
       // if ( classes.length > 0 ) FPSApplyHeadingCSS( window.document as any, HTMLRegEx.h4, classes, true, true, null );
       // if ( cssStyles.length > 0 ) FPSApplyHeadingStyle( window.document as any, HTMLRegEx.h4, cssStyles.join( ';' ) , true, true, null );
-      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyHeadingCSSAndStyles( window.document as any, HTMLRegEx.h4, cssStyles.join( ';' ) , classes, true, true, null );
+      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyHeadingCSSAndStyles( HTMLRegEx.h4, cssStyles.join( ';' ) , classes, true, true, );
 
     }
   }
