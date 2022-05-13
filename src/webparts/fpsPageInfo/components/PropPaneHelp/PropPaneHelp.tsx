@@ -17,77 +17,7 @@ import { FontWeights } from 'office-ui-fabric-react';
 import { BannerHelp, FPSBasicHelp, FPSExpandHelp, ImportHelp, SinglePageAppHelp, VisitorHelp } from '@mikezimm/npmfunctions/dist/PropPaneHelp/FPSCommonOnNpm';
 import { FPSBorderClasses, FPSHeadingNumberClasses, FPSEmojiClasses, FPSMiscClasses, FPSHeadingClasses } from '../HeadingCSS/FPSTagFunctions';
 
-require('@mikezimm/npmfunctions/dist/PropPaneHelp/FPSCommonOnNpm/PropPanelHelp.css');
-
-const SampleViewJSON : any = [
-  {
-    "name": "Author/Title",
-    "displayName": "Created by",
-    "minWidth": 50
-  },
-  {
-    "name": "FileRef",
-    "displayName": "FileLeafRef",
-    "maxWidth": 50,
-    "linkPropertyName": "goToItemPreview"
-  },
-];
-
-// const SampleCommands: any = {
-//   "label": "Press Me",
-//   "primary": false,
-//   "confirm": "Are you sure?",
-//   "alert": "We made our updates!",
-//   "console": "Message to browser console",
-//   "panelMessage": "Complete Panel Text",
-//   "icon": "User",
-//   "updateItem": {
-//     "DueDate": "[today+14]",
-//     "AssignedToId": "[Me]",
-//     "Status": "In Process",
-//     "ReviewDays": 99,
-//     "Body": "Hi! It's [Today+3] and I'm $MyName$"
-//   },
-//   "showWhenEvalTrue": "item.AssignedToId !== sourceUserInfo.Id"
-// };
-
-const SampleCommands: any = {
-  "buttons": [[{
-      "label": "Press Me",
-      "primary": false,
-      "confirm": "Are you sure?",
-      "alert": "We made our updates!",
-      "console": "Message to browser console",
-      "panelMessage": "Complete Panel Text",
-      "icon": "User",
-      "updateItem": {
-        "DueDate": "[today+14]",
-        "AssignedToId": "[Me]",
-        "Status": "In Process",
-        "ReviewDays": 99,
-        "Body": "Hi! It's [Today+3] and I'm $MyName$"
-      },
-      "showWhenEvalTrue": "item.AssignedToId !== sourceUserInfo.Id"
-    }
-  ]],
-  "fields": [],
-
-};
- 
-const SampleCharts: any = [
-  {
-    "primaryField": "Id",
-    "title": "Count of items",
-    "stat": "count",
-    "chartTypes": [
-      "pareto-dec",
-      "stacked-column-labels"
-    ]
-  }
-];
-
-const UserColumnRestPropertiesSPO : string[] = [ 'Title', 'Name', 'EMail', 'FirstName', 'UserName', 'ID', 'SipAddress', 'Office', 'Modified', 'Created', ];
-const UserColumnRestPropertiesSPONOTWORK : string[] = [ 'MobilePhone', 'Department', 'JobTitle', 'WorkPhone', 'ImnName', 'NameWithPicture', 'NameWithPictureAndDetails', 'ContentTypeDisp', ];
+require('../../PropPanelHelp.css');
 
 export function putObjectIntoJSON ( obj: any, name: string = null ) {
   // return <ReactJson src={ obj } name={ 'panelItem' } collapsed={ true } displayDataTypes={ true } displayObjectSize={ true } enableClipboard={ true } style={{ padding: '20px 0px' }}/>;

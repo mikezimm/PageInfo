@@ -19,7 +19,6 @@ import { checkIsInVerticalSection, FPSPinMe } from './PinMe/FPSPinMenu';
 
 import WebpartBanner from "./HelpPanel/banner/onLocal/component";
 
-import stylesP from './PropPaneHelp/PropPanelHelp.module.scss';
 import { WebPartHelpElement } from './PropPaneHelp/PropPaneHelp';
 
 export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFpsPageInfoState> {
