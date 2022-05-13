@@ -52,20 +52,27 @@ export default class PageNavigator extends React.Component<IPageNavigatorProps, 
     if ( this.props.showTOC === false ) {
       return ( null );
     } else { //If there is a null value, it will just show it
+
+      const linksElement = this.state.anchorLinks.length === 0 ? <div style={{ paddingLeft: '20px', paddingBottom: '10px', fontSize: 'larger' }}>
+          There are no headings on this page ;(
+        </div> :
+          <Nav selectedKey={this.state.selectedKey}
+          onLinkClick={this.onLinkClick}
+          styles={{  groupContent: { marginBottom: '10px' }}}
+          groups={[
+            {
+              links: this.state.anchorLinks
+            }
+          ]}
+        />;
+        
       return (
         <div className={styles.pageNavigator}>
           <div className={styles.container}>
             <div className={styles.row}>
               <div className={styles.column}>
                 {/* <div style={{ fontSize: '20px', fontWeight: 600, backgroundColor: semanticColors.defaultStateBackground, color: semanticColors.bodyText}}>{ this.props.description ? this.props.description : null }</div> */}
-                <Nav selectedKey={this.state.selectedKey}
-                  onLinkClick={this.onLinkClick}
-                  groups={[
-                    {
-                      links: this.state.anchorLinks
-                    }
-                  ]}
-                />
+                { linksElement }
               </div>
             </div>
           </div>

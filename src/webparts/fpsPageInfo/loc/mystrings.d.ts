@@ -1,4 +1,5 @@
 declare interface IFpsPageInfoWebPartStrings {
+  bannerTitle: string;
   PropertyPaneDescription: string;
   TOCGroupName: string;
   PIStyleGroupName: string;

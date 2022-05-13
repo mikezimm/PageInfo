@@ -48,7 +48,7 @@ const AdvancedPageProperties: React.FunctionComponent<IAdvancedPagePropertiesPro
       // Get the value(s) for the field from the list item itself
       var allValues: any = {};
       const sitePagesList = await sp.web.lists.ensureSitePagesLibrary();
-      if (props.context.pageContext.listItem !== undefined && props.context.pageContext.listItem !== null) {
+      if ( props.context && props.context.pageContext && props.context.pageContext.listItem !== undefined && props.context.pageContext.listItem !== null) {
         allValues = await sitePagesList.items.getById(props.context.pageContext.listItem.id).select(...props.selectedProperties).fieldValuesAsText();
       }
 

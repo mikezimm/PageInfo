@@ -63,6 +63,9 @@ export interface IFpsPageInfoWebPartProps {
   pageInfoStyle: string;
   tocStyle: string;
   propsStyle: string;
+  h1Style: string;
+  h2Style: string;
+  h3Style: string;
 
   showTOC: boolean;
   minHeadingToShow: IMinHeading;
@@ -75,6 +78,8 @@ export interface IFpsPageInfoWebPartProps {
   showOOTBProps: boolean;
   showApprovalProps: boolean;
   propsExpanded: boolean;
+
+  feedbackEmail: string;
 
   uniqueId: string;
   showBannerGear: boolean; // Not in Prop Pane

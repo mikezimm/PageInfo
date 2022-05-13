@@ -15,6 +15,10 @@ import {
 
 
 } from '@microsoft/sp-property-pane';
+
+
+import { IPropertyFieldGroupOrPerson } from "@pnp/spfx-property-controls/lib/PropertyFieldPeoplePicker";
+
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import {   
   ThemeProvider,
@@ -30,7 +34,15 @@ import * as _lodashAPP from 'lodash';
 
 import { PropertyFieldPeoplePicker, PrincipalType } from '@pnp/spfx-property-controls/lib/PropertyFieldPeoplePicker';
 
+import { setPageFormatting, } from '@mikezimm/npmfunctions/dist/Services/DOM/FPSFormatFunctions';
+
+import { IFPSPage, } from '@mikezimm/npmfunctions/dist/Services/DOM/FPSInterfaces';
 import { createFPSWindowProps, initializeFPSSection, initializeFPSPage, webpartInstance, initializeMinimalStyle } from '@mikezimm/npmfunctions/dist/Services/DOM/FPSDocument';
+import { IFPSWindowProps, IFPSSection, IFPSSectionStyle } from '@mikezimm/npmfunctions/dist/Services/DOM/FPSInterfaces';
+import { setSectionStyles } from '@mikezimm/npmfunctions/dist/Services/DOM/setAllSectionStyles';
+import { minimizeHeader } from '@mikezimm/npmfunctions/dist/Services/DOM/minimzeHeader';
+import { minimizeToolbar } from '@mikezimm/npmfunctions/dist/Services/DOM/minimzeToolbar';
+import { minimizeQuickLaunch } from '@mikezimm/npmfunctions/dist/Services/DOM/quickLaunch';
 
 // import { FPSOptionsGroupBasic, FPSBanner2Group, FPSOptionsGroupAdvanced } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup2';
 import { FPSOptionsGroupBasic, FPSBanner3Group, FPSOptionsGroupAdvanced } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup3';
@@ -84,10 +96,11 @@ export const repoLink: IRepoLinks = links.gitRepoPageInfoSmall;
 
 require('./GrayPropPaneAccordions.css');
 require('./FPSPinMe.css');
-
+require('./components/HeadingCSS/FPSHeadings.css');
 
 import { SPService } from '../../Service/SPService';
 
+import { visitorPanelInfo } from './components/VisitorPanel/PanelComponent';
 import * as strings from 'FpsPageInfoWebPartStrings';
 import FpsPageInfo from './components/FpsPageInfo';
 import { IFpsPageInfoProps } from './components/IFpsPageInfoProps';
@@ -97,13 +110,16 @@ import { Log } from './components/AdvPageProps/utilities/Log';
 import { IFpsPageInfoWebPartProps } from './IFpsPageInfoWebPartProps';
 import { exportIgnoreProps, importBlockProps, } from './IFpsPageInfoWebPartProps';
 import { createStyleFromString } from '@mikezimm/npmfunctions/dist/Services/PropPane/StringToReactCSS';
+import { FPSApplyHeadingCSS, FPSApplyTagCSSAndStyles, FPSApplyHeadingStyle } from './components/HeadingCSS/FPSTagFunctions';
+import { HTMLRegEx, IHTMLRegExKeys } from '../../Service/htmlTags';
+import { css } from 'office-ui-fabric-react';
 
 
 //export type IMinHeading = 'h3' | 'h2' | 'h1' ;
 export const MinHeadingOptions = [
-  { index: 0, key: '3', text: "h3" },
-  { index: 1, key: '2', text: "h2" },
-  { index: 2, key: '1', text: "h1" },
+  { index: 0, key: 'h3', text: "h3" },
+  { index: 1, key: 'h2', text: "h2" },
+  { index: 2, key: 'h1', text: "h1" },
 ];
 
 //export type IPinMeState = 'normal' | 'pinFull' | 'pinMini';
@@ -118,6 +134,9 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
 
+  private h1 = {  classes: [],  css: '',  };
+  private h2 = {  classes: [],  css: '',  };
+  private h3 = {  classes: [],  css: '',  };
 
   //Common FPS variables
   private _unqiueId;
@@ -130,19 +149,25 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
   private urlParameters: any = {};
 
-    //For FPS Banner
-    private forceBanner = true ;
-    private modifyBannerTitle = true ;
-    private modifyBannerStyle = true ;
-  
-    private  expandoDefault = false;
-    private filesList: any = [];
-  
-    private exitPropPaneChanged = false;
+  //For FPS options
+  private fpsPageDone: boolean = false;
+  private fpsPageArray: any[] = null;
+  private minQuickLaunch: boolean = false;
+  private minHideToolbar: boolean = false;
 
-    private expandoErrorObj = {
+  //For FPS Banner
+  private forceBanner = true ;
+  private modifyBannerTitle = true ;
+  private modifyBannerStyle = true ;
 
-    };
+  private  expandoDefault = false;
+  private filesList: any = [];
+
+  private exitPropPaneChanged = false;
+
+  private expandoErrorObj = {
+
+  };
 
   //ADDED FOR WEBPART HISTORY:  
   private thisHistoryInstance: IWebpartHistoryItem2 = null;
@@ -168,6 +193,18 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     this._themeVariant = args.theme;
     this.render();
   }
+
+
+  /***
+ *     .d88b.  d8b   db      d888888b d8b   db d888888b d888888b 
+ *    .8P  Y8. 888o  88        `88'   888o  88   `88'   `~~88~~' 
+ *    88    88 88V8o 88         88    88V8o 88    88       88    
+ *    88    88 88 V8o88         88    88 V8o88    88       88    
+ *    `8b  d8' 88  V888        .88.   88  V888   .88.      88    
+ *     `Y88P'  VP   V8P      Y888888P VP   V8P Y888888P    YP    
+ *                                                               
+ *                                                               
+ */
 
   protected onInit(): Promise<void> {
     this._environmentMessage = this._getEnvironmentMessage();
@@ -201,6 +238,22 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       sp.setup({
         spfxContext: this.context
       });
+
+
+      /***
+     *     .d88b.  d8b   db      d888888b d8b   db d888888b d888888b      d8888b. db   db  .d8b.  .d8888. d88888b      .d888b. 
+     *    .8P  Y8. 888o  88        `88'   888o  88   `88'   `~~88~~'      88  `8D 88   88 d8' `8b 88'  YP 88'          VP  `8D 
+     *    88    88 88V8o 88         88    88V8o 88    88       88         88oodD' 88ooo88 88ooo88 `8bo.   88ooooo         odD' 
+     *    88    88 88 V8o88         88    88 V8o88    88       88         88~~~   88~~~88 88~~~88   `Y8b. 88~~~~~       .88'   
+     *    `8b  d8' 88  V888        .88.   88  V888   .88.      88         88      88   88 88   88 db   8D 88.          j88.    
+     *     `Y88P'  VP   V8P      Y888888P VP   V8P Y888888P    YP         88      YP   YP YP   YP `8888Y' Y88888P      888888D 
+     *                                                                                                                         
+     *                                                                                                                         
+     */
+
+      //NEED TO APPLY THIS HERE as well as follow-up in render for it to not visibly change
+      this.presetCollectionDefaults();
+      this.applyHeadingCSS();
 
       this.properties.pageLayout =  this.context['_pageLayoutType']?this.context['_pageLayoutType'] : this.context['_pageLayoutType'];
 
@@ -288,19 +341,59 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       };
 
       //Added from react-page-navigator component
-      this.anchorLinks = await SPService.GetAnchorLinks(this.context);
+      let tags : IHTMLRegExKeys = 'h14';
+      if ( this.properties.minHeadingToShow === 'h2' ) {
+        tags = 'h13';
+      } else if ( this.properties.minHeadingToShow === 'h1' ) {
+        tags = 'h12';
+      }
+
+      this.anchorLinks = await SPService.GetAnchorLinks( this.context, tags );
 
       if ( this.properties.propsExpanded === undefined || this.properties.propsExpanded === null ) { this.properties.propsExpanded = true; }
-      if ( this.properties.propsTitleField === undefined || this.properties.propsTitleField === null ) { this.properties.propsTitleField = 'Page Properties'; }
+      if ( this.properties.propsTitleField === undefined || this.properties.propsTitleField === null ) { this.properties.propsTitleField = strings.bannerTitle; }
+
       //Have to insure selectedProperties always is an array from AdvancedPagePropertiesWebPart.ts
       // if ( !this.properties.selectedProperties ) { this.properties.selectedProperties = []; }
+
+      this.renderCustomStyles( false );
 
     });
   }
 
   public render(): void {
 
+    /***
+ *    d8888b. d88888b d8b   db d8888b. d88888b d8888b. 
+ *    88  `8D 88'     888o  88 88  `8D 88'     88  `8D 
+ *    88oobY' 88ooooo 88V8o 88 88   88 88ooooo 88oobY' 
+ *    88`8b   88~~~~~ 88 V8o88 88   88 88~~~~~ 88`8b   
+ *    88 `88. 88.     88  V888 88  .8D 88.     88 `88. 
+ *    88   YD Y88888P VP   V8P Y8888D' Y88888P 88   YD 
+ *                                                     
+ *                                                     
+ */
+
+
+  /***
+   *    d8888b. d88888b d8b   db d8888b. d88888b d8888b.       .o88b.  .d8b.  db      db      .d8888. 
+   *    88  `8D 88'     888o  88 88  `8D 88'     88  `8D      d8P  Y8 d8' `8b 88      88      88'  YP 
+   *    88oobY' 88ooooo 88V8o 88 88   88 88ooooo 88oobY'      8P      88ooo88 88      88      `8bo.   
+   *    88`8b   88~~~~~ 88 V8o88 88   88 88~~~~~ 88`8b        8b      88~~~88 88      88        `Y8b. 
+   *    88 `88. 88.     88  V888 88  .8D 88.     88 `88.      Y8b  d8 88   88 88booo. 88booo. db   8D 
+   *    88   YD Y88888P VP   V8P Y8888D' Y88888P 88   YD       `Y88P' YP   YP Y88888P Y88888P `8888Y' 
+   *                                                                                                  
+   *           Source:   PivotTiles 1.5.2.6                                                                                
+   */
+   this.renderCustomStyles();
+
+
     this.properties.showSomeProps = this.properties.showOOTBProps === true || this.properties.showCustomProps === true || this.properties.showApprovalProps === true  ? true : false;
+
+    //Preset infoElement to question mark circle for this particular web part if it's not specificed - due to pin icon being important and usage in pinned location
+    if ( !this.properties.infoElementChoice ) { this.properties.infoElementChoice = 'IconName=Unknown'; }
+    if ( !this.properties.infoElementText ) { this.properties.infoElementText = 'Question mark circle'; }
+
     this._unqiueId = this.context.instanceId;
 
     // quickRefresh is used for SecureScript for when caching html file.  <<< ================================================================
@@ -327,7 +420,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
     let replacePanelWarning = `Anyone with lower permissions than '${this.properties.fullPanelAudience}' will ONLY see this content in panel`;
 
-    console.log('mainWebPart: buildBannerSettings ~ 255',   );
+    console.log('mainWebPart: buildBannerSettings ~ 387',   );
 
     let buildBannerSettings : IBuildBannerSettings = {
 
@@ -360,7 +453,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
     };
 
-    console.log('mainWebPart: showTricks ~ 322',   );
+    // console.log('mainWebPart: showTricks ~ 322',   );
     let showTricks: any = false;
     links.trickyEmails.map( getsTricks => {
       if ( this.context.pageContext.user.loginName && this.context.pageContext.user.loginName.toLowerCase().indexOf( getsTricks ) > -1 ) { 
@@ -369,11 +462,19 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       }
       } );
 
-    console.log('mainWebPart: verifyAudienceVsUser ~ 341',   );
+    // console.log('mainWebPart: verifyAudienceVsUser ~ 341',   );
     this.properties.showBannerGear = verifyAudienceVsUser( this.FPSUser , showTricks, this.properties.homeParentGearAudience, null, renderAsReader );
 
     let bannerSetup = buildBannerProps( this.properties , this.FPSUser, buildBannerSettings, showTricks, renderAsReader );
-    if ( !this.properties.bannerTitle || this.properties.bannerTitle === '' ) { bannerSetup.bannerProps.title = 'hide' ; }
+    if ( !this.properties.bannerTitle || this.properties.bannerTitle === '' ) { 
+      if ( this.properties.defPinState !== 'normal' ) {
+        bannerSetup.bannerProps.title = strings.bannerTitle ;
+      } else {
+        bannerSetup.bannerProps.title = 'hide' ;
+      }
+
+    
+    }
 
     errMessage = bannerSetup.errMessage;
     this.bannerProps = bannerSetup.bannerProps;
@@ -387,12 +488,10 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     }
     // if ( this.bannerProps.showBeAUserIcon === true ) { this.bannerProps.beAUserFunction = this.beAUserFunction.bind(this); }
 
-    // console.log('mainWebPart: visitorPanelInfo ~ 311',   );
-    // this.properties.replacePanelHTML = visitorPanelInfo( this.properties, this.fetchInfo.performance ? this.fetchInfo.performance : null );
+    // console.log('mainWebPart: visitorPanelInfo ~ 405',   );
+    this.properties.replacePanelHTML = visitorPanelInfo( this.properties, );
 
-    // this.bannerProps.replacePanelHTML = this.properties.replacePanelHTML;
-
-    console.log('mainWebPart: createElement ~ 357',   );
+    this.bannerProps.replacePanelHTML = this.properties.replacePanelHTML;
 
     const OOTBProps = this.properties.showOOTBProps === true ? ['ID', 'Modified', 'Editor' , 'Created', 'Author' ] : [];
     const ApprovalProps = []; //this.properties.showApprovalProps === true ? ['ID', 'Created', 'Modified'] : [];
@@ -425,6 +524,8 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         displayMode: this.displayMode,
 
         pageInfoStyle: pageInfoStyle,
+
+        feedbackEmail: this.properties.feedbackEmail ? this.properties.feedbackEmail : '',
         //Banner related props
         errMessage: 'any',
         bannerProps: this.bannerProps,
@@ -643,6 +744,9 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         this.properties.pageInfoStyle = '"paddingBottom":"20px","backgroundColor":"#d3d3d3"';
         this.properties.tocStyle = "";
         this.properties.propsStyle = "";
+        this.properties.h1Style = "";
+        this.properties.h2Style = "";
+        this.properties.h3Style = "";
 
       }
 
@@ -670,20 +774,15 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     var propDrops: IPropertyPaneField<any>[] = [];
     const disableCustomProps = this.properties.showCustomProps === false ? true : false;
 
-    propDrops.push(PropertyPaneTextField('propsTitleField', {
-      label: strings.PropsTitleFieldLabel,
-      disabled: this.properties.showSomeProps === false ? true : false,
-    }));
-
-    propDrops.push(PropertyPaneToggle("propsExpanded", {
-      label: "Default state",
-      onText: "Expanded",
-      offText: "Collapsed",
+    propDrops.push(PropertyPaneToggle("showOOTBProps", {
+      label: "Show Created/Modified Props",
+      onText: "On",
+      offText: "Off",
       // disabled: true,
     }));
 
-    propDrops.push(PropertyPaneToggle("showOOTBProps", {
-      label: "Show Created/Modified Props",
+    propDrops.push( PropertyPaneToggle("showCustomProps", {
+      label: "Show Custom Props",
       onText: "On",
       offText: "Off",
       // disabled: true,
@@ -696,14 +795,26 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       disabled: true, //Not sure what props will be for this.
     }));
 
-    propDrops.push( PropertyPaneToggle("showCustomProps", {
-      label: "Show Custom Props",
-      onText: "On",
-      offText: "Off",
+    propDrops.push(PropertyPaneTextField('propsTitleField', {
+      label: strings.PropsTitleFieldLabel,
+      disabled: this.properties.showSomeProps === false ? true : false,
+    }));
+
+    propDrops.push(PropertyPaneToggle("propsExpanded", {
+      label: "Default state",
+      onText: "Expanded",
+      offText: "Collapsed",
       // disabled: true,
     }));
 
 
+    let banner3BasicGroup = FPSBanner3BasicGroup( this.forceBanner , this.modifyBannerTitle, this.properties.showBanner, this.properties.infoElementChoice === 'Text' ? true : false, true );
+    banner3BasicGroup.groupFields.push(
+      PropertyPaneTextField('feedbackEmail', {
+          label: 'Feedback email',
+          description: 'Adds Feedback icon in the banner.',
+          disabled: this.properties.showBanner !== true ? true : false,
+      }) );
 
     propDrops.push(PropertyPaneHorizontalRule());
     // Determine how many page property dropdowns we currently have
@@ -773,7 +884,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
                   label: strings.DescriptionFieldLabel,
                   disabled: this.properties.showTOC === false ? true : false,
                 }),
-                
+
                 PropertyPaneToggle("tocExpanded", {
                   label: "Default state",
                   onText: "Expanded",
@@ -782,9 +893,10 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
                 }),
 
                 PropertyPaneDropdown('minHeadingToShow', <IPropertyPaneDropdownProps>{
-                  label: 'Min heading to show',
+                  label: 'Min heading to show - refresh required',
                   options: MinHeadingOptions, //MinHeadingOptions
                   disabled: this.properties.showTOC === false ? true : false,
+
                 }),
               ]
             }, //End this group
@@ -797,6 +909,27 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
               groupName: strings.PIStyleGroupName,
               isCollapsed: true,
               groupFields: [
+
+                PropertyPaneTextField('h1Style', {
+                  label: 'Heading 1 Styles',
+                  description: '; separated classNames or straight css like:  color: red',
+                  disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
+                  multiline: true,
+                  }),
+
+                PropertyPaneTextField('h2Style', {
+                  label: 'Heading 2 Styles',
+                  description: '; separated classNames or straight css like:  color: red',
+                  disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
+                  multiline: true,
+                  }),
+
+                PropertyPaneTextField('h3Style', {
+                  label: 'Heading 3 Styles',
+                  description: '; separated classNames or straight css like:  color: red',
+                  disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
+                  multiline: true,
+                  }),
 
                 PropertyPaneTextField('pageInfoStyle', {
                     label: 'Page Info Style options',
@@ -914,7 +1047,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
               // FPSBanner3Group( this.forceBanner , this.modifyBannerTitle, this.modifyBannerStyle, this.properties.showBanner, null, true, this.properties.lockStyles, this.properties.infoElementChoice === 'Text' ? true : false ),
 
-              FPSBanner3BasicGroup( this.forceBanner , this.modifyBannerTitle, this.properties.showBanner, this.properties.infoElementChoice === 'Text' ? true : false ),
+              banner3BasicGroup,
               FPSBanner3NavGroup(), 
               FPSBanner3ThemeGroup( this.modifyBannerStyle, this.properties.showBanner, this.properties.lockStyles, ),
 
@@ -935,5 +1068,154 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         }
       ]
     };
+  }
+
+  private presetCollectionDefaults() {
+
+    // return ;
+    if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf('/sites/financemanual/') > -1 ) {
+
+      const sampleId: IPropertyFieldGroupOrPerson = {
+        id: '1',
+        description: '',
+        fullName: 'Financial Manual Support team',
+        login: '',
+        email: 'ae57524a.Autoliv.onmicrosoft.com@amer.teams.ms',
+        // jobTitle?: string;
+        // initials?: string;
+        imageUrl: null,
+      };
+
+      const siteContacts : any[] = [sampleId];
+          //These are added for the minimum User Panel component ( which turns into the replacePanelHTML component )
+
+      this.properties.feedbackEmail = 'ae57524a.Autoliv.onmicrosoft.com@amer.teams.ms';
+      this.properties.panelMessageDescription1 = 'Finance Manual Help and Contact';
+      this.properties.panelMessageSupport = 'Contact RE for Finance Manual content';
+      this.properties.panelMessageDocumentation = 'Contact MZ for Web part questions';
+      this.properties.panelMessageIfYouStill = '';
+      this.properties.documentationLinkDesc = 'Finance Manual Help site';
+      this.properties.documentationLinkUrl = '/sites/FinanceManual/Help';
+      this.properties.documentationIsValid = true;
+      if ( !this.properties.supportContacts || this.properties.supportContacts.length === 0 ) this.properties.supportContacts = siteContacts;
+
+    }
+
+  }
+
+
+
+  /***
+ *    d88888b d8888b. .d8888.       .d88b.  d8888b. d888888b d888888b  .d88b.  d8b   db .d8888. 
+ *    88'     88  `8D 88'  YP      .8P  Y8. 88  `8D `~~88~~'   `88'   .8P  Y8. 888o  88 88'  YP 
+ *    88ooo   88oodD' `8bo.        88    88 88oodD'    88       88    88    88 88V8o 88 `8bo.   
+ *    88~~~   88~~~     `Y8b.      88    88 88~~~      88       88    88    88 88 V8o88   `Y8b. 
+ *    88      88      db   8D      `8b  d8' 88         88      .88.   `8b  d8' 88  V888 db   8D 
+ *    YP      88      `8888Y'       `Y88P'  88         YP    Y888888P  `Y88P'  VP   V8P `8888Y' 
+ *                                                                                              
+ *                                                                                              
+ */
+
+  private renderCustomStyles( doHeadings: boolean = true ) {
+
+    if ( doHeadings === true ) this.applyHeadingCSS();
+
+    //Used with FPS Options Functions
+    this.setQuickLaunch( this.properties.quickLaunchHide );
+    minimizeHeader( document, this.properties.pageHeaderHide, false, true );
+    this.setThisPageFormatting( this.properties.fpsPageStyle );
+    this.setToolbar( this.properties.toolBarHide );
+    this.updateSectionStyles( );
+  }
+
+  /**
+   * Used with FPS Options Functions
+   * @param quickLaunchHide 
+   */
+   private setQuickLaunch( quickLaunchHide: boolean ) {
+    if ( quickLaunchHide === true && this.minQuickLaunch === false ) {
+      minimizeQuickLaunch( document , quickLaunchHide );
+      this.minQuickLaunch = true;
+    }
+  }
+
+  /**
+   * Used with FPS Options Functions
+   * @param quickLaunchHide 
+   */
+  private setToolbar( hideToolbar: boolean ) {
+
+      if(this.displayMode == DisplayMode.Read && this.urlParameters.tool !== 'true' ){
+        let value = hideToolbar === true ? 'none' : null;
+        let toolBarStyle: IFPSSectionStyle = initializeMinimalStyle( 'Miminze Toolbar', this.wpInstanceID, 'display', value );
+        minimizeToolbar( document, toolBarStyle, false, true );
+        this.minHideToolbar = true;
+      }
+
+  }
+
+  /**
+   * Used with FPS Options Functions
+   * @param fpsPageStyle 
+   */
+  private setThisPageFormatting( fpsPageStyle: string ) {
+
+    let fpsPage: IFPSPage = initializeFPSPage( this.wpInstanceID, this.fpsPageDone, fpsPageStyle, this.fpsPageArray  );
+    fpsPage = setPageFormatting( this.domElement, fpsPage );
+    this.fpsPageArray = fpsPage.Array;
+    this.fpsPageDone = fpsPage.do;
+
+  }
+
+
+  private updateSectionStyles( ) {
+
+    let allSectionMaxWidth = this.properties.allSectionMaxWidthEnable !== true ? null : this.properties.allSectionMaxWidth;
+    let allSectionMargin = this.properties.allSectionMarginEnable !== true ? null : this.properties.allSectionMargin;
+    let sectionStyles = initializeFPSSection( this.wpInstanceID, allSectionMaxWidth, allSectionMargin,  );
+
+    setSectionStyles( document, sectionStyles, true, true );
+
+  }
+
+  private applyHeadingCSS() {
+
+    if ( this.properties.h1Style ) {
+      let pieces = this.properties.h1Style.split(';');
+      let classes = [];
+      let cssStyles = [];
+      pieces.map( piece => {
+        piece = piece.trim();
+        if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
+      });
+
+      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyTagCSSAndStyles( HTMLRegEx.h2, cssStyles.join( ';' ) , classes, true, false, );
+    }
+
+    if ( this.properties.h2Style ) {
+      let pieces = this.properties.h2Style.split(';');
+      let classes = [];
+      let cssStyles = [];
+      pieces.map( piece => {
+        piece = piece.trim();
+        if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
+      });
+
+      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyTagCSSAndStyles( HTMLRegEx.h3, cssStyles.join( ';' ) , classes, true, false, );
+
+    }
+
+    if ( this.properties.h3Style ) {
+      let pieces = this.properties.h3Style.split(';');
+      let classes = [];
+      let cssStyles = [];
+      pieces.map( piece => {
+        piece = piece.trim();
+        if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
+      });
+
+      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyTagCSSAndStyles( HTMLRegEx.h4, cssStyles.join( ';' ) , classes, true, false, );
+
+    }
   }
 }

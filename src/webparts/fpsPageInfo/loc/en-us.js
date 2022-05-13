@@ -1,5 +1,6 @@
 define([], function() {
   return {
+    "bannerTitle": "Page Info",
     "PropertyPaneDescription": "Description",
     "TOCGroupName": "Table of Contents",
     "PIStyleGroupName": "Webpart styles - IT Only",

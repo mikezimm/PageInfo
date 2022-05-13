@@ -9,7 +9,7 @@ import { IRepoLinks } from '@mikezimm/npmfunctions/dist/Links/CreateLinks';
 
 import { convertIssuesMarkdownStringToSpan } from '@mikezimm/npmfunctions/dist/Elements/Markdown';
 
-export const panelVersionNumber = '2022-05-09 -  1.0.0.04'; //Added to show in panel
+export const panelVersionNumber = '2022-05-12 -  1.0.0.05'; //Added to show in panel
 
 export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
 
@@ -33,6 +33,10 @@ export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
      */
 
 
+    table.rows.push( createAboutRow('2022-05-12',"1.0.0.05","#33, #20 - special chars in headings, #28 - scroll", showRepoLinks === true ? repoLinks : null ) );
+    table.rows.push( createAboutRow('',"","#8, #12, #14, #26, #27, #29, #30, #32, #34, #35, ", showRepoLinks === true ? repoLinks : null ) );
+    table.rows.push( createAboutRow('',"","#36 - style headings, #37 prop pane helper", showRepoLinks === true ? repoLinks : null ) );
+    
     table.rows.push( createAboutRow('2022-05-09',"1.0.0.04","#21, #22, #23", showRepoLinks === true ? repoLinks : null ) );
     table.rows.push( createAboutRow('2022-05-09',"1.0.0.04","#7, #9, #10, #11, #13, #16, #17, #18, #19", showRepoLinks === true ? repoLinks : null ) );
     table.rows.push( createAboutRow('2022-05-05',"1.0.0.03","#5 - Add FPS Banner ", showRepoLinks === true ? repoLinks : null ) );

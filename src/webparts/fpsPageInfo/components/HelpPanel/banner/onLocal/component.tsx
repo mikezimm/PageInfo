@@ -27,6 +27,8 @@ import { QuichHelpVCard, AssetCard } from '../Cards/AssetCard';
 import { IWebpartBannerProps, IWebpartBannerState, } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/bannerProps';
 import { IKeySiteProps } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/interfaces';
 
+import * as links from '@mikezimm/npmfunctions/dist/Links/LinksRepos';
+
 import * as assets from "../Cards/assets";
 
 import WebPartLinks from './WebPartLinks';
@@ -44,6 +46,7 @@ import { tricksTable } from '../../Content/Tricks';
 import { getRandomTip, webParTips } from '../../Content/Tips';
 
 import ReactJson from "react-json-view";
+import { LinkBase } from "office-ui-fabric-react";
 
 const pivotStyles = {
 	root: {
@@ -263,7 +266,6 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 
 			let moreInfoText: string = this.props.infoElement ? this.props.infoElement : 'More Information';
 
-			
 			let bannerTitleText = this.props.title && this.props.title.length > 0 ? this.props.title.trim() : 'FPS Webpart';
 			let textWidth = ( moreInfoText.length + bannerTitleText.length ) * 19 + 40; //characters * 19px + 40 padding
 
@@ -301,7 +303,13 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 			let titleInfoOnClick = this.hasNearOrFar === true ? this._openPanel.bind( this ) : null;
 			let titleInfoCursor = this.hasNearOrFar === true ? 'pointer' : null;
 			let styleFlexElements : React.CSSProperties = { padding: '10px', cursor: titleInfoCursor };
-			let styleLeftTitle : React.CSSProperties = { padding: '10px', cursor: titleInfoCursor, maxWidth: titleRatio * remainingWidth, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }; 
+
+			//Added for https://github.com/mikezimm/PageInfo/issues/30
+			const isPinned = this.props.domElement.offsetParent.classList.contains( 'pinMeWebPartDefault') ? true : false;
+			const isPageInfo = this.props.gitHubRepo.desc === links.gitRepoPageInfoSmall.desc ? true : false;
+			const maxWidth = isPinned === true || isPageInfo === true ? '200px' : titleRatio * remainingWidth;
+
+			let styleLeftTitle : React.CSSProperties = { padding: '10px', cursor: titleInfoCursor, maxWidth: maxWidth, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }; 
 			let styleRightTitle : React.CSSProperties = { padding: '10px', cursor: titleInfoCursor, maxWidth: moreInfoRatio * remainingWidth, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }; 
 
 			const isMoreInfoButton = typeof this.props.infoElement === 'string' && this.props.infoElement.toLowerCase().indexOf('iconname=') === 0 ? true : false;

@@ -1,0 +1,93 @@
+/* Common heading styles */
+
+
+.dottedBorder { border-style: dotted ; }
+.dashedBorder { border-style: dashed ; }
+.solidBorder { border-style: solid ; }
+.doubleBorder { border-style: double ; }
+.ridgeBorder { border-style: ridge ; }
+.insetBorder { border-style: inset ; }
+.outsetBorder { border-style: outset ; }
+
+.textCenter { text-align: center !important; }
+
+.heavyTopBotBorder { border-top-style: solid ; border-bottom-style: solid ; border-width: 5px ; padding: 10px ; }
+.dottedTopBotBorder { border-top-style: dotted ; border-bottom-style: dotted ; border-width: 5px ; padding: 10px ; }
+
+.gradiant1 {
+    /* font-size: 20px !important; */
+    /* font-weight: 600 !important; */
+    transition:all 0.6s ease;
+    background-image: linear-gradient(to left, #9a553c, #b393d3) !important;
+    color: transparent !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+  }
+
+  /* Number headings with counters: */
+  body { counter-reset: heading1; }
+
+  /* HTML Symbols https://www.w3schools.com/charsets/ref_utf_symbols.asp */
+  .autoNumberh1:before {
+    content: counter(heading1) ") ";
+    counter-increment: heading1;
+    padding-right: 20px;
+  }
+
+  /* Number headings with counters: */
+  h2 { counter-reset: heading2; }
+
+  .autoNumberh2:before {
+    content: counter(heading1)"."counter(heading2) ") ";
+    counter-increment: heading2;
+    padding-right: 20px;
+  }
+  /* Number headings with counters: */
+  h3 { counter-reset: heading3; }
+
+  .autoNumberh3:before {
+    content: counter(heading1)"."counter(heading2)"."counter(heading3) ") ";
+    counter-increment: heading3;
+    padding-right: 20px;
+  }
+
+  /* \2605 -star  \0021 - Exclaimation point */
+  .fpsStarBlack:before { content: "\2605"; padding-right: 20px;}
+  .fpsStarWhite:before { content: "\2606"; padding-right: 20px;}
+
+  /* see -Code column in this page for reference:  https://en.wikipedia.org/wiki/List_of_Unicode_characters */
+  .fpsSect:before { content: "\00A7"; padding-right: 20px;}
+
+  .fpsPara:before { content: "\00B6"; padding-right: 20px;}
+
+  .fpsBox:before { content: "\2610"; padding-right: 20px;}
+  
+  .fpsCheckBox:before { content: "\2611"; padding-right: 20px;}
+
+  /* https://unicode-table.com/en/263C/ */
+  .fpsSun:before { content: "\263C"; padding-right: 20px;}
+  
+  /* https://unicode-table.com/en/263A/ */
+  .fpsSmile:before { content: "\263A"; padding-right: 20px;}
+
+  /* https://unicode-table.com/en/2604/ */
+  .fpsComet:before { content: "\2604"; padding-right: 20px;}
+
+  /* https://unicode-table.com/en/1F436/ */
+  .fpsPupper:before { content: "\1F436"; padding-right: 20px;}
+
+  /* https://unicode-table.com/en/1F431/ */
+  .fpsKitty:before { content: "\1F431"; padding-right: 20px;}
+
+  /* https://unicode-table.com/en/21A7/ */
+  .arrowDown:before { content: "\21A7"; padding-right: 20px;}
+
+  /* https://unicode-table.com/en/21A6/ */
+  .arrowRight:before { content: "\21A6"; padding-right: 20px;}
+
+  /* https://unicode-table.com/en/1F440/ */
+  .eyeBalls:before { content: "\1F440"; padding-right: 20px;}
+
+  /* https://unicode-table.com/en/1F44D/ */
+  .thumbsUp:before { content: "\1F44D"; padding-right: 20px;}
+
