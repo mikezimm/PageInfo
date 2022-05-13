@@ -71,6 +71,6 @@ export interface IFpsPageInfoState {
   propsExpanded: boolean;
   tocExpanded: boolean;
 
-
+  showPropsHelp: boolean;
   
 }

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styles from './FpsPageInfo.module.scss';
+
 import { IFpsPageInfoProps, IFpsPageInfoState } from './IFpsPageInfoProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 
@@ -14,9 +15,12 @@ import ReactJson from "react-json-view";
 import AdvancedPageProperties from './AdvPageProps/components/AdvancedPageProperties';
 
 import stylesA from './AdvPageProps/components/AdvancedPageProperties.module.scss';
-import { checkIsInVerticalSection, FPSPinMenu, FPSPinMeTest } from './PinMe/FPSPinMenu';
+import { checkIsInVerticalSection, FPSPinMe } from './PinMe/FPSPinMenu';
 
 import WebpartBanner from "./HelpPanel/banner/onLocal/component";
+
+import stylesP from './PropPaneHelp/PropPanelHelp.module.scss';
+import { WebPartHelpElement } from './PropPaneHelp/PropPaneHelp';
 
 export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFpsPageInfoState> {
 
@@ -108,6 +112,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       lastStateChange: '',
       propsExpanded: this.props.advPageProps.defaultExpanded,
       tocExpanded: this.props.pageNavigator.tocExpanded,
+      showPropsHelp: false,
     };
 
 
@@ -115,7 +120,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
   public componentDidMount() {
     // FPSPinMenu( this.props.fpsPinMenu.domElement, this.state.pinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
-    FPSPinMeTest( this.props.fpsPinMenu.domElement, this.state.pinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
+    FPSPinMe( this.props.fpsPinMenu.domElement, this.state.pinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
   }
 
 
@@ -141,7 +146,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     }
     if ( refresh === true ) {
       // FPSPinMenu( this.props.fpsPinMenu.domElement, defPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
-      FPSPinMeTest( this.props.fpsPinMenu.domElement, defPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
+      FPSPinMe( this.props.fpsPinMenu.domElement, defPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
       this.setState({ pinState: defPinState });
     }
 
@@ -161,9 +166,9 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     const PinMenuIcons: any [] = [];
 
 
-    // let propsHelp = <div className={ this.state.showPropsHelp !== true ? stylesP.bannerHide : stylesP.helpPropsShow  }>
-    //     { WebPartHelpElement }
-    // </div>;
+    let propsHelp = <div className={ this.state.showPropsHelp !== true ? 'fps-pph-hide' : 'fps-pph-show'  }>
+        { WebPartHelpElement }
+    </div>;
 
    // let farBannerElementsArray = [];
    let farBannerElementsArray = [...this.farBannerElements,
@@ -173,7 +178,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
   if ( this.props.displayMode === DisplayMode.Edit ) {
     farBannerElementsArray.push( 
-      // <Icon iconName='OpenEnrollment' onClick={ this.togglePropsHelp.bind(this) } style={ bannerProps.bannerCmdReactCSS }></Icon>
+      <Icon iconName='OpenEnrollment' onClick={ this.togglePropsHelp.bind(this) } style={ bannerProps.bannerCmdReactCSS }></Icon>
     );
   }
 
@@ -353,6 +358,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
         <div>
           { devHeader }
           { Banner }
+          { propsHelp }
           <div style={ this.props.pageInfoStyle }>
             { tocComponent }
             { advancedProps }
@@ -365,19 +371,19 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
   private setPinFull() {
     // setExpandoRamicMode( this.props.domElement, newMode, this.props.expandoStyle,  this.props.expandAlert, this.props.expandConsole, this.props.expandoPadding, this.props.pageLayout );
     // FPSPinMenu( this.props.fpsPinMenu.domElement, 'pinFull', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
-    FPSPinMeTest( this.props.fpsPinMenu.domElement, 'pinFull', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
+    FPSPinMe( this.props.fpsPinMenu.domElement, 'pinFull', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     this.setState({ pinState: 'pinFull' });
   }
 
   private setPinMin() {
     // FPSPinMenu( this.props.fpsPinMenu.domElement, 'pinMini', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
-    FPSPinMeTest( this.props.fpsPinMenu.domElement, 'pinMini', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
+    FPSPinMe( this.props.fpsPinMenu.domElement, 'pinMini', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     this.setState({ pinState: 'pinMini' });
   }
 
   private setPinDefault() {
     // FPSPinMenu( this.props.fpsPinMenu.domElement, 'normal', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
-    FPSPinMeTest( this.props.fpsPinMenu.domElement, 'normal', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
+    FPSPinMe( this.props.fpsPinMenu.domElement, 'normal', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     this.setState({ pinState: 'normal' });
   }
 
@@ -390,6 +396,11 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     let newState = this.state.tocExpanded === true ? false : true;
     this.setState( { tocExpanded: newState });
   }
+
+  private togglePropsHelp(){
+    let newState = this.state.showPropsHelp === true ? false : true;
+    this.setState( { showPropsHelp: newState });
+}
 
   private sendFeedback() {
 

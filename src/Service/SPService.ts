@@ -154,7 +154,7 @@ export class SPService {
       console.log(error);
     }
 
-    console.log('anchorLinks', anchorLinks);
+    console.log('FPS Page Info AnchorLinks', anchorLinks);
     return anchorLinks;
   }
 }
