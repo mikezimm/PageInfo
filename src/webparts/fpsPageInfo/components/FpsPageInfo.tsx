@@ -15,7 +15,7 @@ import ReactJson from "react-json-view";
 import AdvancedPageProperties from './AdvPageProps/components/AdvancedPageProperties';
 
 import stylesA from './AdvPageProps/components/AdvancedPageProperties.module.scss';
-import { checkIsInVerticalSection, FPSPinMe } from './PinMe/FPSPinMenu';
+import { FPSPinMe } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu';
 
 import WebpartBanner from "./HelpPanel/banner/onLocal/component";
 

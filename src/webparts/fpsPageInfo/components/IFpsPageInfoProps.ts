@@ -12,7 +12,7 @@ import { IWebpartHistory, IWebpartHistoryItem2, } from '@mikezimm/npmfunctions/d
 
 import { IAdvancedPagePropertiesProps } from "./AdvPageProps/components/IAdvancedPagePropertiesProps";
 import { IPageNavigatorProps } from "./PageNavigator/IPageNavigatorProps";
-import { IPinMeState } from "./PinMe/FPSPinMenu";
+import { IPinMeState } from "@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu";
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as React from 'react';
 

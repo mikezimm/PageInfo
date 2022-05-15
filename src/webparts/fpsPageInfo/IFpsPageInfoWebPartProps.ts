@@ -7,9 +7,8 @@ import { ISupportedHost } from "@mikezimm/npmfunctions/dist/Services/PropPane/FP
 import { IExpandAudiences } from "@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsExpando";
 
 import { IWebpartHistory, IWebpartHistoryItem2, } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistoryInterface';
-import { IPinMeState } from "./components/PinMe/FPSPinMenu";
+import { IPinMeState } from "@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu";
 import { IMinHeading } from "./components/PageNavigator/IPageNavigatorProps";
-
 
 export const changeExpando = [ 
     'enableExpandoramic','expandoDefault','expandoStyle', 'expandoPadding', 'expandoAudience',
