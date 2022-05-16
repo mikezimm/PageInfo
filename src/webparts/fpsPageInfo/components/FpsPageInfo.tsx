@@ -114,7 +114,6 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       lastStateChange: '',
       propsExpanded: this.props.advPageProps.defaultExpanded,
       tocExpanded: this.props.pageNavigator.tocExpanded,
-      showPropsHelp: false,
     };
 
 
@@ -392,9 +391,5 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     this.setState( { tocExpanded: newState });
   }
 
-//   private togglePropsHelp(){
-//     let newState = this.state.showPropsHelp === true ? false : true;
-//     this.setState( { showPropsHelp: newState });
-// }
 
 }
