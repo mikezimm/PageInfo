@@ -58,8 +58,8 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     }
     return farElements;
   }
- 
-     
+
+
   private baseCmdStyles: React.CSSProperties = createBannerStyleObj( 'corpDark1', 'cmd' );
 
   private makeSmallerCmdStyles() {
@@ -121,7 +121,6 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
   }
 
   public componentDidMount() {
-    // FPSPinMenu( this.props.fpsPinMenu.domElement, this.state.pinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     FPSPinMe( this.props.fpsPinMenu.domElement, this.state.pinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
   }
 
@@ -234,6 +233,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
     let Banner = <WebpartBanner 
 
+      forceNarrowStyles= { this.state.pinState === 'pinFull' || this.state.pinState === 'pinMini' ? true : false }
       contentPages= { this.contentPages }
       FPSUser={ bannerProps.FPSUser }
       exportProps={ bannerProps.exportProps }
@@ -372,20 +372,16 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
   }
 
   private setPinFull() {
-    // setExpandoRamicMode( this.props.domElement, newMode, this.props.expandoStyle,  this.props.expandAlert, this.props.expandConsole, this.props.expandoPadding, this.props.pageLayout );
-    // FPSPinMenu( this.props.fpsPinMenu.domElement, 'pinFull', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     FPSPinMe( this.props.fpsPinMenu.domElement, 'pinFull', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     this.setState({ pinState: 'pinFull' });
   }
 
   private setPinMin() {
-    // FPSPinMenu( this.props.fpsPinMenu.domElement, 'pinMini', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     FPSPinMe( this.props.fpsPinMenu.domElement, 'pinMini', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     this.setState({ pinState: 'pinMini' });
   }
 
   private setPinDefault() {
-    // FPSPinMenu( this.props.fpsPinMenu.domElement, 'normal', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     FPSPinMe( this.props.fpsPinMenu.domElement, 'normal', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     this.setState({ pinState: 'normal' });
   }
