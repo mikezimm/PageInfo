@@ -17,11 +17,11 @@ import AdvancedPageProperties from './AdvPageProps/components/AdvancedPageProper
 import stylesA from './AdvPageProps/components/AdvancedPageProperties.module.scss';
 import { FPSPinMe } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu';
 
-import WebpartBanner from "./HelpPanel/bannerRefactor/onLocal/component";
+import WebpartBanner from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/banner/onLocal/component";
 
 import { WebPartHelpElement } from './PropPaneHelp/PropPaneHelp';
 
-import { getBannerPages, IBannerPages } from './HelpPanel/Content/AllContent';
+import { getBannerPages, IBannerPages } from './HelpPanel/AllContent';
 
 export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFpsPageInfoState> {
 

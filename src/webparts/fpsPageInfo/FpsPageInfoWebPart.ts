@@ -810,12 +810,12 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
 
     let banner3BasicGroup = FPSBanner3BasicGroup( this.forceBanner , this.modifyBannerTitle, this.properties.showBanner, this.properties.infoElementChoice === 'Text' ? true : false, true );
-    banner3BasicGroup.groupFields.push(
-      PropertyPaneTextField('feedbackEmail', {
-          label: 'Feedback email',
-          description: 'Adds Feedback icon in the banner.',
-          disabled: this.properties.showBanner !== true ? true : false,
-      }) );
+    // banner3BasicGroup.groupFields.push(
+    //   PropertyPaneTextField('feedbackEmail', {
+    //       label: 'Feedback email',
+    //       description: 'Adds Feedback icon in the banner.',
+    //       disabled: this.properties.showBanner !== true ? true : false,
+    //   }) );
 
     propDrops.push(PropertyPaneHorizontalRule());
     // Determine how many page property dropdowns we currently have
