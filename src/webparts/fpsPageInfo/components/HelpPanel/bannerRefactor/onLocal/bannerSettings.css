@@ -1,0 +1,173 @@
+.banner-settings-component { 
+  background: hsla(0,0%,94.9%,.95);
+}
+
+.banner-settings-component .boxErrors {
+    background: yellow;
+    font-size: larger;
+    text-align: center;
+    padding: 70px 0px;
+  }
+
+.banner-settings-component .boxTiles {
+  /* background: 'GreenYellow'; */
+  height: 100%;
+}
+
+.banner-settings-component .flexBoxes {
+  display: flex;
+  flex-wrap: wrap;
+  background:#f2f2f2f2;
+}
+
+.banner-settings-component .tileBox {
+    min-height: 100px;
+    min-width: 150px;
+    max-width: 285px;
+    overflow: hidden;
+
+    padding-right: 15px;
+    text-overflow: 'ellipsis';
+
+    padding: 0px 25px 25px 25px;
+    margin: 20px;
+    color: black;
+    background: white;
+
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+}
+
+.banner-settings-component .tileBox .boxLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.banner-settings-component .tileBox .boxLinks .heading {
+  display: inline-block;
+  padding-bottom: 8px;
+
+}
+
+.banner-settings-component .tileBox .boxLinks .heading div {
+  font-weight: bold;
+}
+
+.banner-settings-component .tileBox ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.banner-settings-component .tileBox li {
+  cursor: pointer;
+  transition:all 0.4s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  padding-right: 15px;
+  overflow: 'hidden';
+  text-overflow: 'ellipsis';
+  width: 100%;
+  
+  vertical-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+
+}
+
+.banner-settings-component .tileBox li span {
+  white-space: nowrap;
+  padding-right: 15px;
+  overflow: 'hidden';
+  text-overflow: 'ellipsis';
+}
+
+.banner-settings-component .tileBox .justLabel {
+  padding-left: 13px;
+  line-height: 2em;
+  cursor: default;
+}
+
+.banner-settings-component .tileBox .redLabel {
+  padding-left: 13px;
+  line-height: 2em;
+  cursor: default;
+  color: 'red';
+  font-weight: 600;
+}
+
+.banner-settings-component .tileBox .redLabelNoLeftPad {
+  line-height: 2em;
+  cursor: default;
+  color: 'red';
+  font-weight: 600;
+}
+
+.banner-settings-component .tileBox .compressedLabel {
+  padding: 13px;
+  line-height: 1.5em;
+  cursor: default;
+}
+
+.banner-settings-component .tileBox li:hover {
+  transition:all 0.4s ease;
+  background: #c7c7c7;
+
+}
+
+.banner-settings-component .tileBox li:hover i {
+  background: #c7c7c7;
+  transition:all 0.4s ease;
+}
+
+.banner-settings-component .tileBox .grayHover:hover {
+  transition:all 0.4s ease;
+  background: #c7c7c7;
+
+}
+
+.banner-settings-component .tileBox .grayHover:hover i {
+  background: #c7c7c7;
+  transition:all 0.4s ease;
+}
+
+.banner-settings-component .tileBox .red:hover {
+  transition:all 0.4s ease;
+  background: #ffcccc;
+
+}
+
+.banner-settings-component .tileBox .red:hover i {
+  background: #ffcccc;
+  transition:all 0.4s ease;
+}
+
+.banner-settings-component .tileBox .green:hover {
+  transition:all 0.4s ease;
+  background: #ccff99;
+
+}
+
+.banner-settings-component .tileBox .green:hover i {
+  background: #ccff99;
+  transition:all 0.4s ease;
+}
+
+.banner-settings-component .tileBox .yellow:hover {
+  transition:all 0.4s ease;
+  background: #ffff66;
+
+}
+
+.banner-settings-component .tileBox .yellow:hover i {
+  background: #ffff66;
+  transition:all 0.4s ease;
+}
+
+/* This will just remove the extra left indent from Summary box which is not needed. */
+.banner-settings-component .summaryBox .justLabel,.banner-settings-component .summaryBox .redLabel,.banner-settings-component .summaryBox  .compressedLabel {
+  padding-left: 0px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}

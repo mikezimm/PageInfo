@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import styles from '../banner/SinglePage/InfoPane.module.scss';
-
 import { Icon } from 'office-ui-fabric-react';
 
 import * as links from '@mikezimm/npmfunctions/dist/Links/LinksRepos';
@@ -39,7 +37,7 @@ export function basicsContent( repoLinks: IRepoLinks ) {
 
     let thisTable = <div style={{ paddingTop: 15 }}>
         <h2>Easter Eggs</h2>
-        <table className={styles.infoTable} style={{ width: '100%' }}>
+        <table className={ 'single-page-info-table' } style={{ width: '100%' }}>
             <tr><th style={{ minWidth: '70px' }}>Do this...</th><th>Where</th><th>What it does</th></tr>
             { messageRows }
         </table>
@@ -47,7 +45,7 @@ export function basicsContent( repoLinks: IRepoLinks ) {
 
 
     let thisPage = null;
-    thisPage = <div className={styles.infoPane}>
+    thisPage = <div className={ null }>
 
     { thisTable }
   </div>;
@@ -65,7 +63,7 @@ export function basicsContent( repoLinks: IRepoLinks ) {
 */
 
     let html1 =
-        <div className={ styles.infoPane }>
+        <div className={ 'single-page-info-pane' }>
             { thisPage }
         </div>;
 

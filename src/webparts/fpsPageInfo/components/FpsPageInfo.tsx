@@ -17,7 +17,7 @@ import AdvancedPageProperties from './AdvPageProps/components/AdvancedPageProper
 import stylesA from './AdvPageProps/components/AdvancedPageProperties.module.scss';
 import { FPSPinMe } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu';
 
-import WebpartBanner from "./HelpPanel/banner/onLocal/component";
+import WebpartBanner from "./HelpPanel/bannerRefactor/onLocal/component";
 
 import { WebPartHelpElement } from './PropPaneHelp/PropPaneHelp';
 

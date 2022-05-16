@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import styles from '../banner/SinglePage/InfoPane.module.scss';
-
 import { Icon } from 'office-ui-fabric-react';
 
 import * as links from '@mikezimm/npmfunctions/dist/Links/LinksRepos';
@@ -16,7 +14,7 @@ import { IHelpTableRow, IHelpTable, IPageContent, ISinglePageProps } from '../ba
 export function whyContent( repoLinks: IRepoLinks ) {
 
     return null;
-    
+
     let table : IHelpTable  = {
         heading: 'Why use Pivot Tiles',
         headers: ['Web part','Features benefits, comparison'],
