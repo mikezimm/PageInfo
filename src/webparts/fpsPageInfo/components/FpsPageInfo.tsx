@@ -166,22 +166,17 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
     const PinMenuIcons: any [] = [];
 
-
-    let propsHelp = <div className={ this.state.showPropsHelp !== true ? 'fps-pph-hide' : 'fps-pph-show'  }>
-        { WebPartHelpElement }
-    </div>;
-
    // let farBannerElementsArray = [];
    let farBannerElementsArray = [...this.farBannerElements,
     // this.props.showCodeIcon !== true ? null : <div title={'Show Code Details'}><Icon iconName={ 'Code' } onClick={ this.toggleOriginal.bind(this) } style={ bannerProps.bannerCmdReactCSS }></Icon></div>,
   ];
 
 
-  if ( this.props.displayMode === DisplayMode.Edit ) {
-    farBannerElementsArray.push( 
-      <Icon iconName='OpenEnrollment' onClick={ this.togglePropsHelp.bind(this) } style={ bannerProps.bannerCmdReactCSS }></Icon>
-    );
-  }
+  // if ( this.props.displayMode === DisplayMode.Edit ) {
+  //   farBannerElementsArray.push( 
+  //     <Icon iconName='OpenEnrollment' onClick={ this.togglePropsHelp.bind(this) } style={ bannerProps.bannerCmdReactCSS }></Icon>
+  //   );
+  // }
 
   // if ( this.props.fpsPinMenu.forcePinState !== true ) {
     if ( this.props.fpsPinMenu.forcePinState !== true && this.state.pinState === 'normal' ) {
@@ -232,6 +227,8 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
     let Banner = <WebpartBanner 
 
+      displayMode={ this.props.bannerProps.displayMode }
+      WebPartHelpElement={ WebPartHelpElement }
       forceNarrowStyles= { this.state.pinState === 'pinFull' || this.state.pinState === 'pinMini' ? true : false }
       contentPages= { this.contentPages }
       feedbackEmail= { this.props.bannerProps.feedbackEmail }
@@ -253,9 +250,9 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       onHomePage={ bannerProps.onHomePage }
 
       webpartHistory={ this.props.webpartHistory }
-      
+
       showBannerGear={ bannerProps.showBannerGear }
-      
+
       showFullPanel={ bannerProps.showFullPanel }
       replacePanelHTML={ bannerProps.replacePanelHTML }
       replacePanelWarning={ bannerProps.replacePanelWarning }
@@ -361,7 +358,6 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
         <div>
           { devHeader }
           { Banner }
-          { propsHelp }
           <div style={ this.props.pageInfoStyle }>
             { tocComponent }
             { advancedProps }
@@ -396,9 +392,9 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     this.setState( { tocExpanded: newState });
   }
 
-  private togglePropsHelp(){
-    let newState = this.state.showPropsHelp === true ? false : true;
-    this.setState( { showPropsHelp: newState });
-}
+//   private togglePropsHelp(){
+//     let newState = this.state.showPropsHelp === true ? false : true;
+//     this.setState( { showPropsHelp: newState });
+// }
 
 }

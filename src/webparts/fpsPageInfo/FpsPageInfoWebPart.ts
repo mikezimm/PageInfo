@@ -466,7 +466,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     // console.log('mainWebPart: verifyAudienceVsUser ~ 341',   );
     this.properties.showBannerGear = verifyAudienceVsUser( this.FPSUser , showTricks, this.properties.homeParentGearAudience, null, renderAsReader );
 
-    let bannerSetup = buildBannerProps( this.properties , this.FPSUser, buildBannerSettings, showTricks, renderAsReader );
+    let bannerSetup = buildBannerProps( this.properties , this.FPSUser, buildBannerSettings, showTricks, renderAsReader, this.displayMode );
     if ( !this.properties.bannerTitle || this.properties.bannerTitle === '' ) { 
       if ( this.properties.defPinState !== 'normal' ) {
         bannerSetup.bannerProps.title = strings.bannerTitle ;
