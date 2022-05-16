@@ -22,14 +22,10 @@ import { devTable } from '@mikezimm/npmfunctions/dist/Links/Developer';
 import { setExpandoRamicMode } from '@mikezimm/npmfunctions/dist/Services/DOM/FPSExpandoramic';
 import { defaultBannerCommandStyles, } from "@mikezimm/npmfunctions/dist/HelpPanel/onNpm/defaults";
 
-import { QuichHelpVCard, AssetCard } from '../Cards/AssetCard';
-
 import { IWebpartBannerProps, IWebpartBannerState, } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/bannerProps';
 import { IKeySiteProps } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/interfaces';
 
 import * as links from '@mikezimm/npmfunctions/dist/Links/LinksRepos';
-
-import * as assets from "../Cards/assets";
 
 import WebPartLinks from './WebPartLinks';
 
@@ -293,7 +289,7 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 			if ( !bannerStyle.paddingRight ) { bannerStyle.paddingRight = '20px' ; }
 			if ( this.hasNearOrFar === false ) { bannerStyle.cursor = 'pointer' ; }
 
-			let classNames = [ styles.container, this.hoverEffect === true ? styles.opacity : null, styles.flexContainer ].join( ' ' ); //, styles.innerShadow
+			let classNames = [ styles.container, this.hoverEffect === true ? styles.opacity : null, styles.flexContainer ].join( ' ' ); 
 
 			//  On clicks need to be defined like this and only put on specific elements in certain cases.
 			//  OR ELSE they will all get fired messing up panel open
@@ -458,12 +454,6 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 					></SinglePage>;
 				}
 
-
-				let earlyAccess = this.props.earyAccess === false ? null :
-					<MessageBar messageBarType={MessageBarType.severeWarning} style={{ fontSize: 'large' }}>
-						{ `Webpart is still under development` }
-					</MessageBar>;
-
 				let tipHeaderStyle: React.CSSProperties = {paddingRight: '10px', textAlign: 'left' };
 				let tipsTable = <table>
 					<tr>
@@ -493,7 +483,6 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 				  }
 
 				panelContent = <div style={{ paddingBottom: '50px' } }>
-					{ earlyAccess }
 					{ tips }
 					{ webPartLinks }
 					<div style={{display: 'flex', flexWrap: 'nowrap', justifyContent: 'space-between', alignItems: 'center' }}>

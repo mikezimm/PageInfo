@@ -4,7 +4,6 @@ import * as React from "react";
 import { PageContext, SPPermission } from '@microsoft/sp-page-context';
 
 import { Pivot, PivotItem, IPivotItemProps, PivotLinkFormat, PivotLinkSize,} from 'office-ui-fabric-react/lib/Pivot';
-import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 
 import { Icon, IIconProps } from 'office-ui-fabric-react/lib/Icon';
 
