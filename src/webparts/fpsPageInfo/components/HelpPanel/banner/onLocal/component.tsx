@@ -20,10 +20,10 @@ import { goToParentSite, goToHomePage } from "@mikezimm/npmfunctions/dist/Servic
 
 import { devTable } from '@mikezimm/npmfunctions/dist/Links/Developer';
 import { setExpandoRamicMode } from '@mikezimm/npmfunctions/dist/Services/DOM/FPSExpandoramic';
-import { defaultBannerCommandStyles, } from "@mikezimm/npmfunctions/dist/HelpPanel/onNpm/defaults";
+import { defaultBannerCommandStyles, } from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/defaults";
 
-import { IWebpartBannerProps, IWebpartBannerState, } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/bannerProps';
-import { IKeySiteProps } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/interfaces';
+import { IWebpartBannerProps, IWebpartBannerState, } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/bannerProps';
+import { IKeySiteProps } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/interfaces';
 
 import * as links from '@mikezimm/npmfunctions/dist/Links/LinksRepos';
 

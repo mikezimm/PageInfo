@@ -3,7 +3,7 @@ import { IFPSBasicToggleSetting, IFPSExpandoAudience, ISupportedHost } from '@mi
 
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 
-import { IWebpartBannerProps, } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/bannerProps';
+import { IWebpartBannerProps, } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/bannerProps';
 
 import { DisplayMode, Version } from '@microsoft/sp-core-library';
 

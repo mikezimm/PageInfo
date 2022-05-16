@@ -10,7 +10,7 @@ import { RefinerRulesStrs, RefinerRulesInts, RefinerRulesNums, RefinerRulesTime,
 
 import { gitRepoALVFinManSmall } from '@mikezimm/npmfunctions/dist/Links/LinksRepos';
 
-import { defaultBannerCommandStyles, } from "@mikezimm/npmfunctions/dist/HelpPanel/onNpm/defaults";
+import { defaultBannerCommandStyles, } from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/defaults";
 
 import ReactJson from "react-json-view";
 import { FontWeights } from 'office-ui-fabric-react';

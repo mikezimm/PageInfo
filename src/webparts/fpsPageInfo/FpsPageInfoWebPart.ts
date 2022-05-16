@@ -61,7 +61,7 @@ import { importProps, } from '@mikezimm/npmfunctions/dist/Services/PropPane/Impo
 import { sortStringArray, sortObjectArrayByStringKey, sortNumberArray, sortObjectArrayByNumberKey, sortKeysByOtherKey 
 } from '@mikezimm/npmfunctions/dist/Services/Arrays/sorting';
 
-import { IBuildBannerSettings , buildBannerProps, IMinWPBannerProps } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/BannerSetup';
+import { IBuildBannerSettings , buildBannerProps, IMinWPBannerProps } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/BannerSetup';
 
 import { buildExportProps } from './BuildExportProps';
 
@@ -73,7 +73,7 @@ import { encodeDecodeString, } from "@mikezimm/npmfunctions/dist/Services/String
 
 import { verifyAudienceVsUser } from '@mikezimm/npmfunctions/dist/Services/Users/CheckPermissions';
 
-import { bannerThemes, bannerThemeKeys, makeCSSPropPaneString, createBannerStyleStr, createBannerStyleObj } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/defaults';
+import { bannerThemes, bannerThemeKeys, makeCSSPropPaneString, createBannerStyleStr, createBannerStyleObj } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/defaults';
 
 import { IRepoLinks } from '@mikezimm/npmfunctions/dist/Links/CreateLinks';
 
@@ -88,7 +88,7 @@ import { getFPSUser } from '@mikezimm/npmfunctions/dist/Services/Users/FPSUser';
 
 // import { startPerformInit, startPerformOp, updatePerformanceEnd } from './components/Performance/functions';
 // import { IPerformanceOp, ILoadPerformanceALVFM, IHistoryPerformance } from './components/Performance/IPerformance';
-import { IWebpartBannerProps } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/bannerProps';
+import { IWebpartBannerProps } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/bannerProps';
 
 import { ISupportedHost } from "@mikezimm/npmfunctions/dist/Services/PropPane/FPSInterfaces";
 

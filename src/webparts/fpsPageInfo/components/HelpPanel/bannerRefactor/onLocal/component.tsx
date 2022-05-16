@@ -1,5 +1,4 @@
 import * as React from "react";
-import styles from "./banner.module.scss";
 
 import { escape } from "@microsoft/sp-lodash-subset";
 
@@ -20,10 +19,10 @@ import { goToParentSite, goToHomePage } from "@mikezimm/npmfunctions/dist/Servic
 
 import { devTable } from '@mikezimm/npmfunctions/dist/Links/Developer';
 import { setExpandoRamicMode } from '@mikezimm/npmfunctions/dist/Services/DOM/FPSExpandoramic';
-import { defaultBannerCommandStyles, } from "@mikezimm/npmfunctions/dist/HelpPanel/onNpm/defaults";
+import { defaultBannerCommandStyles, } from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/defaults";
 
-import { IWebpartBannerProps, IWebpartBannerState, } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/bannerProps';
-import { IKeySiteProps } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/interfaces';
+import { IWebpartBannerProps, IWebpartBannerState, } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/bannerProps';
+import { IKeySiteProps } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/interfaces';
 
 import * as links from '@mikezimm/npmfunctions/dist/Links/LinksRepos';
 
@@ -31,18 +30,10 @@ import WebPartLinks from './WebPartLinks';
 
 import SinglePage from '../SinglePage/SinglePage';
 
-import { whyContent } from '../../Content/Whyme';  //2022-01-31: Added Pivot Tiles
-import { aboutTable } from '../../Content/About';
-import { gettingStartedContent } from '../../Content/GettingStarted';
-import { errorsContent } from '../../Content/Errors';
-import { advancedContent } from '../../Content/Advanced';
-import { futureContent } from '../../Content/FuturePlans';
-import { basicsContent } from '../../Content/Basics';
-import { tricksTable } from '../../Content/Tricks';
-import { getRandomTip, webParTips } from '../../Content/Tips';
-
 import ReactJson from "react-json-view";
 import { LinkBase } from "office-ui-fabric-react";
+
+require ('./banner.css');
 
 const pivotStyles = {
 	root: {
@@ -67,17 +58,15 @@ const pivotHeadingB = 'Health';  //Templates
 
 export default class WebpartBanner extends React.Component<IWebpartBannerProps, IWebpartBannerState > {
 
+	private getRandomTip( webParTipsX: any[] ) {
+
+		return webParTipsX[Math.floor(Math.random() * webParTipsX.length)];
+	  
+	}
+
 	private hoverEffect = this.props.hoverEffect === false ? false : true;
 
-	private gettingStarted= gettingStartedContent( this.props.gitHubRepo );
-	private basics= basicsContent( this.props.gitHubRepo );
-	private advanced= advancedContent( this.props.gitHubRepo );
-	private futurePlans= futureContent( this.props.gitHubRepo );
 	private dev= null ; //devTable( );
-	private errors= errorsContent( this.props.gitHubRepo );
-	private tricks= tricksTable( this.props.gitHubRepo );
-	private about= aboutTable( this.props.gitHubRepo, this.props.showRepoLinks );
-	private whyMe= whyContent( this.props.gitHubRepo );  //2022-01-31: Added Pivot Tiles
 
 	private wideToggle = this.props.wideToggle === null || this.props.wideToggle === undefined ? true : this.props.wideToggle ;
 
@@ -101,7 +90,7 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 			return <tr><td>{change.prop} : </td><td title={change.value}>{ change.value ? change.value : 'Empty' }</td></tr>;
 		});
 
-		return <div className={ styles.historyItem }>
+		return <div className={ 'historyItem' }>
 			<div>{ item.user } : { new Date ( item.time ).toLocaleString() }</div>
 			<table>{ changes }</table>
 		</div>;
@@ -289,11 +278,10 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 			if ( !bannerStyle.paddingRight ) { bannerStyle.paddingRight = '20px' ; }
 			if ( this.hasNearOrFar === false ) { bannerStyle.cursor = 'pointer' ; }
 
-			let classNames = [ styles.container, this.hoverEffect === true ? styles.opacity : null, styles.flexContainer ].join( ' ' ); 
+			let classNames = [ 'container', this.hoverEffect === true ? 'opacity' : null, 'flexContainer' ].join( ' ' ); 
 
 			//  On clicks need to be defined like this and only put on specific elements in certain cases.
 			//  OR ELSE they will all get fired messing up panel open
-			
 
 			let bannerOnClick = this.hasNearOrFar !== true ? this._openPanel.bind( this ) : null;
 			let titleInfoOnClick = this.hasNearOrFar === true ? this._openPanel.bind( this ) : null;
@@ -309,6 +297,7 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 			let styleRightTitle : React.CSSProperties = { padding: '10px', cursor: titleInfoCursor, maxWidth: moreInfoRatio * remainingWidth, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }; 
 
 			const isMoreInfoButton = typeof this.props.infoElement === 'string' && this.props.infoElement.toLowerCase().indexOf('iconname=') === 0 ? true : false;
+
 			let infoElement = [];
 			if ( isMoreInfoButton === true ) {
 				let iconName = this.props.infoElement.split('=')[1];
@@ -318,18 +307,17 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 			}
 
 			let bannerLeft = this.nearElements.length === 0 ? <div style={ styleFlexElements } onClick = { titleInfoOnClick } > { bannerTitleText } </div> :
-				<div className={ styles.flexLeftNoWrapStart }>
+				<div className={ 'flexLeftNoWrapStart' }>
 					{ this.nearElements }
 					<div style={ styleLeftTitle } onClick = { titleInfoOnClick } title={ bannerTitleText }> { bannerTitleText } </div>
 				</div>;
 
 			let bannerRight = this.props.farElements.length === 0 ? <div style={ styleFlexElements } onClick = { titleInfoOnClick } >{moreInfoText}</div> :
-				<div className={ styles.flexLeftNoWrapStart }>
-
+				<div className={ 'flexLeftNoWrapStart' }>
 					{ [ ...this.props.farElements, ...infoElement, ] }
 				</div>;
 
-			let showSettingStyle = this.showSettingsAsPivot === true ? styles.showSettingsPivot : styles.showSettingsFlex;
+			let showSettingStyle = this.showSettingsAsPivot === true ? 'showSettings showSettingsPivot' : 'showSettings showSettingsFlex';
 
 			let bannerContent = 
 			<div>
@@ -338,7 +326,7 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 					{/* { <div style={{width: '100%', overflow: 'hidden', color: 'green'}}></div>} */}
 					{ bannerRight }
 				</div>
-				<div className={ this.state.showSettings ? showSettingStyle: styles.hideSettings } style={ {} }>
+				<div className={ this.state.showSettings ? showSettingStyle: 'hideSettings' } style={ {} }>
 					{ this.settingsContent }
 				</div>
 			</div>
@@ -377,24 +365,35 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 						<div style={{ padding: '10px 20px 20px 20px', background: 'yellow', marginTop: '20px' }}>{ this.props.replacePanelWarning }</div>
 						<div>{ this.props.replacePanelHTML }</div>
 					</div>;
+
+				// import { whyContent } from './HelpPanel/Content/Whyme';
+				// import { aboutTable } from './HelpPanel/Content/About';
+				// import { gettingStartedContent } from './HelpPanel/Content/GettingStarted';
+				// import { errorsContent } from './HelpPanel/Content/Errors';
+				// import { advancedContent } from './HelpPanel/Content/Advanced';
+				// import { futureContent } from './HelpPanel/Content/FuturePlans';
+				// import { basicsContent } from './HelpPanel/Content/Basics';
+				// import { tricksTable } from './HelpPanel/Content/Tricks';
+				// import { webParTips } from './HelpPanel/Content/Tips';
+
 				} else if ( this.state.selectedKey === pivotHeading1 ) {
-						content = this.gettingStarted;
+						content = this.props.contentPages.gettingStartedContent;
 				} else if ( this.state.selectedKey === pivotHeading2 ) {
-						content= this.basics;
+						content= this.props.contentPages.basicsContent;
 				} else if ( this.state.selectedKey === pivotHeading3 ) {
-						content=  this.advanced;
+						content=  this.props.contentPages.advancedContent;
 				} else if ( this.state.selectedKey === pivotHeading4 ) {
-						content=  this.futurePlans;
+						content=  this.props.contentPages.futureContent;
 				} else if ( this.state.selectedKey === pivotHeading5 ) {
 						content=  this.dev;
 				} else if ( this.state.selectedKey === pivotHeading6 ) {
-						content=  this.errors;
+						content=  this.props.contentPages.errorsContent;
 				} else if ( this.state.selectedKey === pivotHeading7 ) {
-						content= this.tricks;
+						content= this.props.contentPages.tricksTable;
 				} else if ( this.state.selectedKey === pivotHeading8 ) {
-						content= this.about;
+						content= this.props.contentPages.aboutTable;
 				} else if ( this.state.selectedKey === pivotHeading0 ) {  //2022-01-31: Added Pivot Tiles
-						content= this.whyMe;
+						content= this.props.contentPages.whyContent;
 				} else if ( this.state.selectedKey === pivotHeading9 ) {  //2022-01-31: Added Pivot Tiles
 						content= <div id="CommandsJSONPanel" style={{paddingTop: '20px'}}>
 							<h3>Summary of Exportable Properties</h3>
@@ -461,10 +460,10 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 						<th style={tipHeaderStyle}>Where</th>
 						<th style={{textAlign: 'left'}}>Result</th>
 					</tr>
-					{ getRandomTip( this.props.gitHubRepo ) }
+					{ this.getRandomTip( this.props.contentPages.webParTips ) }
 				</table>;
 
-				let tips = webParTips.length === 0 ? null :
+				let tips = this.props.contentPages.webParTips.length === 0 ? null :
 					<MessageBar messageBarType={MessageBarType.warning } >
 						<div style={{fontWeight: 600, fontSize: 'large', marginBottom: '12px'}} >Pro TIP:</div> 
 						<div style={{minHeight: '30px'}} >{ tipsTable }</div>
@@ -493,7 +492,6 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 					</div>
 
 					<Pivot
-							// styles={ pivotStyles }
 							linkFormat={PivotLinkFormat.links}
 							linkSize={PivotLinkSize.normal }
 							onLinkClick={this._selectedIndex.bind(this)}
@@ -505,16 +503,16 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 
 						{ this.props.replacePanelHTML == '' ? null : <PivotItem headerText={pivotHeadingX} ariaLabel={pivotHeadingX} title={pivotHeadingX} itemKey={pivotHeadingX} itemIcon={ 'SunQuestionMark' }/> }
 
-						{ this.whyMe === null ? null : <PivotItem headerText={pivotHeading0} ariaLabel={pivotHeading0} title={pivotHeading0} itemKey={pivotHeading0} itemIcon={ 'QandA' }/> }
+						{ this.props.contentPages.whyContent === null ? null : <PivotItem headerText={pivotHeading0} ariaLabel={pivotHeading0} title={pivotHeading0} itemKey={pivotHeading0} itemIcon={ 'QandA' }/> }
 
-						{ this.gettingStarted === null ? null : <PivotItem headerText={pivotHeading1} ariaLabel={pivotHeading1} title={pivotHeading1} itemKey={pivotHeading1} itemIcon={ null }/> }
-						{ this.basics				 === null ? null : <PivotItem headerText={pivotHeading2} ariaLabel={pivotHeading2} title={pivotHeading2} itemKey={pivotHeading2} itemIcon={ null }/> }
-						{ this.advanced			 === null ? null : <PivotItem headerText={pivotHeading3} ariaLabel={pivotHeading3} title={pivotHeading3} itemKey={pivotHeading3} itemIcon={ null }/> }
-						{ this.futurePlans		 === null ? null : <PivotItem headerText={pivotHeading4} ariaLabel={pivotHeading4} title={pivotHeading4} itemKey={pivotHeading4} itemIcon={ 'RenewalFuture' }/> }
-						{ this.errors 				 === null ? null : <PivotItem headerText={pivotHeading6} ariaLabel={pivotHeading6} title={pivotHeading6} itemKey={pivotHeading6} itemIcon={ 'Warning12' }/> }
+						{ this.props.contentPages.gettingStartedContent === null ? null : <PivotItem headerText={pivotHeading1} ariaLabel={pivotHeading1} title={pivotHeading1} itemKey={pivotHeading1} itemIcon={ null }/> }
+						{ this.props.contentPages.basicsContent				 === null ? null : <PivotItem headerText={pivotHeading2} ariaLabel={pivotHeading2} title={pivotHeading2} itemKey={pivotHeading2} itemIcon={ null }/> }
+						{ this.props.contentPages.advancedContent			 === null ? null : <PivotItem headerText={pivotHeading3} ariaLabel={pivotHeading3} title={pivotHeading3} itemKey={pivotHeading3} itemIcon={ null }/> }
+						{ this.props.contentPages.futureContent		 === null ? null : <PivotItem headerText={pivotHeading4} ariaLabel={pivotHeading4} title={pivotHeading4} itemKey={pivotHeading4} itemIcon={ 'RenewalFuture' }/> }
+						{ this.props.contentPages.errorsContent 				 === null ? null : <PivotItem headerText={pivotHeading6} ariaLabel={pivotHeading6} title={pivotHeading6} itemKey={pivotHeading6} itemIcon={ 'Warning12' }/> }
 						{ this.dev						 === null ? null : <PivotItem headerText={ null } ariaLabel={pivotHeading5} title={pivotHeading5} itemKey={pivotHeading5} itemIcon={ 'TestAutoSolid' }/> }
-						{ showTricks !== true || this.tricks === null ? null : <PivotItem headerText={ null } ariaLabel={pivotHeading7} title={pivotHeading7} itemKey={pivotHeading7} itemIcon={ 'AutoEnhanceOn' }/> }
-						{ this.about 				 === null ? null : <PivotItem headerText={ null } ariaLabel={pivotHeading8} title={pivotHeading8} itemKey={pivotHeading8} itemIcon={ 'Info' }/> }
+						{ showTricks !== true || this.props.contentPages.tricksTable === null ? null : <PivotItem headerText={ null } ariaLabel={pivotHeading7} title={pivotHeading7} itemKey={pivotHeading7} itemIcon={ 'AutoEnhanceOn' }/> }
+						{ this.props.contentPages.aboutTable 				 === null ? null : <PivotItem headerText={ null } ariaLabel={pivotHeading8} title={pivotHeading8} itemKey={pivotHeading8} itemIcon={ 'Info' }/> }
 						{ showExport !== true ? null : <PivotItem headerText={ null } ariaLabel={pivotHeading9} title={pivotHeading9} itemKey={pivotHeading9} itemIcon={ 'Export' }/> }
 						{ showHistory !== true ? null : <PivotItem headerText={ null } ariaLabel={pivotHeadingA} title={pivotHeadingA} itemKey={pivotHeadingA} itemIcon={ 'FullHistory' }/> }
 						{ showMedical !== true ? null : <PivotItem headerText={ null } ariaLabel={pivotHeadingB} title={pivotHeadingB} itemKey={pivotHeadingB} itemIcon={ 'Medical' }/> }
@@ -536,7 +534,7 @@ export default class WebpartBanner extends React.Component<IWebpartBannerProps, 
 			</Panel></div>;
 
 			return (
-				<div className={styles.bannerComponent} >
+				<div className={ 'bannerComponent' } >
 					{ bannerContent }
 					{ bannerPanel }
 				</div>

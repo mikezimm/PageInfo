@@ -7,7 +7,7 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import { Icon, IIconProps } from 'office-ui-fabric-react/lib/Icon';
 import { DisplayMode, Version } from '@microsoft/sp-core-library';
 
-import { bannerThemes, bannerThemeKeys, makeCSSPropPaneString, createBannerStyleStr, createBannerStyleObj, baseBannerCmdStyles } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/defaults';
+import { bannerThemes, bannerThemeKeys, makeCSSPropPaneString, createBannerStyleStr, createBannerStyleObj, baseBannerCmdStyles } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/defaults';
 
 import PageNavigator from './PageNavigator/PageNavigator';
 
@@ -20,6 +20,8 @@ import { FPSPinMe } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu';
 import WebpartBanner from "./HelpPanel/bannerRefactor/onLocal/component";
 
 import { WebPartHelpElement } from './PropPaneHelp/PropPaneHelp';
+
+import { getBannerPages, IBannerPages } from './HelpPanel/Content/AllContent';
 
 export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFpsPageInfoState> {
 
@@ -34,6 +36,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
  *                                                                                               
  */
 
+  private contentPages : IBannerPages = getBannerPages( this.props.bannerProps );
   private nearBannerElements = this.buildNearBannerElements();
   private farBannerElements = this.buildFarBannerElements();
 
@@ -218,19 +221,20 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
   if ( this.props.displayMode === DisplayMode.Edit ) { bannerTitle += '' ; }
 
 
-      /***
-     *    d8888b.  .d8b.  d8b   db d8b   db d88888b d8888b.      d88888b db      d88888b .88b  d88. d88888b d8b   db d888888b 
-     *    88  `8D d8' `8b 888o  88 888o  88 88'     88  `8D      88'     88      88'     88'YbdP`88 88'     888o  88 `~~88~~' 
-     *    88oooY' 88ooo88 88V8o 88 88V8o 88 88ooooo 88oobY'      88ooooo 88      88ooooo 88  88  88 88ooooo 88V8o 88    88    
-     *    88~~~b. 88~~~88 88 V8o88 88 V8o88 88~~~~~ 88`8b        88~~~~~ 88      88~~~~~ 88  88  88 88~~~~~ 88 V8o88    88    
-     *    88   8D 88   88 88  V888 88  V888 88.     88 `88.      88.     88booo. 88.     88  88  88 88.     88  V888    88    
-     *    Y8888P' YP   YP VP   V8P VP   V8P Y88888P 88   YD      Y88888P Y88888P Y88888P YP  YP  YP Y88888P VP   V8P    YP    
-     *                                                                                                                        
-     *                                                                                                                        
-     */
+    /***
+   *    d8888b.  .d8b.  d8b   db d8b   db d88888b d8888b.      d88888b db      d88888b .88b  d88. d88888b d8b   db d888888b 
+   *    88  `8D d8' `8b 888o  88 888o  88 88'     88  `8D      88'     88      88'     88'YbdP`88 88'     888o  88 `~~88~~' 
+   *    88oooY' 88ooo88 88V8o 88 88V8o 88 88ooooo 88oobY'      88ooooo 88      88ooooo 88  88  88 88ooooo 88V8o 88    88    
+   *    88~~~b. 88~~~88 88 V8o88 88 V8o88 88~~~~~ 88`8b        88~~~~~ 88      88~~~~~ 88  88  88 88~~~~~ 88 V8o88    88    
+   *    88   8D 88   88 88  V888 88  V888 88.     88 `88.      88.     88booo. 88.     88  88  88 88.     88  V888    88    
+   *    Y8888P' YP   YP VP   V8P VP   V8P Y88888P 88   YD      Y88888P Y88888P Y88888P YP  YP  YP Y88888P VP   V8P    YP    
+   *                                                                                                                        
+   *                                                                                                                        
+   */
 
-      let Banner = <WebpartBanner 
+    let Banner = <WebpartBanner 
 
+      contentPages= { this.contentPages }
       FPSUser={ bannerProps.FPSUser }
       exportProps={ bannerProps.exportProps }
       showBanner={ bannerProps.showBanner }

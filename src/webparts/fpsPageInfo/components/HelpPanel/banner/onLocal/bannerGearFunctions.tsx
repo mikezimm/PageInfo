@@ -7,7 +7,7 @@ import { Pivot, PivotItem, IPivotItemProps, PivotLinkFormat, PivotLinkSize,} fro
 
 import { Icon, IIconProps } from 'office-ui-fabric-react/lib/Icon';
 
-import { IKeySiteProps } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/interfaces';
+import { IKeySiteProps } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/interfaces';
 
 import settingStyles from './bannerSettings.module.scss';
 
