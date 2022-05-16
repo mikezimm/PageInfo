@@ -35,8 +35,6 @@ export interface IFpsPageInfoProps {
 
   pageInfoStyle: React.CSSProperties;
 
-  feedbackEmail: string;
-
   //FPS Banner and Options props
   displayMode: DisplayMode;
 

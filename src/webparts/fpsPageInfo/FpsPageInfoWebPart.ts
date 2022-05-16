@@ -526,7 +526,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
         pageInfoStyle: pageInfoStyle,
 
-        feedbackEmail: this.properties.feedbackEmail ? this.properties.feedbackEmail : '',
         //Banner related props
         errMessage: 'any',
         bannerProps: this.bannerProps,
