@@ -7,77 +7,60 @@ import { ISupportedHost } from "@mikezimm/npmfunctions/dist/Services/PropPane/FP
 import { IExpandAudiences } from "@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsExpando";
 
 import { IWebpartHistory, IWebpartHistoryItem2, } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistoryInterface';
-import { IPinMeState } from "./components/PinMe/FPSPinMenu";
+import { IPinMeState } from "@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu";
 import { IMinHeading } from "./components/PageNavigator/IPageNavigatorProps";
 
+import { exportIgnorePropsFPS, importBlockPropsFPS } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
 
-export const changeExpando = [ 
-    'enableExpandoramic','expandoDefault','expandoStyle', 'expandoPadding', 'expandoAudience',
-    ];
-  
-  export const changeVisitor = [ 'panelMessageDescription1', 'panelMessageSupport', 'panelMessageDocumentation', 'documentationLinkDesc', 'documentationLinkUrl', 'documentationIsValid', 'supportContacts' ];
-  
-  export const changeBannerBasics = [ 'showBanner', 'bannerTitle', ];
-  export const changeBannerNav = [ 'showGoToHome', 'showGoToParent', 'homeParentGearAudience', ];
-  export const changeBannerTheme = [ 'bannerStyleChoice', 'bannerStyle', 'bannerCmdStyle', 'bannerHoverEffect',  ];
-  export const changeBannerOther = [ 'showRepoLinks', 'showExport', 'lockStyles',   ];
-  
-  export const changeBanner = [ ...changeBannerBasics, ...changeBannerNav, ...changeBannerTheme, ...changeBannerOther  ];
-  
-  export const changefpsOptions1 = [  'searchShow', 'quickLaunchHide', 'pageHeaderHide', 'allSectionMaxWidthEnable', 'allSectionMaxWidth', 'allSectionMarginEnable', 'allSectionMargin', 'toolBarHide', ];
-  
-   export const changefpsOptions2 = [  'fpsPageStyle', 'fpsContainerMaxWidth' ];
-  
-  
-  //, exportIgnoreProps, importBlockProps, importBlockPropsDev
-  //These props will not be exported even if they are in one of the change arrays above (fail-safe)
-  //This was done to always insure these values are not exported to the user
-  
-  //Common props to Ignore export
-  export const exportIgnorePropsFPS = [ 'analyticsList', 'analyticsWeb',  ];
-  
   //Specific for this web part
   export const exportIgnorePropsThis = [ ];
-  
+
   export const exportIgnoreProps = [ ...exportIgnorePropsFPS, ...exportIgnorePropsThis  ];
-  
+
   //These props will not be imported even if they are in one of the change arrays above (fail-safe)
   //This was done so user could not manually insert specific props to over-right fail-safes built in to the webpart
-  
-  //Common props to block import
-  export const importBlockPropsFPS = [ 'scenario', 'analyticsList', 'analyticsWeb', 'lastPropDetailChange', 'showBanner' , 'showTricks', 'showRepoLinks', 'showExport', 'fpsImportProps', 'fullPanelAudience', 'documentationIsValid', 'currentWeb', 'loadPerformance', 'webpartHistory', ];
-  
+
   //Specific for this web part
-  export const importBlockPropsThis = [ ];
-  
+  export const importBlockPropsThis = [ 'showSomeProps' ];
+
   export const importBlockProps = [ ...importBlockPropsFPS, ...importBlockPropsThis ];
-  
+
   //This will be in npmFunctions > Services/PropPane/FPSOptionsExpando in next release.
   //  export type IExpandAudiences = 'Site Admins' | 'Site Owners' | 'Page Editors' | 'WWWone';
+
+
+  export const changePinMe = [ 'defPinState', 'forcePinState' ];
+  export const changeTOC = [ 'showTOC', 'minHeadingToShow' ,'description' , 'TOCTitleField', 'tocExpanded' ];
+  export const changeProperties = [ 'showSomeProps', 'showCustomProps' , 'showOOTBProps' , 'showApprovalProps' , 'propsTitleField', 'propsExpanded', 'selectedProperties' ];
+  export const changeWebPartStyles = [ 'h1Style', 'h2Style' ,'h3Style' , 'pageInfoStyle', 'tocStyle', 'propsStyle' ];
 
 export interface IFpsPageInfoWebPartProps {
 
   defPinState: IPinMeState;
   forcePinState: boolean;
-
-  pageInfoStyle: string;
-  tocStyle: string;
-  propsStyle: string;
-  h1Style: string;
-  h2Style: string;
-  h3Style: string;
-
+  
   showTOC: boolean;
   minHeadingToShow: IMinHeading;
   description: string;
   TOCTitleField: string;
   tocExpanded: boolean;
 
+  h1Style: string;
+  h2Style: string;
+  h3Style: string;
+  pageInfoStyle: string;
+  tocStyle: string;
+  propsStyle: string;
+
   showSomeProps: boolean;
   showCustomProps: boolean;
   showOOTBProps: boolean;
   showApprovalProps: boolean;
   propsExpanded: boolean;
+
+  //Copied from AdvancedPagePropertiesWebPart.ts
+  propsTitleField: string;
+  selectedProperties: string[];
 
   feedbackEmail: string;
 
@@ -86,10 +69,6 @@ export interface IFpsPageInfoWebPartProps {
 
   //Needed for Expandoramic and PinMenu
   pageLayout: ISupportedHost ;// like SinglePageApp etc... this.context[_pageLayout];
-
-  //Copied from AdvancedPagePropertiesWebPart.ts
-  propsTitleField: string;
-  selectedProperties: string[];
 
   //2022-02-17:  Added these for expandoramic mode
   enableExpandoramic: boolean;
@@ -164,4 +143,3 @@ export interface IFpsPageInfoWebPartProps {
   toolBarHide: boolean;
 
 }
-  

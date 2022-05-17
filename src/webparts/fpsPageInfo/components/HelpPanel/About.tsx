@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 //import { IHelpTableRow, IHelpTable, IPageContent, ISinglePageProps } from '../Component/ISinglePageProps';
-import { IHelpTableRow, IHelpTable, IPageContent, ISinglePageProps } from '../banner/SinglePage/ISinglePageProps';
+import { IHelpTableRow, IHelpTable, IPageContent, ISinglePageProps } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/banner/SinglePage/ISinglePageProps';
 
 import * as devLinks from '@mikezimm/npmfunctions/dist/Links/LinksDevDocs';
 
@@ -9,7 +9,7 @@ import { IRepoLinks } from '@mikezimm/npmfunctions/dist/Links/CreateLinks';
 
 import { convertIssuesMarkdownStringToSpan } from '@mikezimm/npmfunctions/dist/Elements/Markdown';
 
-export const panelVersionNumber = '2022-05-12 -  1.0.0.05'; //Added to show in panel
+export const panelVersionNumber = '2022-05-16 -  1.0.0.06'; //Added to show in panel
 
 export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
 
@@ -32,7 +32,7 @@ export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
      * WARNING:  DO NOT add any CDNs to Global Warn or Approve unless you want it to apply to JS as well.
      */
 
-
+    table.rows.push( createAboutRow('2022-05-16',"1.0.0.06","#39 - Move core HelpPanel component code to import npmFunctions, #40, #41, #42, #43", showRepoLinks === true ? repoLinks : null ) );
     table.rows.push( createAboutRow('2022-05-12',"1.0.0.05","#33, #20 - special chars in headings, #28 - scroll", showRepoLinks === true ? repoLinks : null ) );
     table.rows.push( createAboutRow('',"","#8, #12, #14, #26, #27, #29, #30, #32, #34, #35, ", showRepoLinks === true ? repoLinks : null ) );
     table.rows.push( createAboutRow('',"","#36 - style headings, #37 prop pane helper", showRepoLinks === true ? repoLinks : null ) );

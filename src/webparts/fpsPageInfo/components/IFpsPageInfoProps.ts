@@ -3,7 +3,7 @@ import { IFPSBasicToggleSetting, IFPSExpandoAudience, ISupportedHost } from '@mi
 
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 
-import { IWebpartBannerProps, } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/bannerProps';
+import { IWebpartBannerProps, } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/bannerProps';
 
 import { DisplayMode, Version } from '@microsoft/sp-core-library';
 
@@ -12,7 +12,7 @@ import { IWebpartHistory, IWebpartHistoryItem2, } from '@mikezimm/npmfunctions/d
 
 import { IAdvancedPagePropertiesProps } from "./AdvPageProps/components/IAdvancedPagePropertiesProps";
 import { IPageNavigatorProps } from "./PageNavigator/IPageNavigatorProps";
-import { IPinMeState } from "./PinMe/FPSPinMenu";
+import { IPinMeState } from "@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu";
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as React from 'react';
 
@@ -34,8 +34,6 @@ export interface IFpsPageInfoProps {
   themeVariant: IReadonlyTheme | undefined;
 
   pageInfoStyle: React.CSSProperties;
-
-  feedbackEmail: string;
 
   //FPS Banner and Options props
   displayMode: DisplayMode;
@@ -70,7 +68,5 @@ export interface IFpsPageInfoState {
 
   propsExpanded: boolean;
   tocExpanded: boolean;
-
-  showPropsHelp: boolean;
   
 }

@@ -61,7 +61,7 @@ import { importProps, } from '@mikezimm/npmfunctions/dist/Services/PropPane/Impo
 import { sortStringArray, sortObjectArrayByStringKey, sortNumberArray, sortObjectArrayByNumberKey, sortKeysByOtherKey 
 } from '@mikezimm/npmfunctions/dist/Services/Arrays/sorting';
 
-import { IBuildBannerSettings , buildBannerProps, IMinWPBannerProps } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/BannerSetup';
+import { IBuildBannerSettings , buildBannerProps, IMinWPBannerProps } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/BannerSetup';
 
 import { buildExportProps } from './BuildExportProps';
 
@@ -73,7 +73,7 @@ import { encodeDecodeString, } from "@mikezimm/npmfunctions/dist/Services/String
 
 import { verifyAudienceVsUser } from '@mikezimm/npmfunctions/dist/Services/Users/CheckPermissions';
 
-import { bannerThemes, bannerThemeKeys, makeCSSPropPaneString, createBannerStyleStr, createBannerStyleObj } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/defaults';
+import { bannerThemes, bannerThemeKeys, makeCSSPropPaneString, createBannerStyleStr, createBannerStyleObj } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/defaults';
 
 import { IRepoLinks } from '@mikezimm/npmfunctions/dist/Links/CreateLinks';
 
@@ -88,15 +88,16 @@ import { getFPSUser } from '@mikezimm/npmfunctions/dist/Services/Users/FPSUser';
 
 // import { startPerformInit, startPerformOp, updatePerformanceEnd } from './components/Performance/functions';
 // import { IPerformanceOp, ILoadPerformanceALVFM, IHistoryPerformance } from './components/Performance/IPerformance';
-import { IWebpartBannerProps } from '@mikezimm/npmfunctions/dist/HelpPanel/onNpm/bannerProps';
+import { IWebpartBannerProps } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/bannerProps';
 
 import { ISupportedHost } from "@mikezimm/npmfunctions/dist/Services/PropPane/FPSInterfaces";
 
 export const repoLink: IRepoLinks = links.gitRepoPageInfoSmall;
 
-require('./GrayPropPaneAccordions.css');
-require('./FPSPinMe.css');
+require('@mikezimm/npmfunctions/dist/Services/PropPane/GrayPropPaneAccordions.css');
+require('@mikezimm/npmfunctions/dist/PinMe/FPSPinMe.css');
 require('./components/HeadingCSS/FPSHeadings.css');
+require('@mikezimm/npmfunctions/dist/PropPaneHelp/PropPanelHelp.css');
 
 import { SPService } from '../../Service/SPService';
 
@@ -465,7 +466,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     // console.log('mainWebPart: verifyAudienceVsUser ~ 341',   );
     this.properties.showBannerGear = verifyAudienceVsUser( this.FPSUser , showTricks, this.properties.homeParentGearAudience, null, renderAsReader );
 
-    let bannerSetup = buildBannerProps( this.properties , this.FPSUser, buildBannerSettings, showTricks, renderAsReader );
+    let bannerSetup = buildBannerProps( this.properties , this.FPSUser, buildBannerSettings, showTricks, renderAsReader, this.displayMode );
     if ( !this.properties.bannerTitle || this.properties.bannerTitle === '' ) { 
       if ( this.properties.defPinState !== 'normal' ) {
         bannerSetup.bannerProps.title = strings.bannerTitle ;
@@ -525,7 +526,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
         pageInfoStyle: pageInfoStyle,
 
-        feedbackEmail: this.properties.feedbackEmail ? this.properties.feedbackEmail : '',
         //Banner related props
         errMessage: 'any',
         bannerProps: this.bannerProps,
@@ -809,12 +809,12 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
 
     let banner3BasicGroup = FPSBanner3BasicGroup( this.forceBanner , this.modifyBannerTitle, this.properties.showBanner, this.properties.infoElementChoice === 'Text' ? true : false, true );
-    banner3BasicGroup.groupFields.push(
-      PropertyPaneTextField('feedbackEmail', {
-          label: 'Feedback email',
-          description: 'Adds Feedback icon in the banner.',
-          disabled: this.properties.showBanner !== true ? true : false,
-      }) );
+    // banner3BasicGroup.groupFields.push(
+    //   PropertyPaneTextField('feedbackEmail', {
+    //       label: 'Feedback email',
+    //       description: 'Adds Feedback icon in the banner.',
+    //       disabled: this.properties.showBanner !== true ? true : false,
+    //   }) );
 
     propDrops.push(PropertyPaneHorizontalRule());
     // Determine how many page property dropdowns we currently have

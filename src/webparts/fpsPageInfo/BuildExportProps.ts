@@ -1,5 +1,4 @@
 
-
 /***
  *    d888888b .88b  d88. d8888b.  .d88b.  d8888b. d888888b       .d88b.  d88888b d88888b d888888b  .o88b. d888888b  .d8b.  db      
  *      `88'   88'YbdP`88 88  `8D .8P  Y8. 88  `8D `~~88~~'      .8P  Y8. 88'     88'       `88'   d8P  Y8   `88'   d8' `8b 88      
@@ -47,17 +46,11 @@
 
  import * as strings from 'FpsPageInfoWebPartStrings';
 
-//  import { IPivottiles7WebPartProps, changeCols1, changeCols2, 
-//    changeHubs, changeSubs, changeGroups, changeLists, changeLibs, changeStyles, changeSizes, changeHeros, changeItems, changeCats, changeFilters, 
-//    changePermissions, changefpsOptions1, changefpsOptions2, 
-//    changeNews, changePages, changeBox, changeExpando, changeManual, changeBanner, changeSetup, changeBasic, changeExtraInfo,
-//    PowerBIManualLinks, PowerBIManualLinksHref,
-//    exportIgnoreProps, importBlockPropsDev, importBlockPropsTeam, importBlockPropsCorp,
-//    } from './IPivottiles7WebPartProps';
-
 import { IFpsPageInfoWebPartProps } from './IFpsPageInfoWebPartProps';
 import { exportIgnoreProps, importBlockProps, } from './IFpsPageInfoWebPartProps';
-import { changeVisitor, changeExpando, changeBanner, changefpsOptions1, changefpsOptions2, } from './IFpsPageInfoWebPartProps';
+
+import { changeVisitor, changeExpando, changeBanner, changefpsOptions1, changefpsOptions2, exportIgnorePropsFPS, importBlockPropsFPS } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
+
 // import { ILoadPerformanceALVFM, IPerformanceOp } from './components/Performance/IFpsPageInfoWebPartProps';
 
 
@@ -98,6 +91,9 @@ import { changeVisitor, changeExpando, changeBanner, changefpsOptions1, changefp
  * buildExportProps builds up an object of specific webpart properties that can be exported via the help panel
  * @returns exportObject
  */
+
+import { changePinMe, changeTOC, changeProperties, changeWebPartStyles } from './IFpsPageInfoWebPartProps';
+
  export function buildExportProps( wpProps : IFpsPageInfoWebPartProps, wpInstanceID: string, currentWeb: string, ) {
     let exportStructure :any = {};
     // let wpInstanceIDSplit = wpInstanceID.split('|');
@@ -105,6 +101,11 @@ import { changeVisitor, changeExpando, changeBanner, changefpsOptions1, changefp
 
     exportStructure.wpInstanceID = wpInstanceID;
     exportStructure.currentWeb = currentWeb;
+
+    exportStructure.changePinMe = changePinMe;
+    exportStructure.changeTOC = changeTOC;
+    exportStructure.changeProperties = changeProperties;
+    exportStructure.changeWebPartStyles = changeWebPartStyles;
 
 
     // exportStructure.Script = changeScript;
