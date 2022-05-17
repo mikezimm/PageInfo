@@ -31,6 +31,8 @@
       "tocExpanded": true,
       "minHeadingToShow": "h3",
       
+      "pageInfoStyle": "\"paddingBottom\":\"20px\",\"backgroundColor\":\"#dcdcdc\";\"borderLeft\":\"solid 3px #c4c4c4\"",
+
       "propsTitleField":  "Page Properties",
 
       "selectedProperties": [],

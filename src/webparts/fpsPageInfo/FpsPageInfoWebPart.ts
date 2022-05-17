@@ -114,6 +114,7 @@ import { createStyleFromString } from '@mikezimm/npmfunctions/dist/Services/Prop
 import { FPSApplyHeadingCSS, FPSApplyTagCSSAndStyles, FPSApplyHeadingStyle } from './components/HeadingCSS/FPSTagFunctions';
 import { HTMLRegEx, IHTMLRegExKeys } from '../../Service/htmlTags';
 import { css } from 'office-ui-fabric-react';
+import { PreConfiguredPrpos } from './PreConfiguredSettings';
 
 
 //export type IMinHeading = 'h3' | 'h2' | 'h1' ;
@@ -1072,34 +1073,50 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
   private presetCollectionDefaults() {
 
-    // return ;
-    if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf('/sites/financemanual/') > -1 ) {
+    PreConfiguredPrpos.preset.map( preconfig => {
+      if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf( preconfig.location ) > -1 ) {
+        Object.keys( preconfig.props ).map( prop => {
+          if ( !this.properties[prop] ) this.properties[prop] = preconfig[ prop ];
+        });
+      }
+    });
 
-      const sampleId: IPropertyFieldGroupOrPerson = {
-        id: '1',
-        description: '',
-        fullName: 'Financial Manual Support team',
-        login: '',
-        email: 'ae57524a.Autoliv.onmicrosoft.com@amer.teams.ms',
-        // jobTitle?: string;
-        // initials?: string;
-        imageUrl: null,
-      };
+    PreConfiguredPrpos.forced.map( preconfig => {
+      if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf( preconfig.location ) > -1 ) {
+        Object.keys( preconfig.props ).map( prop => {
+          this.properties[prop] = preconfig[ prop ];
+        });
+      }
+    });
 
-      const siteContacts : any[] = [sampleId];
-          //These are added for the minimum User Panel component ( which turns into the replacePanelHTML component )
+    // // return ;
+    // if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf('/sites/financemanual/') > -1 ) {
 
-      this.properties.feedbackEmail = 'ae57524a.Autoliv.onmicrosoft.com@amer.teams.ms';
-      this.properties.panelMessageDescription1 = 'Finance Manual Help and Contact';
-      this.properties.panelMessageSupport = 'Contact RE for Finance Manual content';
-      this.properties.panelMessageDocumentation = 'Contact MZ for Web part questions';
-      this.properties.panelMessageIfYouStill = '';
-      this.properties.documentationLinkDesc = 'Finance Manual Help site';
-      this.properties.documentationLinkUrl = '/sites/FinanceManual/Help';
-      this.properties.documentationIsValid = true;
-      if ( !this.properties.supportContacts || this.properties.supportContacts.length === 0 ) this.properties.supportContacts = siteContacts;
+    //   const sampleId: IPropertyFieldGroupOrPerson = {
+    //     id: '1',
+    //     description: '',
+    //     fullName: 'Financial Manual Support team',
+    //     login: '',
+    //     email: 'ae57524a.Autoliv.onmicrosoft.com@amer.teams.ms',
+    //     // jobTitle?: string;
+    //     // initials?: string;
+    //     imageUrl: null,
+    //   };
 
-    }
+    //   const siteContacts : any[] = [sampleId];
+    //       //These are added for the minimum User Panel component ( which turns into the replacePanelHTML component )
+
+    //   this.properties.feedbackEmail = 'ae57524a.Autoliv.onmicrosoft.com@amer.teams.ms';
+    //   this.properties.panelMessageDescription1 = 'Finance Manual Help and Contact';
+    //   this.properties.panelMessageSupport = 'Contact RE for Finance Manual content';
+    //   this.properties.panelMessageDocumentation = 'Contact MZ for Web part questions';
+    //   this.properties.panelMessageIfYouStill = '';
+    //   this.properties.documentationLinkDesc = 'Finance Manual Help site';
+    //   this.properties.documentationLinkUrl = '/sites/FinanceManual/Help';
+    //   this.properties.documentationIsValid = true;
+    //   if ( !this.properties.supportContacts || this.properties.supportContacts.length === 0 ) this.properties.supportContacts = siteContacts;
+
+    // }
 
   }
 
