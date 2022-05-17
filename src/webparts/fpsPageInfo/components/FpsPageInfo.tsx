@@ -345,6 +345,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
           description={ this.props.pageNavigator.description }
           anchorLinks={ this.props.pageNavigator.anchorLinks }
           tocStyle={ this.props.pageNavigator.tocStyle }
+          
         >
       </PageNavigator>
     </div>
