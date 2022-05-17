@@ -15,11 +15,11 @@ import ReactJson from "react-json-view";
 import AdvancedPageProperties from './AdvPageProps/components/AdvancedPageProperties';
 
 import stylesA from './AdvPageProps/components/AdvancedPageProperties.module.scss';
-import { FPSPinMe } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu';
+import { FPSPinMe, IPinMeState } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu';
 
 import WebpartBanner from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/banner/onLocal/component";
 
-import { WebPartHelpElement } from './PropPaneHelp/PropPaneHelp';
+import { getWebPartHelpElement } from './PropPaneHelp/PropPaneHelp';
 
 import { getBannerPages, IBannerPages } from './HelpPanel/AllContent';
 
@@ -36,6 +36,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
  *                                                                                               
  */
 
+  private WebPartHelpElement = getWebPartHelpElement( this.props.sitePresets );
   private contentPages : IBannerPages = getBannerPages( this.props.bannerProps );
   private nearBannerElements = this.buildNearBannerElements();
   private farBannerElements = this.buildFarBannerElements();
@@ -120,7 +121,8 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
   }
 
   public componentDidMount() {
-    FPSPinMe( this.props.fpsPinMenu.domElement, this.state.pinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
+    let tempPinState: IPinMeState = this.props.displayMode === DisplayMode.Edit ? 'normal' : this.state.pinState;
+    FPSPinMe( this.props.fpsPinMenu.domElement, tempPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
   }
 
 
@@ -138,12 +140,17 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
   public componentDidUpdate(prevProps){
     let refresh = false;
-    const defPinState = this.props.fpsPinMenu.defPinState;
+    let defPinState = this.props.fpsPinMenu.defPinState;
     if ( defPinState !== prevProps.fpsPinMenu.defPinState ) {
       refresh = true;
     } else if ( prevProps.fpsPinMenu.forcePinState !== this.props.fpsPinMenu.forcePinState ) {
       refresh = true;
     }
+    //This fixed https://github.com/mikezimm/PageInfo/issues/47
+    if ( this.props.displayMode === DisplayMode.Edit ) {
+      defPinState = 'normal';
+    } 
+
     if ( refresh === true ) {
       // FPSPinMenu( this.props.fpsPinMenu.domElement, defPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
       FPSPinMe( this.props.fpsPinMenu.domElement, defPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
@@ -227,7 +234,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     let Banner = <WebpartBanner 
 
       displayMode={ this.props.bannerProps.displayMode }
-      WebPartHelpElement={ WebPartHelpElement }
+      WebPartHelpElement={ this.WebPartHelpElement }
       forceNarrowStyles= { this.state.pinState === 'pinFull' || this.state.pinState === 'pinMini' ? true : false }
       contentPages= { this.contentPages }
       feedbackEmail= { this.props.bannerProps.feedbackEmail }

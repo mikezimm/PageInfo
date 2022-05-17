@@ -15,6 +15,7 @@ import { IPageNavigatorProps } from "./PageNavigator/IPageNavigatorProps";
 import { IPinMeState } from "@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu";
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as React from 'react';
+import { ISitePreConfigProps } from '../PreConfiguredSettings';
 
 export interface IFPSPinMenu {
   defPinState: IPinMeState;
@@ -25,6 +26,7 @@ export interface IFPSPinMenu {
 }
 
 export interface IFpsPageInfoProps {
+
   description: string;
   isDarkTheme: boolean;
   environmentMessage: string;
@@ -34,6 +36,8 @@ export interface IFpsPageInfoProps {
   themeVariant: IReadonlyTheme | undefined;
 
   pageInfoStyle: React.CSSProperties;
+
+  sitePresets : ISitePreConfigProps;
 
   //FPS Banner and Options props
   displayMode: DisplayMode;
