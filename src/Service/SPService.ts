@@ -29,11 +29,16 @@ export class SPService {
    */
   private static GetAnchorUrl(headingValue: string): string {
     let urlExists = true;
-    // .replace(/[^a-zA-Z0-9.,()\- ]/g, "") replaces chars except a - z, 0 - 9 , ( ) and a . with ""
+
+    // Great catch @mikezimm, I included all the extra chars you suggested.
+    // Is it a prior function or regex are replacing the & with empty string before that point so your line 21 is not finding it?
+    // So, for this part. The problem with line 21 not finding the & char is due to line 20 removing the char. With adding the & char to line 20 we exclude it from our regex expression. .replace(/[^a-zA-Z0-9.,()\-& ]/g, "")
+
+    // .replace(/[^a-zA-Z0-9.,()\-& ]/g, "") replaces chars except a - z, 0 - 9 , & ( ) and a . with ""
     // .replace(/'|?|\|/| |&/g, "-") replaces any blanks and special characters (list is for sure not complete) with "-"
     // .replace(/--+/g, "-") replaces any additional - with only one -; e.g. --- get replaced with -, -- get replaced with - etc.
     let anchorUrl = `#${headingValue
-      .replace(/[^a-zA-Z0-9.,()\- ]/g, "") //https://github.com/mikezimm/PageInfo/issues/20
+      .replace(/[^a-zA-Z0-9.,()\-& ]/g, "") //https://github.com/mikezimm/PageInfo/issues/20
       .replace(/\'|\?|\\|\/| |\&/g, "-")
       .replace(/--+/g, "-")}`.toLowerCase();
     let urlSuffix = 1;
