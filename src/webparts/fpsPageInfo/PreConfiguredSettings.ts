@@ -2,6 +2,8 @@ import { IPropertyFieldGroupOrPerson } from "@pnp/spfx-property-controls/lib/Pro
 import { IFpsPageInfoWebPartProps } from "./IFpsPageInfoWebPartProps";
 
 import { IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
+import { encrptMeOriginalTest } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/logTest';
+import { ContALVFMContent, ContALVFMWebP } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/constants';
 
 const FinancialManualContacts: IPropertyFieldGroupOrPerson = {
     id: '1',
@@ -39,8 +41,8 @@ export const ForceFinancialManual : IPreConfigSettings = {
         // Visitor Panel props that are not preset in manifest.json
         fullPanelAudience: 'Page Editors',
         panelMessageDescription1: 'Finance Manual Help and Contact',
-        panelMessageSupport: 'Contact RE for Finance Manual content',
-        panelMessageDocumentation: 'Contact MZ for Web part questions',
+        panelMessageSupport: `Contact ${encrptMeOriginalTest( ContALVFMContent )} for Finance Manual content`,
+        panelMessageDocumentation: `Contact ${encrptMeOriginalTest( ContALVFMWebP )}  for Web part questions`,
         panelMessageIfYouStill: '',
         documentationLinkDesc: 'Finance Manual Help site',
         documentationLinkUrl: '/sites/FinanceManual/Help',
