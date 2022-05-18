@@ -17,9 +17,10 @@ import { FontWeights } from 'office-ui-fabric-react';
 import { BannerHelp, FPSBasicHelp, FPSExpandHelp, ImportHelp, SinglePageAppHelp, VisitorHelp } from '@mikezimm/npmfunctions/dist/PropPaneHelp/FPSCommonOnNpm';
 import { FPSBorderClasses, FPSHeadingNumberClasses, FPSEmojiClasses, FPSMiscClasses, FPSHeadingClasses } from '../HeadingCSS/FPSTagFunctions';
 
-require('./PropPanelHelp.css');
+require('@mikezimm/npmfunctions/dist/PropPaneHelp/PropPanelHelp.css');
 
-import { PreConfiguredPrpos, ISitePreConfigProps } from '../../PreConfiguredSettings';
+import { ISitePreConfigProps, } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
+
 
 export function putObjectIntoJSON ( obj: any, name: string = null ) {
   // return <ReactJson src={ obj } name={ 'panelItem' } collapsed={ true } displayDataTypes={ true } displayObjectSize={ true } enableClipboard={ true } style={{ padding: '20px 0px' }}/>;
@@ -74,7 +75,6 @@ export function getWebPartHelpElement ( sitePresets : ISitePreConfigProps ) {
     </div>;
 
   }
-  
 
   const WebPartHelpElement = <div style={{ overflowX: 'scroll' }}>
 

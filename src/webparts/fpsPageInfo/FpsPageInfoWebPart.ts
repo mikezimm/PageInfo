@@ -114,8 +114,8 @@ import { createStyleFromString } from '@mikezimm/npmfunctions/dist/Services/Prop
 import { FPSApplyHeadingCSS, FPSApplyTagCSSAndStyles, FPSApplyHeadingStyle } from './components/HeadingCSS/FPSTagFunctions';
 import { HTMLRegEx, IHTMLRegExKeys } from '../../Service/htmlTags';
 import { css } from 'office-ui-fabric-react';
-import { getThisSitesPreConfigProps, IConfigurationProp, ISitePreConfigProps, PreConfiguredPrpos } from './PreConfiguredSettings';
-
+import { PreConfiguredProps } from './PreConfiguredSettings';
+import { getThisSitesPreConfigProps, IConfigurationProp, ISitePreConfigProps, IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
 
 //export type IMinHeading = 'h3' | 'h2' | 'h1' ;
 export const MinHeadingOptions = [
@@ -1039,7 +1039,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
   private presetCollectionDefaults() {
     
-    this.sitePresets = getThisSitesPreConfigProps( this.properties, this.context.pageContext.web.serverRelativeUrl );
+    this.sitePresets = getThisSitesPreConfigProps( PreConfiguredProps, this.properties, this.context.pageContext.web.serverRelativeUrl );
 
     this.sitePresets.presets.map( setting => {
       if ( this.properties[setting.prop] === setting.value ) { 
@@ -1069,7 +1069,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     });
 
 
-    // PreConfiguredPrpos.preset.map( preconfig => {
+    // PreConfiguredProps.preset.map( preconfig => {
     //   if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf( preconfig.location ) > -1 ) {
     //     Object.keys( preconfig.props ).map( prop => {
     //       if ( !this.properties[prop] ) { 
@@ -1080,7 +1080,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     //   }
     // });
 
-    // PreConfiguredPrpos.forced.map( preconfig => {
+    // PreConfiguredProps.forced.map( preconfig => {
     //   if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf( preconfig.location ) > -1 ) {
     //     Object.keys( preconfig.props ).map( prop => {
     //       if ( this.properties[prop] !== preconfig.props[ prop ] ) {

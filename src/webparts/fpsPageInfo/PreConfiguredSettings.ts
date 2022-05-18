@@ -1,15 +1,7 @@
 import { IPropertyFieldGroupOrPerson } from "@pnp/spfx-property-controls/lib/PropertyFieldPeoplePicker";
 import { IFpsPageInfoWebPartProps } from "./IFpsPageInfoWebPartProps";
 
-export interface IPreConfigSettings {
-    location: string;
-    props: any;
-}
-
-export interface IAllPreConfigSettings {
-    forced: IPreConfigSettings[];
-    preset: IPreConfigSettings[];
-}
+import { IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
 
 const FinancialManualContacts: IPropertyFieldGroupOrPerson = {
     id: '1',
@@ -89,64 +81,7 @@ export const PresetSomeRandomSite : IPreConfigSettings = {
     }
 };
 
-export const PreConfiguredPrpos : IAllPreConfigSettings = {
+export const PreConfiguredProps : IAllPreConfigSettings = {
     forced: [ ForceFinancialManual ],
     preset: [ PresetFinancialManual, PresetSomeRandomSite ],
 };
-
-type colorClassName = 'green' | 'yellow' | 'red' | 'na';
-export interface IConfigurationProp {
-    location: string;
-    prop: string;
-    value: any;
-    type: 'preset' | 'forced' | 'unk';
-    status: 'tbd' |  'valid' | 'preset' | 'changed' | 'error' | 'unk';
-    className: colorClassName;
-
-}
-
-export interface ISitePreConfigProps {
-    presets: IConfigurationProp[];
-    forces: IConfigurationProp[];
-}
-
-export function getThisSitesPreConfigProps( thisProps: IFpsPageInfoWebPartProps , serverRelativeUrl: string ) : ISitePreConfigProps {
-
-    let presets: IConfigurationProp[] = [];
-    let forces: IConfigurationProp[] = [];
-
-    PreConfiguredPrpos.preset.map( preconfig => {
-      if ( serverRelativeUrl.toLowerCase().indexOf( preconfig.location ) > -1 ) {
-        Object.keys( preconfig.props ).map( prop => {
-        //   if ( !thisProps[prop] ) { 
-            let className: colorClassName = getPropColorClass( thisProps[prop], preconfig.props[ prop ], 'yellow' );
-            presets.push( { location: preconfig.location, type: 'preset', prop: prop, value: preconfig.props[ prop ], status: 'tbd', className: className });
-        //   }
-        });
-      }
-    });
-
-    PreConfiguredPrpos.forced.map( preconfig => {
-      if ( serverRelativeUrl.toLowerCase().indexOf( preconfig.location ) > -1 ) {
-        Object.keys( preconfig.props ).map( prop => {
-        //   if ( thisProps[prop] !== preconfig.props[ prop ] ) {
-            let className: colorClassName = getPropColorClass( thisProps[prop], preconfig.props[ prop ], 'red' );
-            forces.push( { location: preconfig.location, type: 'forced', prop: prop, value: preconfig.props[ prop ], status: 'tbd', className: className });
-        //   }
-        });
-      }
-    });
-
-    return { presets: presets, forces: forces };
-
-}
-
-function getPropColorClass( actualProp: any, testProp: any, notEqualClass: colorClassName, defValue: colorClassName = 'na' ) {
-
-    let className: colorClassName = 'na';
-    if ( actualProp === testProp ) { className = 'green' ; } 
-    else if ( actualProp && ( actualProp !== testProp ) ) { className = notEqualClass ; }
-    else { className = defValue; }
-
-    return className;
-}

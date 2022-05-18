@@ -15,7 +15,8 @@ import { IPageNavigatorProps } from "./PageNavigator/IPageNavigatorProps";
 import { IPinMeState } from "@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu";
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as React from 'react';
-import { ISitePreConfigProps } from '../PreConfiguredSettings';
+import { ISitePreConfigProps, } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
+
 
 export interface IFPSPinMenu {
   defPinState: IPinMeState;
