@@ -114,7 +114,8 @@ import { createStyleFromString } from '@mikezimm/npmfunctions/dist/Services/Prop
 import { FPSApplyHeadingCSS, FPSApplyTagCSSAndStyles, FPSApplyHeadingStyle } from './components/HeadingCSS/FPSTagFunctions';
 import { HTMLRegEx, IHTMLRegExKeys } from '../../Service/htmlTags';
 import { css } from 'office-ui-fabric-react';
-
+import { PreConfiguredProps } from './PreConfiguredSettings';
+import { getThisSitesPreConfigProps, IConfigurationProp, ISitePreConfigProps, IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
 
 //export type IMinHeading = 'h3' | 'h2' | 'h1' ;
 export const MinHeadingOptions = [
@@ -140,6 +141,9 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
   private h3 = {  classes: [],  css: '',  };
 
   //Common FPS variables
+
+  private sitePresets : ISitePreConfigProps = null;
+
   private _unqiueId;
   private validDocsContacts: string = '';
 
@@ -531,6 +535,8 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         bannerProps: this.bannerProps,
         webpartHistory: this.properties.webpartHistory,
 
+        sitePresets: this.sitePresets,
+
         pageNavigator:   {
           minHeadingToShow: this.properties.minHeadingToShow,
           showTOC: this.properties.showTOC,
@@ -807,14 +813,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       // disabled: true,
     }));
 
-
     let banner3BasicGroup = FPSBanner3BasicGroup( this.forceBanner , this.modifyBannerTitle, this.properties.showBanner, this.properties.infoElementChoice === 'Text' ? true : false, true );
-    // banner3BasicGroup.groupFields.push(
-    //   PropertyPaneTextField('feedbackEmail', {
-    //       label: 'Feedback email',
-    //       description: 'Adds Feedback icon in the banner.',
-    //       disabled: this.properties.showBanner !== true ? true : false,
-    //   }) );
 
     propDrops.push(PropertyPaneHorizontalRule());
     // Determine how many page property dropdowns we currently have
@@ -954,38 +953,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
               ]
             }, //End this group
 
-
-//  pageInfoStyle: string;
-// tocStyle: string;
-// propsStyle: string;
-
-
-// PropertyPaneDropdown('bannerStyleChoice', <IPropertyPaneDropdownProps>{
-//   label: 'Banner Theme',
-//   options: bannerThemeChoicesWSiteTheme,
-//   disabled: modifyBannerStyle !== true || showBanner !== true ? true : false,
-// }) );
-
-// // if ( lockStyles !== true ) {
-// fields.push(
-//   PropertyPaneTextField('bannerStyle', {
-//       label: 'Style options',
-//       description: 'React.CSSProperties format like:  "fontSize":"larger","color":"red"',
-//       disabled: modifyBannerStyle !== true || showBanner !== true || lockStyles === true ? true : false,
-//       multiline: true,
-//       }) );
-// // }
-
-// // if ( lockStyles !== true ) {
-// fields.push(
-//   PropertyPaneTextField('bannerCmdStyle', {
-//       label: 'Button Style options',
-//       description: 'React.CSSProperties format like:  "fontSize":"larger","color":"red"',
-//       disabled: modifyBannerStyle !== true || showBanner !== true || lockStyles === true ? true : false,
-//       multiline: true,
-//       }) );
-
-
             {
               groupName: 'Visitor Help Info (required)',
               isCollapsed: true,
@@ -1071,35 +1038,60 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
   }
 
   private presetCollectionDefaults() {
+    
+    this.sitePresets = getThisSitesPreConfigProps( PreConfiguredProps, this.properties, this.context.pageContext.web.serverRelativeUrl );
 
-    // return ;
-    if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf('/sites/financemanual/') > -1 ) {
+    this.sitePresets.presets.map( setting => {
+      if ( this.properties[setting.prop] === setting.value ) { 
+        setting.status = 'valid';
 
-      const sampleId: IPropertyFieldGroupOrPerson = {
-        id: '1',
-        description: '',
-        fullName: 'Financial Manual Support team',
-        login: '',
-        email: 'ae57524a.Autoliv.onmicrosoft.com@amer.teams.ms',
-        // jobTitle?: string;
-        // initials?: string;
-        imageUrl: null,
-      };
+      } else if ( !this.properties[setting.prop] ) { 
+        this.properties[setting.prop] = setting.value ;
+        setting.status = 'preset';
 
-      const siteContacts : any[] = [sampleId];
-          //These are added for the minimum User Panel component ( which turns into the replacePanelHTML component )
+      }
+    });
 
-      this.properties.feedbackEmail = 'ae57524a.Autoliv.onmicrosoft.com@amer.teams.ms';
-      this.properties.panelMessageDescription1 = 'Finance Manual Help and Contact';
-      this.properties.panelMessageSupport = 'Contact RE for Finance Manual content';
-      this.properties.panelMessageDocumentation = 'Contact MZ for Web part questions';
-      this.properties.panelMessageIfYouStill = '';
-      this.properties.documentationLinkDesc = 'Finance Manual Help site';
-      this.properties.documentationLinkUrl = '/sites/FinanceManual/Help';
-      this.properties.documentationIsValid = true;
-      if ( !this.properties.supportContacts || this.properties.supportContacts.length === 0 ) this.properties.supportContacts = siteContacts;
+    this.sitePresets.forces.map( setting => {
+      if ( this.properties[setting.prop] === setting.value ) { 
+        setting.status = 'valid';
 
-    }
+      } else if ( !this.properties[setting.prop] ) { 
+        this.properties[setting.prop] = setting.value ;
+        setting.status = 'preset';
+
+      } else if ( this.properties[setting.prop] !== setting.value ) { 
+        this.properties[setting.prop] = setting.value ;
+        setting.status = 'changed';
+
+      }
+
+    });
+
+
+    // PreConfiguredProps.preset.map( preconfig => {
+    //   if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf( preconfig.location ) > -1 ) {
+    //     Object.keys( preconfig.props ).map( prop => {
+    //       if ( !this.properties[prop] ) { 
+    //         this.properties[prop] = preconfig.props[ prop ];
+    //         presets.push( { prop: prop, value: preconfig.props[ prop ] });
+    //       }
+    //     });
+    //   }
+    // });
+
+    // PreConfiguredProps.forced.map( preconfig => {
+    //   if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf( preconfig.location ) > -1 ) {
+    //     Object.keys( preconfig.props ).map( prop => {
+    //       if ( this.properties[prop] !== preconfig.props[ prop ] ) {
+    //         this.properties[prop] = preconfig.props[ prop ];
+    //         forces.push( { prop: prop, value: preconfig.props[ prop ] });
+    //       }
+    //     });
+    //   }
+    // });
+
+    console.log('Preset props used:', this.sitePresets );
 
   }
 

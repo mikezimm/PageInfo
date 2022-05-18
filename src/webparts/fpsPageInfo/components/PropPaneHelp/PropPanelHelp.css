@@ -1,0 +1,50 @@
+
+.fps-pph-content table.configured-props {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x: scroll;
+    margin-top: 15px;
+}
+
+.fps-pph-content table.configured-props tr {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.fps-pph-content table.configured-props tr.red {
+    background: #ffe6e6;
+}
+
+.fps-pph-content table.configured-props tr.yellow {
+    background: #ffffcc;
+}
+
+.fps-pph-content table.configured-props tr.green {
+    background: #ccffcc;
+}
+
+.fps-pph-content table.configured-props tr td:first-child {
+    width: 200px;
+    padding: 5px 15px 5px 15px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.fps-pph-content table.configured-props tr td:nth-child(2) {
+    /* width: 100px; */
+    padding: 5px 15px 5px 0px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.fps-pph-content table.configured-props tr td:nth-child(3) {
+    width: 100px;
+    padding: 5px 15px 5px 0px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.fps-pph-content table.configured-props tr td:nth-child(4) {
+    /* width: calc(100% - 500px); */
+
+}
