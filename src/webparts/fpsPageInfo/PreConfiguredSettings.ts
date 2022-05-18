@@ -78,27 +78,30 @@ export const ForceFinancialManual : IPreConfigSettings = {
 export const PresetFinancialManual : IPreConfigSettings = {
     location: '/sites/financemanual/',
     props: {
-
         homeParentGearAudience: 'Everyone',
+    }
+};
+
+export const PresetSomeRandomSite : IPreConfigSettings = {
+    location: '/sites/SomeRandomSite/',
+    props: {
+        homeParentGearAudience: 'Some Test Value',
     }
 };
 
 export const PreConfiguredPrpos : IAllPreConfigSettings = {
     forced: [ ForceFinancialManual ],
-    preset: [ PresetFinancialManual ],
+    preset: [ PresetFinancialManual, PresetSomeRandomSite ],
 };
 
-export const ThisSitesPreConfiguredPrpos : IAllPreConfigSettings = {
-    forced: [ ForceFinancialManual ],
-    preset: [ PresetFinancialManual ],
-};
-
+type colorClassName = 'green' | 'yellow' | 'red' | 'na';
 export interface IConfigurationProp {
     location: string;
     prop: string;
     value: any;
     type: 'preset' | 'forced' | 'unk';
-    status: 'tbd' |  'valid' | 'preset' | 'force-preset' | 'force-changed' | 'error' | 'unk';
+    status: 'tbd' |  'valid' | 'preset' | 'changed' | 'error' | 'unk';
+    className: colorClassName;
 
 }
 
@@ -115,9 +118,10 @@ export function getThisSitesPreConfigProps( thisProps: IFpsPageInfoWebPartProps 
     PreConfiguredPrpos.preset.map( preconfig => {
       if ( serverRelativeUrl.toLowerCase().indexOf( preconfig.location ) > -1 ) {
         Object.keys( preconfig.props ).map( prop => {
-          if ( !thisProps[prop] ) { 
-            presets.push( { location: preconfig.location, type: 'preset', prop: prop, value: preconfig.props[ prop ], status: 'tbd' });
-          }
+        //   if ( !thisProps[prop] ) { 
+            let className: colorClassName = getPropColorClass( thisProps[prop], preconfig.props[ prop ], 'yellow' );
+            presets.push( { location: preconfig.location, type: 'preset', prop: prop, value: preconfig.props[ prop ], status: 'tbd', className: className });
+        //   }
         });
       }
     });
@@ -125,13 +129,24 @@ export function getThisSitesPreConfigProps( thisProps: IFpsPageInfoWebPartProps 
     PreConfiguredPrpos.forced.map( preconfig => {
       if ( serverRelativeUrl.toLowerCase().indexOf( preconfig.location ) > -1 ) {
         Object.keys( preconfig.props ).map( prop => {
-          if ( thisProps[prop] !== preconfig.props[ prop ] ) {
-            forces.push( { location: preconfig.location, type: 'forced', prop: prop, value: preconfig.props[ prop ], status: 'tbd' });
-          }
+        //   if ( thisProps[prop] !== preconfig.props[ prop ] ) {
+            let className: colorClassName = getPropColorClass( thisProps[prop], preconfig.props[ prop ], 'red' );
+            forces.push( { location: preconfig.location, type: 'forced', prop: prop, value: preconfig.props[ prop ], status: 'tbd', className: className });
+        //   }
         });
       }
     });
 
     return { presets: presets, forces: forces };
 
+}
+
+function getPropColorClass( actualProp: any, testProp: any, notEqualClass: colorClassName, defValue: colorClassName = 'na' ) {
+
+    let className: colorClassName = 'na';
+    if ( actualProp === testProp ) { className = 'green' ; } 
+    else if ( actualProp && ( actualProp !== testProp ) ) { className = notEqualClass ; }
+    else { className = defValue; }
+
+    return className;
 }

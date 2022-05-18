@@ -1058,11 +1058,11 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
       } else if ( !this.properties[setting.prop] ) { 
         this.properties[setting.prop] = setting.value ;
-        setting.status = 'force-preset';
+        setting.status = 'preset';
 
       } else if ( this.properties[setting.prop] !== setting.value ) { 
         this.properties[setting.prop] = setting.value ;
-        setting.status = 'force-changed';
+        setting.status = 'changed';
 
       }
 

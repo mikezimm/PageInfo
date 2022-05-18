@@ -17,7 +17,7 @@ import { FontWeights } from 'office-ui-fabric-react';
 import { BannerHelp, FPSBasicHelp, FPSExpandHelp, ImportHelp, SinglePageAppHelp, VisitorHelp } from '@mikezimm/npmfunctions/dist/PropPaneHelp/FPSCommonOnNpm';
 import { FPSBorderClasses, FPSHeadingNumberClasses, FPSEmojiClasses, FPSMiscClasses, FPSHeadingClasses } from '../HeadingCSS/FPSTagFunctions';
 
-
+require('./PropPanelHelp.css');
 
 import { PreConfiguredPrpos, ISitePreConfigProps } from '../../PreConfiguredSettings';
 
@@ -40,6 +40,8 @@ const ShowRawHTML = <Icon iconName={ 'FileCode' } title='Show Raw HTML here' sty
 const padRight15: React.CSSProperties = { paddingRight: '15px' };
 const padRight40: React.CSSProperties = { paddingRight: '40px' };
 
+const ReactCSSPropsNote = <span style={{ color: 'darkred', fontWeight: 500 }}>React.CSSProperties string like (with quotes):</span>;
+
 export function getWebPartHelpElement ( sitePresets : ISitePreConfigProps ) {
 
   const usePreSets = sitePresets && ( sitePresets.forces.length > 0 || sitePresets.presets.length > 0 ) ? true : false;
@@ -47,16 +49,21 @@ export function getWebPartHelpElement ( sitePresets : ISitePreConfigProps ) {
   let preSetsContent = null;
   if ( usePreSets === true ) {
     const forces = sitePresets.forces.length === 0 ? null : <div>
-      <div className={ 'fps-pph-topic' }>Forced Properties</div>
-      { sitePresets.forces.map ( preset => {
-        return <tr><td>{preset.prop}</td><td>{preset.type}</td><td>{preset.status}</td><td>{JSON.stringify(preset.value) } </td></tr>;
-      }) }
+      <div className={ 'fps-pph-topic' }>Forced Properties - may seem editable but are auto-set</div>
+      <table className='configured-props'>
+        { sitePresets.forces.map ( preset => {
+          return <tr className={preset.className}><td>{preset.prop}</td><td title={ `for sites: ${preset.location}`}>{preset.type}</td><td>{preset.status}</td><td>{JSON.stringify(preset.value) } </td></tr>;
+        }) }
+      </table>
     </div>;
     const presets = sitePresets.presets.length === 0 ? null : <div>
       <div className={ 'fps-pph-topic' }>Preset Properties</div>
-      { sitePresets.forces.map ( preset => {
-        return <tr><td>{preset.prop}</td><td>{preset.type}</td><td>{preset.status}</td><td>{JSON.stringify(preset.value) } </td></tr>;
-      }) }
+      <table className='configured-props'>
+        { sitePresets.presets.map ( preset => {
+          return <tr className={preset.className}><td>{preset.prop}</td><td title={ `for sites: ${preset.location}`}>{preset.type}</td><td>{preset.status}</td><td>{JSON.stringify(preset.value) } </td></tr>;
+        }) }
+      </table>
+
     </div>;
 
     preSetsContent = <div  className={ 'fps-pph-content' } style={{ display: 'flex' }}>
@@ -69,7 +76,7 @@ export function getWebPartHelpElement ( sitePresets : ISitePreConfigProps ) {
   }
   
 
-  const WebPartHelpElement = <div>
+  const WebPartHelpElement = <div style={{ overflowX: 'scroll' }}>
 
     <Pivot 
             linkFormat={PivotLinkFormat.links}
@@ -81,11 +88,7 @@ export function getWebPartHelpElement ( sitePresets : ISitePreConfigProps ) {
         //   onLinkClick= { null }  //{this.specialClick.bind(this)}
         //   selectedKey={ null }
         >
-        { !preSetsContent ? null : 
-          <PivotItem headerText={ 'Presets' } >
-            { preSetsContent }
-            </PivotItem>
-        }
+
         <PivotItem headerText={ 'Pin Me' } > 
           <div className={ 'fps-pph-content' }>
             <div className={ 'fps-pph-topic' }>Default Location</div>
@@ -169,15 +172,15 @@ export function getWebPartHelpElement ( sitePresets : ISitePreConfigProps ) {
 
             <div className={ 'fps-pph-topic' }>Page Info Style options</div>
             <div>Applies to the container below the banner that contains both the TOC and Props components</div>
-            <div>React.CSSProperties string like (with quotes): "fontSize":"larger","color":"red"</div>
+            <div>{ ReactCSSPropsNote } "fontSize":"larger","color":"red"</div>
 
             <div className={ 'fps-pph-topic' }>Table of Contents Style options</div>
             <div>Applies to the Table of Contents container</div>
-            <div>React.CSSProperties string like (with quotes): "fontWeight":600,"color":"yellow"</div>
+            <div>{ ReactCSSPropsNote } "fontWeight":600,"color":"yellow"</div>
 
             <div className={ 'fps-pph-topic' }>Properties Style options</div>
             <div>Applies to the Properties container</div>
-            <div>React.CSSProperties string like (with quotes): "fontWeight":600,"color":"yellow"</div>
+            <div>{ ReactCSSPropsNote } "fontWeight":600,"color":"yellow"</div>
           </div>
         </PivotItem>
 
@@ -187,7 +190,11 @@ export function getWebPartHelpElement ( sitePresets : ISitePreConfigProps ) {
         { FPSExpandHelp }
         { SinglePageAppHelp }
         { ImportHelp }
-
+        { !preSetsContent ? null : 
+          <PivotItem headerText={ null } itemIcon='Badge'>
+            { preSetsContent }
+            </PivotItem>
+        }
     </Pivot>
   </div>;
 
