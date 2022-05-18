@@ -9,7 +9,7 @@ import { IRepoLinks } from '@mikezimm/npmfunctions/dist/Links/CreateLinks';
 
 import { convertIssuesMarkdownStringToSpan } from '@mikezimm/npmfunctions/dist/Elements/Markdown';
 
-export const panelVersionNumber = '2022-05-16 -  1.0.1.01'; //Added to show in panel
+export const panelVersionNumber = '2022-05-18 -  1.0.1.02'; //Added to show in panel
 
 export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
 
@@ -32,7 +32,9 @@ export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
      * WARNING:  DO NOT add any CDNs to Global Warn or Approve unless you want it to apply to JS as well.
      */
 
-    table.rows.push( createAboutRow('2022-05-16',"1.0.1.01","#45, #46, #47, #48, #49, #50, #51, #52, #53 - Presets, Improvements", showRepoLinks === true ? repoLinks : null ) );
+    table.rows.push( createAboutRow('2022-05-18',"1.0.1.02","#55", showRepoLinks === true ? repoLinks : null ) );
+
+    table.rows.push( createAboutRow('2022-05-17',"1.0.1.01","#45, #46, #47, #48, #49, #50, #51, #52, #53 - Presets, Improvements", showRepoLinks === true ? repoLinks : null ) );
 
     table.rows.push( createAboutRow('2022-05-16',"1.0.0.06","#39 - Move core HelpPanel component code to import npmFunctions, #40, #41, #42, #43", showRepoLinks === true ? repoLinks : null ) );
     table.rows.push( createAboutRow('2022-05-12',"1.0.0.05","#33, #20 - special chars in headings, #28 - scroll", showRepoLinks === true ? repoLinks : null ) );

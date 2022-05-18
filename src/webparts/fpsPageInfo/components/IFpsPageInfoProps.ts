@@ -61,6 +61,8 @@ export interface IFpsPageInfoProps {
 
   fpsPinMenu: IFPSPinMenu;
 
+  saveLoadAnalytics: any;
+
 
 }
 

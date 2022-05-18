@@ -11,6 +11,9 @@ define([], function() {
     "AppSharePointEnvironment": "The app is running on SharePoint page",
     "AppTeamsTabEnvironment": "The app is running in Microsoft Teams",
 
+    "analyticsList": "FPSPageInfoViews",
+    "analyticsWeb": "/sites/Templates/Analytics/",
+
     //Copied from AdvancedPagePropertiesWebPart.ts
     "PropertyPaneDescriptionP": "Select the page properties that you want to display on the page",
     "PropertiesGroupName": "Properties",
@@ -19,5 +22,6 @@ define([], function() {
     "PropPaneAddButtonText": "Add",
     "PropPaneDeleteButtonText": "Delete",
     "LogAppName": "FPS Page Info"
+
   }
 });

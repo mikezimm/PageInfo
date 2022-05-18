@@ -123,6 +123,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
   public componentDidMount() {
     let tempPinState: IPinMeState = this.props.displayMode === DisplayMode.Edit ? 'normal' : this.state.pinState;
     FPSPinMe( this.props.fpsPinMenu.domElement, tempPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
+    this.props.saveLoadAnalytics( 'FPS Page Info View', 'didMount');
   }
 
 
