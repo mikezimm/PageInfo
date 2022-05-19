@@ -51,6 +51,8 @@ import { exportIgnoreProps, importBlockProps, } from './IFpsPageInfoWebPartProps
 
 import { changeVisitor, changeExpando, changeBanner, changefpsOptions1, changefpsOptions2, exportIgnorePropsFPS, importBlockPropsFPS } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
 
+import { changeBannerBasics, changeBannerNav, changeBannerTheme, changeBannerOther, } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
+
 // import { ILoadPerformanceALVFM, IPerformanceOp } from './components/Performance/IFpsPageInfoWebPartProps';
 
 
@@ -118,6 +120,32 @@ import { changePinMe, changeTOC, changeProperties, changeWebPartStyles } from '.
     
     exportStructure.Expando = changeExpando;
 
+    exportStructure.fpsOptions2 = changefpsOptions2;
+
+    let exportObject = createExportObject( exportStructure, wpProps, exportIgnoreProps, false );
+
+    console.log('Exportable Props:', exportObject );
+    return exportObject;
+
+  }
+
+  export function buildFPSAnalyticsProps( wpProps : IFpsPageInfoWebPartProps, wpInstanceID: string, currentWeb: string, ) {
+    let exportStructure :any = {};
+
+    exportStructure.wpInstanceID = wpInstanceID;
+    exportStructure.currentWeb = currentWeb;
+
+    exportStructure.Visitor = changeVisitor;
+
+    exportStructure.BannerBasics = changeBannerBasics;
+    exportStructure.BannerNav = changeBannerNav;
+
+    exportStructure.BannerTheme = changeBannerTheme;
+    exportStructure.BannerOther = changeBannerOther;
+
+    // exportStructure.Expando = changeExpando;
+
+    exportStructure.fpsOptions1 = changefpsOptions1;
     exportStructure.fpsOptions2 = changefpsOptions2;
 
     let exportObject = createExportObject( exportStructure, wpProps, exportIgnoreProps, false );

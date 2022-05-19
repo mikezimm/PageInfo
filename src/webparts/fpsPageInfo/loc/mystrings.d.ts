@@ -10,6 +10,10 @@ declare interface IFpsPageInfoWebPartStrings {
   AppSharePointEnvironment: string;
   AppTeamsTabEnvironment: string;
 
+  // 1 - Analytics options
+  analyticsWeb: string;
+  analyticsList: string;
+
   //Copied from AdvancedPagePropertiesWebPart.ts
   PropertyPaneDescriptionP: string;
   OOTBPropGroupName: string;
