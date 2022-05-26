@@ -37,10 +37,20 @@ export class SPService {
     // .replace(/[^a-zA-Z0-9.,()\-& ]/g, "") replaces chars except a - z, 0 - 9 , & ( ) and a . with ""
     // .replace(/'|?|\|/| |&/g, "-") replaces any blanks and special characters (list is for sure not complete) with "-"
     // .replace(/--+/g, "-") replaces any additional - with only one -; e.g. --- get replaced with -, -- get replaced with - etc.
+
+    // let anchorUrl = `#${headingValue
+    //   .replace(/[^a-zA-Z0-9.,()\-& ]/g, "") //https://github.com/mikezimm/PageInfo/issues/20
+    //   .replace(/\'|\?|\\|\/| |\&/g, "-")
+    //   .replace(/--+/g, "-")}`.toLowerCase();
+
     let anchorUrl = `#${headingValue
-      .replace(/[^a-zA-Z0-9.,()\-& ]/g, "") //https://github.com/mikezimm/PageInfo/issues/20
+      .replace(/[^a-zA-Z0-9.,()!\-& ]/g, "")
       .replace(/\'|\?|\\|\/| |\&/g, "-")
-      .replace(/--+/g, "-")}`.toLowerCase();
+      .replace(/--+/g, "-")
+      //This line must be last to clean up any leading-trailing -
+      .replace( /^\-*|\-*$/g , "")} 
+      `.toLowerCase();
+
     let urlSuffix = 1;
     while (urlExists === true) {
       urlExists = (this.allUrls.indexOf(anchorUrl) === -1) ? false : true;
