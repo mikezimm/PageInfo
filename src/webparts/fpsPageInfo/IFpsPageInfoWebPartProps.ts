@@ -32,6 +32,10 @@ import { exportIgnorePropsFPS, importBlockPropsFPS } from '@mikezimm/npmfunction
   export const changePinMe = [ 'defPinState', 'forcePinState' ];
   export const changeTOC = [ 'showTOC', 'minHeadingToShow' ,'description' , 'TOCTitleField', 'tocExpanded' ];
   export const changeProperties = [ 'showSomeProps', 'showCustomProps' , 'showOOTBProps' , 'showApprovalProps' , 'propsTitleField', 'propsExpanded', 'selectedProperties' ];
+
+  export const changeRelated1 = [ 'related1description', 'related1showItems' , 'related1isExpanded' , 'related1web' , 'related1listTitle', 'related1restFilter', 'related1linkProp', 'related1displayProp', 'relatedStyle' ];
+  export const changeRelated2 = [ 'related2description', 'related2showItems' , 'related2isExpanded' , 'related2web' , 'related2listTitle', 'related2restFilter', 'related2linkProp', 'related2displayProp' ];
+
   export const changeWebPartStyles = [ 'h1Style', 'h2Style' ,'h3Style' , 'pageInfoStyle', 'tocStyle', 'propsStyle' ];
 
 export interface IFpsPageInfoWebPartProps {
@@ -63,6 +67,26 @@ export interface IFpsPageInfoWebPartProps {
   selectedProperties: string[];
 
   feedbackEmail: string;
+
+  relatedStyle: string;
+
+  related1description: string;
+  related1showItems: boolean;
+  related1isExpanded: boolean;
+  related1web: string;
+  related1listTitle: string;
+  related1restFilter: string;
+  related1linkProp: string; // aka FileLeaf to open file name, if empty, will just show the value
+  related1displayProp: string;
+
+  related2description: string;
+  related2showItems: boolean;
+  related2isExpanded: boolean;
+  related2web: string;
+  related2listTitle: string;
+  related2restFilter: string;
+  related2linkProp: string; // aka FileLeaf to open file name, if empty, will just show the value
+  related2displayProp: string;
 
   uniqueId: string;
   showBannerGear: boolean; // Not in Prop Pane

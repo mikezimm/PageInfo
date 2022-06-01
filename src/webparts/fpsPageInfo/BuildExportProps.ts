@@ -49,9 +49,9 @@
 import { IFpsPageInfoWebPartProps } from './IFpsPageInfoWebPartProps';
 import { exportIgnoreProps, importBlockProps, } from './IFpsPageInfoWebPartProps';
 
-import { changeVisitor, changeExpando, changeBanner, changefpsOptions1, changefpsOptions2, exportIgnorePropsFPS, importBlockPropsFPS } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
+import { changeVisitor, changeExpando, changeBanner, changefpsOptions1, changefpsOptions2, exportIgnorePropsFPS, importBlockPropsFPS,  } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
 
-import { changeBannerBasics, changeBannerNav, changeBannerTheme, changeBannerOther, } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
+import { changeBannerBasics, changeBannerNav, changeBannerTheme, changeBannerOther,  } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
 
 // import { ILoadPerformanceALVFM, IPerformanceOp } from './components/Performance/IFpsPageInfoWebPartProps';
 
@@ -94,7 +94,7 @@ import { changeBannerBasics, changeBannerNav, changeBannerTheme, changeBannerOth
  * @returns exportObject
  */
 
-import { changePinMe, changeTOC, changeProperties, changeWebPartStyles } from './IFpsPageInfoWebPartProps';
+import { changePinMe, changeTOC, changeProperties, changeWebPartStyles, changeRelated1, changeRelated2 } from './IFpsPageInfoWebPartProps';
 
  export function buildExportProps( wpProps : IFpsPageInfoWebPartProps, wpInstanceID: string, currentWeb: string, ) {
     let exportStructure :any = {};
@@ -107,8 +107,10 @@ import { changePinMe, changeTOC, changeProperties, changeWebPartStyles } from '.
     exportStructure.changePinMe = changePinMe;
     exportStructure.changeTOC = changeTOC;
     exportStructure.changeProperties = changeProperties;
-    exportStructure.changeWebPartStyles = changeWebPartStyles;
+    exportStructure.changeRelated1 = changeRelated1;
+    exportStructure.changeRelated2 = changeRelated2;
 
+    exportStructure.changeWebPartStyles = changeWebPartStyles;
 
     // exportStructure.Script = changeScript;
 

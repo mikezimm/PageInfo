@@ -1,7 +1,7 @@
 
 import { IFPSBasicToggleSetting, IFPSExpandoAudience, ISupportedHost } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSInterfaces';
 
-import { WebPartContext } from "@microsoft/sp-webpart-base";
+import { WebPartContext, } from "@microsoft/sp-webpart-base";
 
 import { IWebpartBannerProps, } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/bannerProps';
 
@@ -16,6 +16,7 @@ import { IPinMeState } from "@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu";
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as React from 'react';
 import { ISitePreConfigProps, } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
+import { IRelatedItemsProps } from './RelatedItems/IRelatedItemsProps';
 
 
 export interface IFPSPinMenu {
@@ -59,6 +60,9 @@ export interface IFpsPageInfoProps {
 
   advPageProps: IAdvancedPagePropertiesProps;
 
+  relatedItemsProps1: IRelatedItemsProps;
+  relatedItemsProps2: IRelatedItemsProps;
+
   fpsPinMenu: IFPSPinMenu;
 
   saveLoadAnalytics: any;
@@ -75,5 +79,6 @@ export interface IFpsPageInfoState {
 
   propsExpanded: boolean;
   tocExpanded: boolean;
-  
+  related1Expanded: boolean;
+  related2Expanded: boolean;
 }

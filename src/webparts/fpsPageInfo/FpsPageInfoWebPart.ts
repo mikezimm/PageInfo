@@ -117,6 +117,7 @@ import { HTMLRegEx, IHTMLRegExKeys } from '../../Service/htmlTags';
 import { css } from 'office-ui-fabric-react';
 import { PreConfiguredProps } from './PreConfiguredSettings';
 import { getThisSitesPreConfigProps, IConfigurationProp, ISitePreConfigProps, IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
+import { IRelatedItemsProps } from './components/RelatedItems/IRelatedItemsProps';
 
 //export type IMinHeading = 'h3' | 'h2' | 'h1' ;
 export const MinHeadingOptions = [
@@ -507,9 +508,27 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
     // else if ( this.props.styleString ) { bannerStyle = createStyleFromString( this.props.styleString, { background: 'green' }, 'bannerStyle in banner/component.tsx ~ 81' ); }
 
-    let pageInfoStyle: React.CSSProperties = createStyleFromString( this.properties.pageInfoStyle, { paddingBottom: '20px', background: '#d3d3d3' }, 'FPSPageInfoWP in ~ 406' );
-    let tocStyle: React.CSSProperties = createStyleFromString( this.properties.tocStyle, null, 'FPSPageInfoWP in ~ 407' );
-    let propsStyle: React.CSSProperties = createStyleFromString( this.properties.propsStyle, null, 'FPSPageInfoWP in ~ 408' );
+    let pageInfoStyle: React.CSSProperties = createStyleFromString( this.properties.pageInfoStyle, { paddingBottom: '20px', background: '#d3d3d3' }, 'FPSPageInfoWP in ~ 511' );
+    let tocStyle: React.CSSProperties = createStyleFromString( this.properties.tocStyle, null, 'FPSPageInfoWP in ~ 512' );
+    let propsStyle: React.CSSProperties = createStyleFromString( this.properties.propsStyle, null, 'FPSPageInfoWP in ~ 513' );
+    let relatedItemsStyle: React.CSSProperties = createStyleFromString( this.properties.relatedStyle, null, 'FPSPageInfoWP in ~ 514' );
+
+    // let relatedItems1: IRelatedItemsProps = {
+    //   description: '',
+    //   showItems: false,
+    //   fetchInfo: {
+    //     web: '',
+    //     listTitle: '',
+    //     restFilter: '',
+    //     linkProp: '', // aka FileLeaf to open file name, if empty, will just show the value
+    //     displayProp: '',
+    //   },
+    
+    //   isExpanded: false,
+    //   themeVariant: this._themeVariant,
+    
+    //   itemsStyle: relatedItemsStyle,
+    // }
 
     const element: React.ReactElement<IFpsPageInfoProps> = React.createElement(
       FpsPageInfo,
@@ -557,6 +576,38 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           selectedProperties: selectedProperties,
           themeVariant: this._themeVariant,
           propsStyle: propsStyle,
+        },
+
+        relatedItemsProps1: {
+          parentKey: 'related1',
+          description: this.properties.related1description,
+          showItems: this.properties.related1showItems,
+          fetchInfo: {
+            web: this.properties.related1web.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : this.properties.related1web,
+            listTitle: this.properties.related1listTitle,
+            restFilter: this.properties.related1restFilter,
+            linkProp: this.properties.related1linkProp, // aka FileLeaf to open file name, if empty, will just show the value
+            displayProp: this.properties.related1displayProp,
+          },
+          isExpanded: this.properties.related1isExpanded,
+          themeVariant: this._themeVariant,
+          itemsStyle: relatedItemsStyle,
+        },
+
+        relatedItemsProps2: {
+          parentKey: 'related2',
+          description: this.properties.related2description,
+          showItems: this.properties.related2showItems,
+          fetchInfo: {
+            web: this.properties.related2web.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : this.properties.related2web,
+            listTitle: this.properties.related2listTitle,
+            restFilter: this.properties.related2restFilter,
+            linkProp: this.properties.related2linkProp, // aka FileLeaf to open file name, if empty, will just show the value
+            displayProp: this.properties.related2displayProp,
+          },
+          isExpanded: this.properties.related2isExpanded,
+          themeVariant: this._themeVariant,
+          itemsStyle: relatedItemsStyle,
         },
 
         fpsPinMenu: {
