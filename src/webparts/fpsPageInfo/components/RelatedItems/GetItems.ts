@@ -10,6 +10,8 @@ import "@pnp/sp/items";
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 
+import { WebPartContext, } from "@microsoft/sp-webpart-base";
+
 import { CreateClientsidePage, ClientsideText, ClientsidePageFromFile, IClientsidePage } from "@pnp/sp/clientside-pages";
 import { ClientsideWebpart } from "@pnp/sp/clientside-pages";
 
@@ -18,6 +20,8 @@ import { warnMutuallyExclusive } from 'office-ui-fabric-react';
 
 import { sortObjectArrayByStringKey } from '@mikezimm/npmfunctions/dist/Services/Arrays/sorting';
 import { getHelpfullErrorV2 } from '@mikezimm/npmfunctions/dist/Services/Logging/ErrorHandler';
+import { IReturnErrorType, checkDeepProperty } from "@mikezimm/npmfunctions/dist/Services/Objects/properties"; 
+
 import { IAnyContent, } from './IRelatedItemsState';
 import { divide } from 'lodash';
 import { isValidElement } from 'react';
@@ -30,12 +34,14 @@ import { IRelatedFetchInfo } from './IRelatedItemsProps';
     // debugger;
     let web = await Web( `${window.location.origin}${fetchInfo.web}` );
 
-    let expColumns = getExpandColumns( [] );
-    let selColumns = getSelectColumns( [] );
+    let baseSelectColumns = [ fetchInfo.displayProp, fetchInfo.linkProp ];
+
+    let expColumns = getExpandColumns( baseSelectColumns );
+    let selColumns = getSelectColumns( baseSelectColumns );
 
     const expandThese = expColumns.join(",");
     //Do not get * columns when using standards so you don't pull WikiFields
-    let baseSelectColumns = [ fetchInfo.displayProp, fetchInfo.linkProp ];
+
 
     //itemFetchCol
     //let selectThese = '*,WikiField,FileRef,FileLeafRef,' + selColumns.join(",");
@@ -43,21 +49,27 @@ import { IRelatedFetchInfo } from './IRelatedItemsProps';
     let items: IAnyContent[] = [];
     let filtered: IAnyContent[] = [];
 
-    console.log('sourceProps', fetchInfo );
+    console.log('getRelatedItems: fetchInfo', fetchInfo );
     let errMess = null;
+
     try {
       items = await web.lists.getByTitle( fetchInfo.listTitle ).items
-      .select(selectThese).expand(expandThese).getAll();
+      .select(selectThese).filter(fetchInfo.restFilter).expand(expandThese).getAll();
 
     } catch (e) {
-      errMess = getHelpfullErrorV2( e, true, true, 'getClassicContent ~ 213');
-      console.log('sourceProps', fetchInfo );
+      errMess = getHelpfullErrorV2( e, true, true, 'getRelatedItems ~ 60');
+      console.log('getRelatedItems: fetchInfo', fetchInfo );
 
     }
 
-    items = sortObjectArrayByStringKey( items, 'asc', 'FileLeafRef' );
+    items.map ( item => {
+      item.linkUrl = checkDeepProperty( item, fetchInfo.linkProp.split('/'), 'ShortError' );
+      item.linkText = checkDeepProperty( item, fetchInfo.displayProp.split('/'), 'ShortError' );
+    });
 
-    console.log( 'getClassicContent', fetchInfo , items );
+    items = !fetchInfo.displayProp ? items : sortObjectArrayByStringKey( items, 'asc', 'linkText' );
+
+    console.log( 'getRelatedItems: fetchInfo, items', fetchInfo , items );
 
     return { items: items, filtered: filtered, error: errMess, fetchInfo: fetchInfo };
 

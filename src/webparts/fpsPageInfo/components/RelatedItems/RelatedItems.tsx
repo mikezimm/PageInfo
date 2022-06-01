@@ -7,7 +7,7 @@ import * as React from 'react';
 import styles from './RelatedItems.module.scss';
 import { IRelatedItemsProps } from './IRelatedItemsProps';
 import { IRelatedItemsState } from './IRelatedItemsState';
-import { Nav, INavLink } from 'office-ui-fabric-react/lib/Nav';
+import { Icon, IIconProps } from 'office-ui-fabric-react/lib/Icon';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import { getRelatedItems } from './GetItems';
 
@@ -66,11 +66,23 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
       return ( null );
     } else { //If there is a null value, it will just show it
 
+
+
       const linksElement = this.state.items.length === 0 ? <div style={{ paddingLeft: '20px', paddingBottom: '10px', fontSize: 'larger' }}>
-          There are no headings on this page ;(
+          There are no related items ;(
         </div> :
         <div>
-          { this.state.items.map( item => { return <li>{ item[this.props.fetchInfo.displayProp] }</li> ; } )}
+          { this.state.items.map( item => { 
+            let label = <span className={ styles.trimText}>{ item.linkText }</span>;
+
+            if ( item.linkUrl ) {
+              let liTitle = `Go to ${item.linkText}`;
+              return <li className = { styles.isLink } style={ this.props.itemsStyle } title={liTitle} onClick={ () => { this.onLinkClick( item.linkUrl  ); }}>{ label }
+                <Icon title={ `Go to ${item.linkUrl}` }iconName='OpenInNewTab'></Icon></li> ;
+            } else {
+              return <li style={ this.props.itemsStyle }>{ label }</li> ;
+            }
+            } )}
         </div>;
 
       return (
@@ -88,4 +100,10 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
     }
 
   }
+
+  private onLinkClick( gotoLink: string ) {
+    // alert('Going to ' + gotoLink );
+    window.open( gotoLink, '_none' ) ;
+}
+
 }

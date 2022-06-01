@@ -108,7 +108,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       const showStyles = isExpanded === true || !related.description ? stylesA.showProperties : stylesA.hideProperties;
   
       let accordion = !related.showItems || !related.description ? null : 
-      <div className={ stylesA.propsTitle } style={{ display: 'flex', flexWrap: 'nowrap', paddingTop: '20px' }} onClick={ () => { this.toggleRelated( related, isExpanded ) ; } }>
+      <div className={ stylesA.propsTitle } style={{ display: 'flex', flexWrap: 'nowrap', }} onClick={ () => { this.toggleRelated( related, isExpanded ) ; } }>
         <div style={{ cursor: 'pointer' }} title={'Show or Collapse RelatedItems'}>{ related.description }</div>
         { isExpanded === true ? this.TOCCollapse : this.TOCExpand }
       </div> ;
@@ -377,7 +377,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
 
     let tocAccordion = !this.props.pageNavigator.showTOC || !this.props.pageNavigator.description ? null : 
-    <div className={ stylesA.propsTitle } style={{ display: 'flex', flexWrap: 'nowrap', paddingTop: '20px' }} onClick={ this.toggleTOC.bind(this) }>
+    <div className={ stylesA.propsTitle } style={{ display: 'flex', flexWrap: 'nowrap', }} onClick={ this.toggleTOC.bind(this) }>
       <div style={{ cursor: 'pointer' }} title={'Show or Collapse Table of Contents'}>{ this.props.pageNavigator.description }</div>
       { this.state.tocExpanded === true ? this.TOCCollapse : this.TOCExpand }
     </div> ;
@@ -410,6 +410,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
           { devHeader }
           { Banner }
           <div style={ this.props.pageInfoStyle }>
+            <div style={{ height: '20px' }}></div>
             { this.createRelatedContent(this.props.relatedItemsProps1, this.state.related1Expanded, this.state.pinState ) }
             { this.createRelatedContent(this.props.relatedItemsProps2, this.state.related2Expanded, this.state.pinState ) }
             { tocComponent }

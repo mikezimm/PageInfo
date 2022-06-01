@@ -6,6 +6,9 @@ export interface IAnyContent extends Partial<any> {
   FileLeafRef: string;
   FileRef: string;
 
+  linkUrl: string;
+  linkText: string;
+
   meta: string[];
 
   modifiedMS: number;
