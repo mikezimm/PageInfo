@@ -16,7 +16,7 @@ import { CreateClientsidePage, ClientsideText, ClientsidePageFromFile, IClientsi
 import { ClientsideWebpart } from "@pnp/sp/clientside-pages";
 
 import { getExpandColumns, getKeysLike, getSelectColumns } from '@mikezimm/npmfunctions/dist/Lists/getFunctions';
-import { warnMutuallyExclusive } from 'office-ui-fabric-react';
+import { imageProperties, warnMutuallyExclusive } from 'office-ui-fabric-react';
 
 import { sortObjectArrayByStringKey } from '@mikezimm/npmfunctions/dist/Services/Arrays/sorting';
 import { getHelpfullErrorV2 } from '@mikezimm/npmfunctions/dist/Services/Logging/ErrorHandler';
@@ -33,6 +33,11 @@ import { IRelatedFetchInfo } from './IRelatedItemsProps';
 
     // debugger;
     let web = await Web( `${window.location.origin}${fetchInfo.web}` );
+
+    if ( fetchInfo.canvasImgs === true || fetchInfo.canvasLinks === true ) {
+      fetchInfo.linkProp = 'CanvasContent1';
+      fetchInfo.displayProp = '';
+    }
 
     let baseSelectColumns = [ fetchInfo.displayProp, fetchInfo.linkProp ];
 
@@ -63,8 +68,42 @@ import { IRelatedFetchInfo } from './IRelatedItemsProps';
     }
 
     items.map ( item => {
-      item.linkUrl = checkDeepProperty( item, fetchInfo.linkProp.split('/'), 'ShortError' );
-      item.linkText = checkDeepProperty( item, fetchInfo.displayProp.split('/'), 'ShortError' );
+      item.images=[];
+      item.links=[];
+      if ( fetchInfo.canvasImgs === true || fetchInfo.canvasLinks === true ) {
+
+        if ( fetchInfo.canvasImgs === true ) {
+          let sourceStrings = item.CanvasContent1.split('"imageSources":');
+          if ( sourceStrings.length > 1 ) {
+            sourceStrings.map( (source, idx) => {
+              if ( idx > 0 ) {
+                let sourceString = source.substring(0, source.indexOf('}') + 1  );
+                let sources = JSON.parse( sourceString );
+                Object.keys(sources).map( key => {
+                  item.images.push( decodeURI( sources[key]) );
+                });
+              }
+            });
+          }
+        }
+
+        if ( fetchInfo.canvasLinks === true ) {
+          let sourceStrings = item.CanvasContent1.split('<a ');
+          if ( sourceStrings.length > 1 ) {
+            sourceStrings.map( (source, idx) => {
+              let sourceString = source.substring( source.indexOf(' href="') + 7);
+              sourceString = sourceString.substring(0, sourceString.indexOf('"'));
+              item.links.push( sourceString );
+            });
+          }
+        }
+
+      } else {
+        item.linkUrl = checkDeepProperty( item, fetchInfo.linkProp.split('/'), 'ShortError' );
+        item.linkText = checkDeepProperty( item, fetchInfo.displayProp.split('/'), 'ShortError' );
+        item.CanvasContent1 = '';
+      }
+
     });
 
     items = !fetchInfo.displayProp ? items : sortObjectArrayByStringKey( items, 'asc', 'linkText' );

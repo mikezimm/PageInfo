@@ -9,6 +9,10 @@ export interface IAnyContent extends Partial<any> {
   linkUrl: string;
   linkText: string;
 
+  CanvasContent1: string;
+  images: string[];
+  links: string[];
+
   meta: string[];
 
   modifiedMS: number;

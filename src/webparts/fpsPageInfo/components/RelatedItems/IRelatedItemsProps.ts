@@ -9,6 +9,8 @@ export interface IRelatedFetchInfo {
   restFilter: string;
   linkProp: string; // aka FileLeaf to open file name, if empty, will just show the value
   displayProp: string;
+  canvasLinks?: boolean;
+  canvasImgs?: boolean;
 }
 
 export interface IRelatedItemsProps {
