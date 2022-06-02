@@ -33,7 +33,7 @@ export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
      */
 
     table.rows.push( createAboutRow('2022-06-02',"1.0.1.03","#61 - fix TOC links for ! - and leading-trailing special chars", showRepoLinks === true ? repoLinks : null ) );
-    table.rows.push( createAboutRow('',"","#58, #60 - CSS, #61, #63 - Add Images and Links, #64 - Add Related Info", showRepoLinks === true ? repoLinks : null ) );
+    table.rows.push( createAboutRow('',"","#58, #60 - CSS, #61, #63 - Add Images and Links, #64 - Add Related Info, #65", showRepoLinks === true ? repoLinks : null ) );
 
     table.rows.push( createAboutRow('2022-05-18',"1.0.1.02","#55", showRepoLinks === true ? repoLinks : null ) );
 

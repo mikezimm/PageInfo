@@ -44,6 +44,8 @@ import { minimizeHeader } from '@mikezimm/npmfunctions/dist/Services/DOM/minimze
 import { minimizeToolbar } from '@mikezimm/npmfunctions/dist/Services/DOM/minimzeToolbar';
 import { minimizeQuickLaunch } from '@mikezimm/npmfunctions/dist/Services/DOM/quickLaunch';
 
+import { replaceHandleBars } from '@mikezimm/npmfunctions/dist/Services/Strings/handleBars';
+
 // import { FPSOptionsGroupBasic, FPSBanner2Group, FPSOptionsGroupAdvanced } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup2';
 import { FPSOptionsGroupBasic, FPSBanner3Group, FPSOptionsGroupAdvanced } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup3';
 import { FPSBanner3BasicGroup,FPSBanner3NavGroup, FPSBanner3ThemeGroup } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup3';
@@ -580,12 +582,12 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
         relatedItemsProps1: {
           parentKey: 'related1',
-          description: this.replaceHandleBars( this.properties.related1description, this.context ),
+          description: replaceHandleBars( this.properties.related1description, this.context ),
           showItems: this.properties.related1showItems,
           fetchInfo: {
-            web: this.properties.related1web.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : this.replaceHandleBars( this.properties.related1web, this.context ),
-            listTitle: this.replaceHandleBars( this.properties.related1listTitle, this.context ),
-            restFilter: this.replaceHandleBars( this.properties.related1restFilter, this.context ),
+            web: this.properties.related1web.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : replaceHandleBars( this.properties.related1web, this.context ),
+            listTitle: replaceHandleBars( this.properties.related1listTitle, this.context ),
+            restFilter: replaceHandleBars( this.properties.related1restFilter, this.context ),
             linkProp: this.properties.related1linkProp, // aka FileLeaf to open file name, if empty, will just show the value
             displayProp: this.properties.related1displayProp,
           },
@@ -596,12 +598,12 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
         relatedItemsProps2: {
           parentKey: 'related2',
-          description: this.replaceHandleBars( this.properties.related2description, this.context ) ,
+          description: replaceHandleBars( this.properties.related2description, this.context ) ,
           showItems: this.properties.related2showItems,
           fetchInfo: {
-            web: this.properties.related2web.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : this.replaceHandleBars( this.properties.related2web, this.context ),
-            listTitle: this.replaceHandleBars( this.properties.related2listTitle, this.context ),
-            restFilter: this.replaceHandleBars( this.properties.related2restFilter, this.context ),
+            web: this.properties.related2web.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : replaceHandleBars( this.properties.related2web, this.context ),
+            listTitle: replaceHandleBars( this.properties.related2listTitle, this.context ),
+            restFilter: replaceHandleBars( this.properties.related2restFilter, this.context ),
             linkProp: this.properties.related2linkProp, // aka FileLeaf to open file name, if empty, will just show the value
             displayProp: this.properties.related2displayProp,
           },
@@ -612,12 +614,12 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
         pageLinks: {
           parentKey: 'pageLinks',
-          description: this.replaceHandleBars( this.properties.pageLinksdescription, this.context ) ,
+          description: replaceHandleBars( this.properties.pageLinksdescription, this.context ) ,
           showItems: this.properties.pageLinksshowItems,
           fetchInfo: {
-            web: this.properties.pageLinksweb.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : this.replaceHandleBars( this.properties.pageLinksweb, this.context ),
-            listTitle: this.replaceHandleBars( this.properties.pageLinkslistTitle, this.context ),
-            restFilter: this.replaceHandleBars( this.properties.pageLinksrestFilter, this.context ),
+            web: this.properties.pageLinksweb.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : replaceHandleBars( this.properties.pageLinksweb, this.context ),
+            listTitle: replaceHandleBars( this.properties.pageLinkslistTitle, this.context ),
+            restFilter: replaceHandleBars( this.properties.pageLinksrestFilter, this.context ),
             linkProp: this.properties.pageLinkslinkProp, // aka FileLeaf to open file name, if empty, will just show the value
             displayProp: this.properties.pageLinksdisplayProp,
             canvasLinks: this.properties.canvasLinks,
@@ -643,53 +645,53 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
   }
 
 
-  private replaceHandleBars( str: string , context: WebPartContext ) {
+  // private replaceHandleBars( str: string , context: WebPartContext ) {
 
-    if ( !str ) { return '' ; } else {
+  //   if ( !str ) { return '' ; } else {
 
-      if ( str.indexOf('{{') === -1 || str.indexOf('}}') === -1 ) {
-        return str;
+  //     if ( str.indexOf('{{') === -1 || str.indexOf('}}') === -1 ) {
+  //       return str;
 
-      } else {
+  //     } else {
 
-        let newStr = str.replace( /{{PageId}}/gi , `${context.pageContext.listItem.id.toFixed()}` );
+  //       let newStr = str.replace( /{{PageId}}/gi , `${context.pageContext.listItem.id.toFixed()}` );
 
-        if ( str.indexOf('{{List') > -1 ) {
-          newStr = newStr.replace( /{{ListTitle}}/gi , `${context.pageContext.list.title}` );
-          newStr = newStr.replace( /{{ListId}}/gi , `${context.pageContext.list.id}` );
-          newStr = newStr.replace( /{{ListUrl}}/gi , `${context.pageContext.list.serverRelativeUrl}` );
-        }
+  //       if ( str.indexOf('{{List') > -1 ) {
+  //         newStr = newStr.replace( /{{ListTitle}}/gi , `${context.pageContext.list.title}` );
+  //         newStr = newStr.replace( /{{ListId}}/gi , `${context.pageContext.list.id}` );
+  //         newStr = newStr.replace( /{{ListUrl}}/gi , `${context.pageContext.list.serverRelativeUrl}` );
+  //       }
 
-        if ( str.indexOf('{{User') > -1 ) {
-          newStr = newStr.replace( /{{UserName}}/gi , `${ context.pageContext.user.displayName }` );
-          newStr = newStr.replace( /{{UserLogin}}/gi , `${ context.pageContext.user.loginName }` );
-          newStr = newStr.replace( /{{UserEmail}}/gi , `${ context.pageContext.user.email }` );
-        }
+  //       if ( str.indexOf('{{User') > -1 ) {
+  //         newStr = newStr.replace( /{{UserName}}/gi , `${ context.pageContext.user.displayName }` );
+  //         newStr = newStr.replace( /{{UserLogin}}/gi , `${ context.pageContext.user.loginName }` );
+  //         newStr = newStr.replace( /{{UserEmail}}/gi , `${ context.pageContext.user.email }` );
+  //       }
 
-        if ( str.indexOf('{{Web') > -1 ) {
-          newStr = newStr.replace( /{{WebTitle}}/gi , `${context.pageContext.web.title}` );
-          newStr = newStr.replace( /{{WebUrl}}/gi , `${context.pageContext.web.serverRelativeUrl}` );
-          newStr = newStr.replace( /{{WebId}}/gi , `${context.pageContext.web.id}` );
-        }
+  //       if ( str.indexOf('{{Web') > -1 ) {
+  //         newStr = newStr.replace( /{{WebTitle}}/gi , `${context.pageContext.web.title}` );
+  //         newStr = newStr.replace( /{{WebUrl}}/gi , `${context.pageContext.web.serverRelativeUrl}` );
+  //         newStr = newStr.replace( /{{WebId}}/gi , `${context.pageContext.web.id}` );
+  //       }
 
-        if ( str.indexOf('{{Site') > -1 ) {
-          newStr = newStr.replace( /{{SiteTitle}}/gi , `${context.pageContext.web.title}` );
-          newStr = newStr.replace( /{{SiteUrl}}/gi , `${context.pageContext.web.serverRelativeUrl}` );
-          newStr = newStr.replace( /{{SiteId}}/gi , `${context.pageContext.web.id}` );
-        }
+  //       if ( str.indexOf('{{Site') > -1 ) {
+  //         newStr = newStr.replace( /{{SiteTitle}}/gi , `${context.pageContext.web.title}` );
+  //         newStr = newStr.replace( /{{SiteUrl}}/gi , `${context.pageContext.web.serverRelativeUrl}` );
+  //         newStr = newStr.replace( /{{SiteId}}/gi , `${context.pageContext.web.id}` );
+  //       }
 
-        let now = new Date();
+  //       let now = new Date();
 
-        newStr = newStr.replace( /{{Now}}/gi , `${ now.toLocaleString() }` );
-        newStr = newStr.replace( /{{Today}}/gi , `${ now.toLocaleDateString() }` );
+  //       newStr = newStr.replace( /{{Now}}/gi , `${ now.toLocaleString() }` );
+  //       newStr = newStr.replace( /{{Today}}/gi , `${ now.toLocaleDateString() }` );
 
-        return newStr;
+  //       return newStr;
 
-      }
+  //     }
 
-    }
+  //   }
 
-  }
+  // }
 
   private beAUserFunction() {
     console.log('beAUserFunction:',   );
