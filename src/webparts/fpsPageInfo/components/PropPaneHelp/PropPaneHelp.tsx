@@ -15,11 +15,26 @@ import { defaultBannerCommandStyles, } from "@mikezimm/npmfunctions/dist/HelpPan
 import ReactJson from "react-json-view";
 import { FontWeights } from 'office-ui-fabric-react';
 import { BannerHelp, FPSBasicHelp, FPSExpandHelp, ImportHelp, SinglePageAppHelp, VisitorHelp } from '@mikezimm/npmfunctions/dist/PropPaneHelp/FPSCommonOnNpm';
+
+import {HandleBarReplacements } from '@mikezimm/npmfunctions/dist/Services/Strings/handleBars';
+
 import { FPSBorderClasses, FPSHeadingNumberClasses, FPSEmojiClasses, FPSMiscClasses, FPSHeadingClasses } from '../HeadingCSS/FPSTagFunctions';
 
 require('@mikezimm/npmfunctions/dist/PropPaneHelp/PropPanelHelp.css');
 
 import { ISitePreConfigProps, } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
+
+const SampleRelatedInfoProps =         {
+  description: 'Standards',
+  showItems: true,
+  isExpanded: true,
+  web: '/sites/financemanual/manual',
+  listTitle: 'Site Pages',
+  restFilter: 'StandardDocumentsId eq {{PageId}}',
+  linkProp: 'File/ServerRelativeUrl', // aka FileLeaf to open file name, if empty, will just show the value
+  displayProp: 'Title',
+  itemsStyle: '"fontWeight":600,"color":"yellow"',
+};
 
 
 export function putObjectIntoJSON ( obj: any, name: string = null ) {
@@ -181,6 +196,56 @@ export function getWebPartHelpElement ( sitePresets : ISitePreConfigProps ) {
             <div className={ 'fps-pph-topic' }>Properties Style options</div>
             <div>Applies to the Properties container</div>
             <div>{ ReactCSSPropsNote } "fontWeight":600,"color":"yellow"</div>
+          </div>
+        </PivotItem>
+
+        <PivotItem headerText={ 'RelatedInfo' } > 
+          <div className={ 'fps-pph-content' }>
+
+            <div className={ 'fps-pph-topic' }>Related Info is a way to show items that are related to this page.</div>
+            <div>
+              <li><b>showItems - </b>Enable or Disable this feature</li>
+              <li><b>description - </b>Heading for this feature - clickable to expand/collapse</li>
+              <li><b>web - </b>Server Relative Url of list-item you are relating to</li>
+              <li><b>listTitle - </b>List Title which has the related info</li>
+              <li><b>restFilter - </b>rest based filter - see context-based substitutions below</li>
+              <li><b>linkProp - </b>Static/Internal name of the field with the go-to link.  Leave empty to not have it clickable.</li>
+              <li><b>displayProp - </b>Static/Internal name of the field with the related info text</li>
+              <li><b>isExpanded - </b>Default state when loading the page</li>
+              <li><b>itemsStyle - </b> { ReactCSSPropsNote } "fontWeight":600,"color":"yellow" </li>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <div>
+                <div className={ 'fps-pph-topic' }>Sample of tested settings.</div>
+                <ReactJson src={ SampleRelatedInfoProps } name={ 'Sample Props' } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>
+              </div>
+              <div>
+                <h3>This will do the following</h3>
+                <ol>
+                  <li>showItems == true &gt; enables feature</li>
+                  <li>Sets the heading for this section to Standards</li>
+                  <li>Sets default visibility to Expanded</li>
+                  <li>Gets related info from web:  /sites/financemanual/manual</li>
+                  <li>Gets related info from Library:  Site Pages</li>
+                  <li>Gets items where the lookup column  StandardDocuments has the same value as the current site's PageId</li>
+                  <li>Sets the goto link location as File/ServerRelativeUrl.  You could also use a text column for the link or build up a link to anything</li>
+                  <li>Sets the display text of the link to the Title of the lookup item</li>
+                </ol>
+              </div>
+            </div>
+
+            <div className={ 'fps-pph-topic' }>Use the following subsitutions to customize restFilters.</div>
+
+            <div style={{ display: 'flex' }}>
+                {
+                  Object.keys ( HandleBarReplacements ).map ( key => {
+                    return  <div style={ padRight40 }><div className={ 'fps-pph-topic' }>{key}</div><ul>
+                              { HandleBarReplacements[key].map( rule => <li>{ rule }</li> ) }
+                            </ul></div>;
+                  })
+                }
+            </div>
           </div>
         </PivotItem>
 

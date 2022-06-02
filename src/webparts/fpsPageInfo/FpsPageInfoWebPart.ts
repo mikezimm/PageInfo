@@ -19,7 +19,7 @@ import {
 
 import { IPropertyFieldGroupOrPerson } from "@pnp/spfx-property-controls/lib/PropertyFieldPeoplePicker";
 
-import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
+import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
 import {   
   ThemeProvider,
   ThemeChangedEventArgs,
@@ -43,6 +43,8 @@ import { setSectionStyles } from '@mikezimm/npmfunctions/dist/Services/DOM/setAl
 import { minimizeHeader } from '@mikezimm/npmfunctions/dist/Services/DOM/minimzeHeader';
 import { minimizeToolbar } from '@mikezimm/npmfunctions/dist/Services/DOM/minimzeToolbar';
 import { minimizeQuickLaunch } from '@mikezimm/npmfunctions/dist/Services/DOM/quickLaunch';
+
+import { replaceHandleBars } from '@mikezimm/npmfunctions/dist/Services/Strings/handleBars';
 
 // import { FPSOptionsGroupBasic, FPSBanner2Group, FPSOptionsGroupAdvanced } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup2';
 import { FPSOptionsGroupBasic, FPSBanner3Group, FPSOptionsGroupAdvanced } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup3';
@@ -117,6 +119,7 @@ import { HTMLRegEx, IHTMLRegExKeys } from '../../Service/htmlTags';
 import { css } from 'office-ui-fabric-react';
 import { PreConfiguredProps } from './PreConfiguredSettings';
 import { getThisSitesPreConfigProps, IConfigurationProp, ISitePreConfigProps, IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
+import { IRelatedItemsProps } from './components/RelatedItems/IRelatedItemsProps';
 
 //export type IMinHeading = 'h3' | 'h2' | 'h1' ;
 export const MinHeadingOptions = [
@@ -463,7 +466,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     // console.log('mainWebPart: showTricks ~ 322',   );
     let showTricks: any = false;
     links.trickyEmails.map( getsTricks => {
-      if ( this.context.pageContext.user.loginName && this.context.pageContext.user.loginName.toLowerCase().indexOf( getsTricks ) > -1 ) { 
+      if ( this.context.pageContext.user && this.context.pageContext.user.loginName && this.context.pageContext.user.loginName.toLowerCase().indexOf( getsTricks ) > -1 ) { 
         showTricks = true ;
         this.properties.showRepoLinks = true; //Always show these users repo links
       }
@@ -507,9 +510,27 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
     // else if ( this.props.styleString ) { bannerStyle = createStyleFromString( this.props.styleString, { background: 'green' }, 'bannerStyle in banner/component.tsx ~ 81' ); }
 
-    let pageInfoStyle: React.CSSProperties = createStyleFromString( this.properties.pageInfoStyle, { paddingBottom: '20px', background: '#d3d3d3' }, 'FPSPageInfoWP in ~ 406' );
-    let tocStyle: React.CSSProperties = createStyleFromString( this.properties.tocStyle, null, 'FPSPageInfoWP in ~ 407' );
-    let propsStyle: React.CSSProperties = createStyleFromString( this.properties.propsStyle, null, 'FPSPageInfoWP in ~ 408' );
+    let pageInfoStyle: React.CSSProperties = createStyleFromString( this.properties.pageInfoStyle, { paddingBottom: '20px', background: '#d3d3d3' }, 'FPSPageInfoWP in ~ 511' );
+    let tocStyle: React.CSSProperties = createStyleFromString( this.properties.tocStyle, null, 'FPSPageInfoWP in ~ 512' );
+    let propsStyle: React.CSSProperties = createStyleFromString( this.properties.propsStyle, null, 'FPSPageInfoWP in ~ 513' );
+    let relatedItemsStyle: React.CSSProperties = createStyleFromString( this.properties.relatedStyle, null, 'FPSPageInfoWP in ~ 514' );
+
+    // let relatedItems1: IRelatedItemsProps = {
+    //   description: '',
+    //   showItems: false,
+    //   fetchInfo: {
+    //     web: '',
+    //     listTitle: '',
+    //     restFilter: '',
+    //     linkProp: '', // aka FileLeaf to open file name, if empty, will just show the value
+    //     displayProp: '',
+    //   },
+    
+    //   isExpanded: false,
+    //   themeVariant: this._themeVariant,
+    
+    //   itemsStyle: relatedItemsStyle,
+    // }
 
     const element: React.ReactElement<IFpsPageInfoProps> = React.createElement(
       FpsPageInfo,
@@ -559,6 +580,56 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           propsStyle: propsStyle,
         },
 
+        relatedItemsProps1: {
+          parentKey: 'related1',
+          description: replaceHandleBars( this.properties.related1description, this.context ),
+          showItems: this.properties.related1showItems,
+          fetchInfo: {
+            web: this.properties.related1web.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : replaceHandleBars( this.properties.related1web, this.context ),
+            listTitle: replaceHandleBars( this.properties.related1listTitle, this.context ),
+            restFilter: replaceHandleBars( this.properties.related1restFilter, this.context ),
+            linkProp: this.properties.related1linkProp, // aka FileLeaf to open file name, if empty, will just show the value
+            displayProp: this.properties.related1displayProp,
+          },
+          isExpanded: this.properties.related1isExpanded,
+          themeVariant: this._themeVariant,
+          itemsStyle: relatedItemsStyle,
+        },
+
+        relatedItemsProps2: {
+          parentKey: 'related2',
+          description: replaceHandleBars( this.properties.related2description, this.context ) ,
+          showItems: this.properties.related2showItems,
+          fetchInfo: {
+            web: this.properties.related2web.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : replaceHandleBars( this.properties.related2web, this.context ),
+            listTitle: replaceHandleBars( this.properties.related2listTitle, this.context ),
+            restFilter: replaceHandleBars( this.properties.related2restFilter, this.context ),
+            linkProp: this.properties.related2linkProp, // aka FileLeaf to open file name, if empty, will just show the value
+            displayProp: this.properties.related2displayProp,
+          },
+          isExpanded: this.properties.related2isExpanded,
+          themeVariant: this._themeVariant,
+          itemsStyle: relatedItemsStyle,
+        },
+
+        pageLinks: {
+          parentKey: 'pageLinks',
+          description: replaceHandleBars( this.properties.pageLinksdescription, this.context ) ,
+          showItems: this.properties.pageLinksshowItems,
+          fetchInfo: {
+            web: this.properties.pageLinksweb.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : replaceHandleBars( this.properties.pageLinksweb, this.context ),
+            listTitle: replaceHandleBars( this.properties.pageLinkslistTitle, this.context ),
+            restFilter: replaceHandleBars( this.properties.pageLinksrestFilter, this.context ),
+            linkProp: this.properties.pageLinkslinkProp, // aka FileLeaf to open file name, if empty, will just show the value
+            displayProp: this.properties.pageLinksdisplayProp,
+            canvasLinks: this.properties.canvasLinks,
+            canvasImgs: this.properties.canvasImgs,
+          },
+          isExpanded: this.properties.pageLinksisExpanded,
+          themeVariant: this._themeVariant,
+          itemsStyle: relatedItemsStyle,
+        },
+
         fpsPinMenu: {
           defPinState: this.properties.defPinState,
           forcePinState: this.properties.forcePinState,
@@ -572,6 +643,55 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     ReactDom.render(element, this.domElement);
 
   }
+
+
+  // private replaceHandleBars( str: string , context: WebPartContext ) {
+
+  //   if ( !str ) { return '' ; } else {
+
+  //     if ( str.indexOf('{{') === -1 || str.indexOf('}}') === -1 ) {
+  //       return str;
+
+  //     } else {
+
+  //       let newStr = str.replace( /{{PageId}}/gi , `${context.pageContext.listItem.id.toFixed()}` );
+
+  //       if ( str.indexOf('{{List') > -1 ) {
+  //         newStr = newStr.replace( /{{ListTitle}}/gi , `${context.pageContext.list.title}` );
+  //         newStr = newStr.replace( /{{ListId}}/gi , `${context.pageContext.list.id}` );
+  //         newStr = newStr.replace( /{{ListUrl}}/gi , `${context.pageContext.list.serverRelativeUrl}` );
+  //       }
+
+  //       if ( str.indexOf('{{User') > -1 ) {
+  //         newStr = newStr.replace( /{{UserName}}/gi , `${ context.pageContext.user.displayName }` );
+  //         newStr = newStr.replace( /{{UserLogin}}/gi , `${ context.pageContext.user.loginName }` );
+  //         newStr = newStr.replace( /{{UserEmail}}/gi , `${ context.pageContext.user.email }` );
+  //       }
+
+  //       if ( str.indexOf('{{Web') > -1 ) {
+  //         newStr = newStr.replace( /{{WebTitle}}/gi , `${context.pageContext.web.title}` );
+  //         newStr = newStr.replace( /{{WebUrl}}/gi , `${context.pageContext.web.serverRelativeUrl}` );
+  //         newStr = newStr.replace( /{{WebId}}/gi , `${context.pageContext.web.id}` );
+  //       }
+
+  //       if ( str.indexOf('{{Site') > -1 ) {
+  //         newStr = newStr.replace( /{{SiteTitle}}/gi , `${context.pageContext.web.title}` );
+  //         newStr = newStr.replace( /{{SiteUrl}}/gi , `${context.pageContext.web.serverRelativeUrl}` );
+  //         newStr = newStr.replace( /{{SiteId}}/gi , `${context.pageContext.web.id}` );
+  //       }
+
+  //       let now = new Date();
+
+  //       newStr = newStr.replace( /{{Now}}/gi , `${ now.toLocaleString() }` );
+  //       newStr = newStr.replace( /{{Today}}/gi , `${ now.toLocaleDateString() }` );
+
+  //       return newStr;
+
+  //     }
+
+  //   }
+
+  // }
 
   private beAUserFunction() {
     console.log('beAUserFunction:',   );
@@ -853,6 +973,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           },
           displayGroupsAsAccordion: true, //DONT FORGET THIS IF PROP PANE GROUPS DO NOT EXPAND
           groups: [
+            WebPartInfoGroup( links.gitRepoPageInfoSmall, 'Best TOC and Page Info available :)' ),
             {
               groupName: strings.PinMeGroupName,
               groupFields: [
@@ -1212,6 +1333,17 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     }
   }
 
+
+/***
+ *     .d8b.  d8b   db  .d8b.  db      db    db d888888b d888888b  .o88b. .d8888. 
+ *    d8' `8b 888o  88 d8' `8b 88      `8b  d8' `~~88~~'   `88'   d8P  Y8 88'  YP 
+ *    88ooo88 88V8o 88 88ooo88 88       `8bd8'     88       88    8P      `8bo.   
+ *    88~~~88 88 V8o88 88~~~88 88         88       88       88    8b        `Y8b. 
+ *    88   88 88  V888 88   88 88booo.    88       88      .88.   Y8b  d8 db   8D 
+ *    YP   YP VP   V8P YP   YP Y88888P    YP       YP    Y888888P  `Y88P' `8888Y' 
+ *                                                                                
+ *                                                                                
+ */
   private async saveLoadAnalytics( Title: string, Result: string, ) {
 
     if ( this.analyticsWasExecuted === true ) {

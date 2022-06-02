@@ -13,6 +13,7 @@ import PageNavigator from './PageNavigator/PageNavigator';
 
 import ReactJson from "react-json-view";
 import AdvancedPageProperties from './AdvPageProps/components/AdvancedPageProperties';
+import RelatedItems from './RelatedItems/RelatedItems';
 
 import stylesA from './AdvPageProps/components/AdvancedPageProperties.module.scss';
 import { FPSPinMe, IPinMeState } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu';
@@ -22,6 +23,7 @@ import WebpartBanner from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/banner/onL
 import { getWebPartHelpElement } from './PropPaneHelp/PropPaneHelp';
 
 import { getBannerPages, IBannerPages } from './HelpPanel/AllContent';
+import { IRelatedItemsProps } from './RelatedItems/IRelatedItemsProps';
 
 export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFpsPageInfoState> {
 
@@ -94,6 +96,45 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
   private TOCExpand = <Icon  title={ 'Expand Table of Contents' } iconName='ChevronDownMed' style={ this.propsExpandCmdStyles  }></Icon>;
   private TOCCollapse = <Icon  title={ 'Collapse Table of Contents' } iconName='ChevronUpMed' style={ this.propsExpandCmdStyles  }></Icon>;
 
+
+  private createRelatedContent( related: IRelatedItemsProps, isExpanded: boolean, pinState: IPinMeState ) {
+
+    if ( related.showItems !== true ) {
+      return null;
+
+    } else {
+
+      const fadeMeClass = pinState === 'pinMini' ? `pinMeFadeContent` : `pinMeContent`;
+      const showStyles = isExpanded === true || !related.description ? stylesA.showProperties : stylesA.hideProperties;
+  
+      let accordion = !related.showItems || !related.description ? null : 
+      <div className={ stylesA.propsTitle } style={{ display: 'flex', flexWrap: 'nowrap', }} onClick={ () => { this.toggleRelated( related, isExpanded ) ; } }>
+        <div style={{ cursor: 'pointer' }} title={'Show or Collapse RelatedItems'}>{ related.description }</div>
+        { isExpanded === true ? this.TOCCollapse : this.TOCExpand }
+      </div> ;
+  
+      const relatedComponent = <div className = {`${fadeMeClass}`} style={ related.itemsStyle}>
+      { accordion }
+      <div className={ showStyles }>
+        <RelatedItems 
+            context={ this.props.context }
+            parentKey={ related.parentKey }
+            themeVariant={ this.props.pageNavigator.themeVariant }
+            description={ related.description }
+            showItems={ related.showItems }
+            isExpanded={ isExpanded }
+            fetchInfo={ related.fetchInfo }
+            itemsStyle={ related.itemsStyle }
+          >
+        </RelatedItems>
+      </div>
+      </div>;
+
+      return relatedComponent;
+    }
+
+
+  }
  /***
   *     .o88b.  .d88b.  d8b   db .d8888. d888888b d8888b. db    db  .o88b. d888888b  .d88b.  d8888b. 
   *    d8P  Y8 .8P  Y8. 888o  88 88'  YP `~~88~~' 88  `8D 88    88 d8P  Y8 `~~88~~' .8P  Y8. 88  `8D 
@@ -115,6 +156,9 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       lastStateChange: '',
       propsExpanded: this.props.advPageProps.defaultExpanded,
       tocExpanded: this.props.pageNavigator.tocExpanded,
+      related1Expanded: this.props.relatedItemsProps1.isExpanded,
+      related2Expanded: this.props.relatedItemsProps2.isExpanded,
+      pageLinksExpanded: this.props.pageLinks.isExpanded,
     };
 
 
@@ -334,7 +378,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
 
     let tocAccordion = !this.props.pageNavigator.showTOC || !this.props.pageNavigator.description ? null : 
-    <div className={ stylesA.propsTitle } style={{ display: 'flex', flexWrap: 'nowrap', paddingTop: '20px' }} onClick={ this.toggleTOC.bind(this) }>
+    <div className={ stylesA.propsTitle } style={{ display: 'flex', flexWrap: 'nowrap', }} onClick={ this.toggleTOC.bind(this) }>
       <div style={{ cursor: 'pointer' }} title={'Show or Collapse Table of Contents'}>{ this.props.pageNavigator.description }</div>
       { this.state.tocExpanded === true ? this.TOCCollapse : this.TOCExpand }
     </div> ;
@@ -358,6 +402,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     </div>
     </div>;
 
+
     let devHeader = this.state.showDevHeader === true ? <div><b>Props: </b> { 'this.props.lastPropChange' + ', ' + 'this.props.lastPropDetailChange' } - <b>State: lastStateChange: </b> { this.state.lastStateChange  } </div> : null ;
 
     return (
@@ -366,12 +411,34 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
           { devHeader }
           { Banner }
           <div style={ this.props.pageInfoStyle }>
+            <div style={{ height: '20px' }}></div>
+            { this.createRelatedContent(this.props.relatedItemsProps1, this.state.related1Expanded, this.state.pinState ) }
+            { this.createRelatedContent(this.props.relatedItemsProps2, this.state.related2Expanded, this.state.pinState ) }
             { tocComponent }
             { advancedProps }
+            { this.createRelatedContent(this.props.pageLinks, this.state.pageLinksExpanded, this.state.pinState ) }
           </div>
         </div>
       </section>
     );
+  }
+
+  private toggleRelated( related: IRelatedItemsProps, isExpanded: boolean ) {
+    let newExpanded = isExpanded === true ? false : true;
+    if ( related.parentKey === 'related1' ) {
+      this.setState({ related1Expanded: newExpanded });
+
+    } else if ( related.parentKey === 'related2' ) {
+      this.setState({ related2Expanded: newExpanded });
+
+    } else if ( related.parentKey === 'pageLinks' ) {
+      this.setState({ pageLinksExpanded: newExpanded });
+
+    } else {
+      alert(`Whhhooaaa, was not expecting this parentKey: ${related.parentKey} ~ FPSPageInfo 420`);
+
+    }
+
   }
 
   private setPinFull() {
