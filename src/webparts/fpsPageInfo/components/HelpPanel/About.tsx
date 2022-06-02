@@ -9,7 +9,7 @@ import { IRepoLinks } from '@mikezimm/npmfunctions/dist/Links/CreateLinks';
 
 import { convertIssuesMarkdownStringToSpan } from '@mikezimm/npmfunctions/dist/Elements/Markdown';
 
-export const panelVersionNumber = '2022-06-02 -  1.0.1.03'; //Added to show in panel
+export const panelVersionNumber = '2022-06-02 -  1.0.1.04'; //Added to show in panel
 
 export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
 
@@ -31,6 +31,8 @@ export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
      * 
      * WARNING:  DO NOT add any CDNs to Global Warn or Approve unless you want it to apply to JS as well.
      */
+
+    table.rows.push( createAboutRow('2022-06-02',"1.0.1.04","#67 - fix toLowerCase() error, fix #58, ", showRepoLinks === true ? repoLinks : null ) );
 
     table.rows.push( createAboutRow('2022-06-02',"1.0.1.03","#61 - fix TOC links for ! - and leading-trailing special chars", showRepoLinks === true ? repoLinks : null ) );
     table.rows.push( createAboutRow('',"","#58, #60 - CSS, #61, #63 - Add Images and Links, #64 - Add Related Info, #65", showRepoLinks === true ? repoLinks : null ) );
