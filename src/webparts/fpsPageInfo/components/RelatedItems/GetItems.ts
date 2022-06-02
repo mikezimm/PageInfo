@@ -100,7 +100,8 @@ function replaceHTMLEntities( str ) {
                 let sourceString = source.substring(0, source.indexOf('}') + 1  ) ;
                 let sources = JSON.parse( sourceString );
                 Object.keys(sources).map( key => {
-                  item.images.push( decodeURI( sources[key]) );
+                  let url = decodeURI( sources[key]);
+                  item.images.push( url );
                 });
               }
             });
