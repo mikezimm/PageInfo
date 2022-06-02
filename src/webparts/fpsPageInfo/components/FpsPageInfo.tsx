@@ -158,6 +158,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       tocExpanded: this.props.pageNavigator.tocExpanded,
       related1Expanded: this.props.relatedItemsProps1.isExpanded,
       related2Expanded: this.props.relatedItemsProps2.isExpanded,
+      pageLinksExpanded: this.props.pageLinks.isExpanded,
     };
 
 
@@ -415,6 +416,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
             { this.createRelatedContent(this.props.relatedItemsProps2, this.state.related2Expanded, this.state.pinState ) }
             { tocComponent }
             { advancedProps }
+            { this.createRelatedContent(this.props.pageLinks, this.state.pageLinksExpanded, this.state.pinState ) }
           </div>
         </div>
       </section>
@@ -428,6 +430,9 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
     } else if ( related.parentKey === 'related2' ) {
       this.setState({ related2Expanded: newExpanded });
+
+    } else if ( related.parentKey === 'pageLinks' ) {
+      this.setState({ pageLinksExpanded: newExpanded });
 
     } else {
       alert(`Whhhooaaa, was not expecting this parentKey: ${related.parentKey} ~ FPSPageInfo 420`);

@@ -66,8 +66,6 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
       return ( null );
     } else { //If there is a null value, it will just show it
 
-
-
       const linksElement = this.state.items.length === 0 ? <div style={{ paddingLeft: '20px', paddingBottom: '10px', fontSize: 'larger' }}>
           There are no related items ;(
         </div> :
@@ -85,6 +83,24 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
             } )}
         </div>;
 
+        let imgList = null;
+        if ( this.props.fetchInfo.canvasImgs === true && this.state.items.length > 0  && this.state.items[0].images.length > 0 ) {
+          imgList = 
+          <div><div>Embedded Images</div>
+            { this.state.items[0].images.map( img => { 
+              let label = <span className={ styles.trimText}>{ img }</span>;
+              if ( img ) {
+                let liTitle = `Go to ${img}`;
+                return <li className = { styles.isLink } style={ this.props.itemsStyle } title={liTitle} onClick={ () => { this.onLinkClick( img  ); }}>{ label }
+                  <Icon title={ `Go to ${img}` }iconName='OpenInNewTab'></Icon></li> ;
+              } else {
+                return <li style={ this.props.itemsStyle }>{ label }</li> ;
+              }
+              } )}
+          </div>;
+
+        }
+
       return (
         <div className={styles.relatedItems}>
           <div className={styles.container}>
@@ -92,6 +108,7 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
               <div className={styles.column}>
                 {/* <div style={{ fontSize: '20px', fontWeight: 600, backgroundColor: semanticColors.defaultStateBackground, color: semanticColors.bodyText}}>{ this.props.description ? this.props.description : null }</div> */}
                 { linksElement }
+                { imgList }
               </div>
             </div>
           </div>

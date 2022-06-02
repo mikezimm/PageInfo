@@ -610,6 +610,24 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           itemsStyle: relatedItemsStyle,
         },
 
+        pageLinks: {
+          parentKey: 'pageLinks',
+          description: this.replaceHandleBars( this.properties.pageLinksdescription, this.context ) ,
+          showItems: this.properties.pageLinksshowItems,
+          fetchInfo: {
+            web: this.properties.pageLinksweb.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : this.replaceHandleBars( this.properties.pageLinksweb, this.context ),
+            listTitle: this.replaceHandleBars( this.properties.pageLinkslistTitle, this.context ),
+            restFilter: this.replaceHandleBars( this.properties.pageLinksrestFilter, this.context ),
+            linkProp: this.properties.pageLinkslinkProp, // aka FileLeaf to open file name, if empty, will just show the value
+            displayProp: this.properties.pageLinksdisplayProp,
+            canvasLinks: this.properties.canvasLinks,
+            canvasImgs: this.properties.canvasImgs,
+          },
+          isExpanded: this.properties.pageLinksisExpanded,
+          themeVariant: this._themeVariant,
+          itemsStyle: relatedItemsStyle,
+        },
+
         fpsPinMenu: {
           defPinState: this.properties.defPinState,
           forcePinState: this.properties.forcePinState,

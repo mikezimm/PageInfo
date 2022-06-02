@@ -27,6 +27,21 @@ import { divide } from 'lodash';
 import { isValidElement } from 'react';
 import { IRelatedFetchInfo } from './IRelatedItemsProps';
 
+/**
+ * Creation of string from HTML entities
+ */
+function replaceHTMLEntities( str ) {
+  let newStr = str + '';
+  // newStr = newStr.replace(/&#123;&quot;/gi,'"');
+  newStr = newStr.replace(/&#123;/gi,'{');
+  newStr = newStr.replace(/&#125;/gi,'}');
+  newStr = newStr.replace(/\\&quot;/gi,'"');
+  newStr = newStr.replace(/&quot;/gi,'"');
+  newStr = newStr.replace(/&#58;/gi,':');
+  return newStr;
+
+}
+
 
 //Standards are really site pages, supporting docs are files
  export async function getRelatedItems( fetchInfo: IRelatedFetchInfo, updateProgress: any, ) {
@@ -39,18 +54,23 @@ import { IRelatedFetchInfo } from './IRelatedItemsProps';
       fetchInfo.displayProp = '';
     }
 
-    let baseSelectColumns = [ fetchInfo.displayProp, fetchInfo.linkProp ];
+    let baseSelectColumns = [];
+    if ( fetchInfo.displayProp ) baseSelectColumns.push( fetchInfo.displayProp );
+    if ( fetchInfo.linkProp ) baseSelectColumns.push( fetchInfo.linkProp );
 
     let expColumns = getExpandColumns( baseSelectColumns );
     let selColumns = getSelectColumns( baseSelectColumns );
 
-    const expandThese = expColumns.join(",");
+    let expandThese = expColumns.length > 1 ? expColumns.join(",") : expColumns[0];
+    if ( !expandThese ) expandThese = ''; //Added this for cases where there are no expanded columns and therefore expColumns is undefined.
+
     //Do not get * columns when using standards so you don't pull WikiFields
 
 
     //itemFetchCol
     //let selectThese = '*,WikiField,FileRef,FileLeafRef,' + selColumns.join(",");
-    let selectThese = [ baseSelectColumns, ...selColumns, ].join(",");
+    let selectThese = [ baseSelectColumns, ...selColumns, ];
+    let selectTheseString = selectThese.join(",");
     let items: IAnyContent[] = [];
     let filtered: IAnyContent[] = [];
 
@@ -59,7 +79,7 @@ import { IRelatedFetchInfo } from './IRelatedItemsProps';
 
     try {
       items = await web.lists.getByTitle( fetchInfo.listTitle ).items
-      .select(selectThese).filter(fetchInfo.restFilter).expand(expandThese).getAll();
+      .select(selectTheseString).filter(fetchInfo.restFilter).expand(expandThese).getAll();
 
     } catch (e) {
       errMess = getHelpfullErrorV2( e, true, true, 'getRelatedItems ~ 60');
@@ -70,14 +90,14 @@ import { IRelatedFetchInfo } from './IRelatedItemsProps';
     items.map ( item => {
       item.images=[];
       item.links=[];
-      if ( fetchInfo.canvasImgs === true || fetchInfo.canvasLinks === true ) {
-
+      if ( ( fetchInfo.canvasImgs === true || fetchInfo.canvasLinks === true ) && item.CanvasContent1 ) {
+        item.CanvasContent1 = replaceHTMLEntities( item.CanvasContent1 );
         if ( fetchInfo.canvasImgs === true ) {
           let sourceStrings = item.CanvasContent1.split('"imageSources":');
           if ( sourceStrings.length > 1 ) {
             sourceStrings.map( (source, idx) => {
               if ( idx > 0 ) {
-                let sourceString = source.substring(0, source.indexOf('}') + 1  );
+                let sourceString = source.substring(0, source.indexOf('}') + 1  ) ;
                 let sources = JSON.parse( sourceString );
                 Object.keys(sources).map( key => {
                   item.images.push( decodeURI( sources[key]) );
@@ -91,7 +111,7 @@ import { IRelatedFetchInfo } from './IRelatedItemsProps';
           let sourceStrings = item.CanvasContent1.split('<a ');
           if ( sourceStrings.length > 1 ) {
             sourceStrings.map( (source, idx) => {
-              let sourceString = source.substring( source.indexOf(' href="') + 7);
+              let sourceString = source.substring( source.indexOf(' href="') + 7) ;
               sourceString = sourceString.substring(0, sourceString.indexOf('"'));
               item.links.push( sourceString );
             });

@@ -85,6 +85,17 @@ export const ForceFinancialManual : IPreConfigSettings = {
         related2linkProp: 'File/ServerRelativeUrl', // aka FileLeaf to open file name, if empty, will just show the value
         related2displayProp: 'FileLeafRef',
 
+        pageLinksdescription: 'Images and Links',
+        pageLinksshowItems: true,
+        pageLinksisExpanded: false,
+        canvasLinks: true,
+        canvasImgs: true,
+        pageLinksweb: '/sites/financemanual/manual',
+        pageLinkslistTitle: 'Site Pages',
+        pageLinksrestFilter: 'ID eq {{PageId}}',
+        pageLinkslinkProp: 'File/ServerRelativeUrl', // aka FileLeaf to open file name, if empty, will just show the value
+        pageLinksdisplayProp: 'FileLeafRef',
+        
     }
 };
 

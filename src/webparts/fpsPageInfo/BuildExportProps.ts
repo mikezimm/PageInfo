@@ -46,7 +46,7 @@
 
  import * as strings from 'FpsPageInfoWebPartStrings';
 
-import { IFpsPageInfoWebPartProps } from './IFpsPageInfoWebPartProps';
+import { changePageLinks, IFpsPageInfoWebPartProps } from './IFpsPageInfoWebPartProps';
 import { exportIgnoreProps, importBlockProps, } from './IFpsPageInfoWebPartProps';
 
 import { changeVisitor, changeExpando, changeBanner, changefpsOptions1, changefpsOptions2, exportIgnorePropsFPS, importBlockPropsFPS,  } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
@@ -109,6 +109,7 @@ import { changePinMe, changeTOC, changeProperties, changeWebPartStyles, changeRe
     exportStructure.changeProperties = changeProperties;
     exportStructure.changeRelated1 = changeRelated1;
     exportStructure.changeRelated2 = changeRelated2;
+    exportStructure.pageLinks = changePageLinks;
 
     exportStructure.changeWebPartStyles = changeWebPartStyles;
 

@@ -62,6 +62,7 @@ export interface IFpsPageInfoProps {
 
   relatedItemsProps1: IRelatedItemsProps;
   relatedItemsProps2: IRelatedItemsProps;
+  pageLinks: IRelatedItemsProps;
 
   fpsPinMenu: IFPSPinMenu;
 
@@ -81,4 +82,5 @@ export interface IFpsPageInfoState {
   tocExpanded: boolean;
   related1Expanded: boolean;
   related2Expanded: boolean;
+  pageLinksExpanded: boolean;
 }
