@@ -971,6 +971,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           },
           displayGroupsAsAccordion: true, //DONT FORGET THIS IF PROP PANE GROUPS DO NOT EXPAND
           groups: [
+            WebPartInfoGroup( links.gitRepoPageInfoSmall, 'Best TOC and Page Info available :)' ),
             {
               groupName: strings.PinMeGroupName,
               groupFields: [
