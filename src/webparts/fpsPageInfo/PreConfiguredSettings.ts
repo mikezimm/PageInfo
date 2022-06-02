@@ -38,6 +38,10 @@ export const ForceEverywhere : IPreConfigSettings = {
 export const PresetEverywhere : IPreConfigSettings = {
     location: '*',
     props: {
+
+        related1web: 'current',
+        related2web: 'current',
+
         relatedStyle: '',
 
         // pageLinksdescription: 'Images and Links',
@@ -125,7 +129,7 @@ export const ForceFinancialManualSubSite : IPreConfigSettings = {
         related1description: 'Standards',
         related1showItems: true,
         related1isExpanded: true,
-        related1web: '/sites/financemanual/manual',
+
         related1listTitle: 'Site Pages',
         related1restFilter: 'StandardDocumentsId eq {{PageId}}',
         related1linkProp: 'File/ServerRelativeUrl', // aka FileLeaf to open file name, if empty, will just show the value
@@ -134,7 +138,7 @@ export const ForceFinancialManualSubSite : IPreConfigSettings = {
         related2description: 'Supporting Documents',
         related2showItems: true,
         related2isExpanded: false,
-        related2web: '/sites/financemanual/manual',
+
         related2listTitle: 'SupportDocuments',
         related2restFilter: 'StandardDocumentsId eq {{PageId}}',
         related2linkProp: 'File/ServerRelativeUrl', // aka FileLeaf to open file name, if empty, will just show the value
