@@ -16,7 +16,45 @@ const FinancialManualContacts: IPropertyFieldGroupOrPerson = {
     imageUrl: null,
 };
 
-export const ForceFinancialManual : IPreConfigSettings = {
+export const ForceEverywhere : IPreConfigSettings = {
+    location: '*',
+    props: {
+        // relatedStyle: '',
+
+        pageLinksdescription: 'Images and Links',
+        // pageLinksshowItems: true,
+        // pageLinksisExpanded: false,
+        // canvasLinks: true,
+        // canvasImgs: true,
+        pageLinksweb: 'current',
+        pageLinkslistTitle: 'Site Pages',
+        pageLinksrestFilter: 'ID eq {{PageId}}',
+        pageLinkslinkProp: 'File/ServerRelativeUrl', // aka FileLeaf to open file name, if empty, will just show the value
+        pageLinksdisplayProp: 'FileLeafRef',
+        
+    }
+};
+
+export const PresetEverywhere : IPreConfigSettings = {
+    location: '*',
+    props: {
+        relatedStyle: '',
+
+        // pageLinksdescription: 'Images and Links',
+        pageLinksshowItems: true,
+        pageLinksisExpanded: false,
+        canvasLinks: true,
+        canvasImgs: true,
+        // pageLinksweb: 'current',
+        // pageLinkslistTitle: 'Site Pages',
+        // pageLinksrestFilter: 'ID eq {{PageId}}',
+        // pageLinkslinkProp: 'File/ServerRelativeUrl', // aka FileLeaf to open file name, if empty, will just show the value
+        // pageLinksdisplayProp: 'FileLeafRef',
+        
+    }
+};
+
+export const ForceFinancialManualColl : IPreConfigSettings = {
     location: '/sites/financemanual/',
     props: {
         // Pin Me props that are not preset in manifest.json
@@ -28,15 +66,15 @@ export const ForceFinancialManual : IPreConfigSettings = {
         pageInfoStyle: '\"paddingBottom\":\"20px\",\"backgroundColor\":\"#dcdcdc\";\"borderLeft\":\"solid 3px #c4c4c4\"',
 
         // Properties props that are not preset in manifest.json
-        selectedProperties: [
-            "ALGroup",
-            "DocumentType",
-            "Functions",
-            "Processes",
-            "ReportingSections",
-            "StandardDocuments",
-            "Topics",
-        ],
+        // selectedProperties: [
+        //     "ALGroup",
+        //     "DocumentType",
+        //     "Functions",
+        //     "Processes",
+        //     "ReportingSections",
+        //     "StandardDocuments",
+        //     "Topics",
+        // ],
 
         // Visitor Panel props that are not preset in manifest.json
         fullPanelAudience: 'Page Editors',
@@ -65,6 +103,23 @@ export const ForceFinancialManual : IPreConfigSettings = {
         bannerCmdStyle: '{\"color\":\"white\",\"backgroundColor\":\"#005495\",\"fontSize\":16,\"fontWeight\":\"normal\",\"fontStyle\":\"normal\",\"padding\":\"7px 4px\",\"marginRight\":\"0px\",\"borderRadius\":\"5px\",\"cursor\":\"pointer\"}',
         lockStyles: true,
 
+    }
+};
+
+export const ForceFinancialManualSubSite : IPreConfigSettings = {
+    location: '/sites/financemanual/manual/',
+    props: {
+
+        selectedProperties: [
+            "ALGroup",
+            "DocumentType",
+            "Functions",
+            "Processes",
+            "ReportingSections",
+            "StandardDocuments",
+            "Topics",
+        ],
+
         relatedStyle: '',
 
         related1description: 'Standards',
@@ -84,21 +139,9 @@ export const ForceFinancialManual : IPreConfigSettings = {
         related2restFilter: 'StandardDocumentsId eq {{PageId}}',
         related2linkProp: 'File/ServerRelativeUrl', // aka FileLeaf to open file name, if empty, will just show the value
         related2displayProp: 'FileLeafRef',
-
-        pageLinksdescription: 'Images and Links',
-        pageLinksshowItems: true,
-        pageLinksisExpanded: false,
-        canvasLinks: true,
-        canvasImgs: true,
-        pageLinksweb: '/sites/financemanual/manual',
-        pageLinkslistTitle: 'Site Pages',
-        pageLinksrestFilter: 'ID eq {{PageId}}',
-        pageLinkslinkProp: 'File/ServerRelativeUrl', // aka FileLeaf to open file name, if empty, will just show the value
-        pageLinksdisplayProp: 'FileLeafRef',
         
     }
 };
-
 
 export const PresetFinancialManual : IPreConfigSettings = {
     location: '/sites/financemanual/',
@@ -115,6 +158,6 @@ export const PresetSomeRandomSite : IPreConfigSettings = {
 };
 
 export const PreConfiguredProps : IAllPreConfigSettings = {
-    forced: [ ForceFinancialManual ],
-    preset: [ PresetFinancialManual, PresetSomeRandomSite ],
+    forced: [ ForceFinancialManualColl, ForceFinancialManualSubSite, ForceEverywhere ],
+    preset: [ PresetFinancialManual, PresetSomeRandomSite, PresetEverywhere ],
 };

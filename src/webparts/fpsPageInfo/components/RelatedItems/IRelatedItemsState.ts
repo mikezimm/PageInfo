@@ -24,4 +24,8 @@ export interface IRelatedItemsState {
   items: IAnyContent[];
   errMess: string;
   fetched: boolean;
+
+  canvasLinksExpanded: boolean;
+  canvasImgsExpanded: boolean;
+
 }

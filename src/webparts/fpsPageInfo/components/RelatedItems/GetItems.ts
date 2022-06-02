@@ -96,7 +96,7 @@ function replaceHTMLEntities( str ) {
           let sourceStrings = item.CanvasContent1.split('"imageSources":');
           if ( sourceStrings.length > 1 ) {
             sourceStrings.map( (source, idx) => {
-              if ( idx > 0 ) {
+              if ( idx > 0 ) { //Always skip index 0 because it is the string before the first tag.
                 let sourceString = source.substring(0, source.indexOf('}') + 1  ) ;
                 let sources = JSON.parse( sourceString );
                 Object.keys(sources).map( key => {
@@ -112,9 +112,11 @@ function replaceHTMLEntities( str ) {
           let sourceStrings = item.CanvasContent1.split('<a ');
           if ( sourceStrings.length > 1 ) {
             sourceStrings.map( (source, idx) => {
-              let sourceString = source.substring( source.indexOf(' href="') + 7) ;
-              sourceString = sourceString.substring(0, sourceString.indexOf('"'));
-              item.links.push( sourceString );
+              if ( idx > 0 ) { //Always skip index 0 because it is the string before the first tag.
+                let sourceString = source.substring( source.indexOf(' href="') + 7) ;
+                sourceString = sourceString.substring(0, sourceString.indexOf('"'));
+                item.links.push( sourceString );
+              }
             });
           }
         }
@@ -122,6 +124,7 @@ function replaceHTMLEntities( str ) {
       } else {
         item.linkUrl = checkDeepProperty( item, fetchInfo.linkProp.split('/'), 'ShortError' );
         item.linkText = checkDeepProperty( item, fetchInfo.displayProp.split('/'), 'ShortError' );
+        item.linkText = item.linkText ? decodeURI(item.linkText) : item.linkText;
         item.CanvasContent1 = '';
       }
 

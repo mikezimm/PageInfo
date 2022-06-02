@@ -464,7 +464,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     // console.log('mainWebPart: showTricks ~ 322',   );
     let showTricks: any = false;
     links.trickyEmails.map( getsTricks => {
-      if ( this.context.pageContext.user.loginName && this.context.pageContext.user.loginName.toLowerCase().indexOf( getsTricks ) > -1 ) { 
+      if ( this.context.pageContext.user && this.context.pageContext.user.loginName && this.context.pageContext.user.loginName.toLowerCase().indexOf( getsTricks ) > -1 ) { 
         showTricks = true ;
         this.properties.showRepoLinks = true; //Always show these users repo links
       }
