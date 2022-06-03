@@ -105,11 +105,11 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     } else {
 
       const fadeMeClass = pinState === 'pinMini' ? `pinMeFadeContent` : `pinMeContent`;
-      const showStyles = isExpanded === true || !related.description ? stylesA.showProperties : stylesA.hideProperties;
+      const showStyles = isExpanded === true || !related.heading ? stylesA.showProperties : stylesA.hideProperties;
   
-      let accordion = !related.showItems || !related.description ? null : 
+      let accordion = !related.showItems || !related.heading ? null : 
       <div className={ stylesA.propsTitle } style={{ display: 'flex', flexWrap: 'nowrap', }} onClick={ () => { this.toggleRelated( related, isExpanded ) ; } }>
-        <div style={{ cursor: 'pointer' }} title={'Show or Collapse RelatedItems'}>{ related.description }</div>
+        <div style={{ cursor: 'pointer' }} title={'Show or Collapse RelatedItems'}>{ related.heading }</div>
         { isExpanded === true ? this.TOCCollapse : this.TOCExpand }
       </div> ;
   
@@ -120,7 +120,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
             context={ this.props.context }
             parentKey={ related.parentKey }
             themeVariant={ this.props.pageNavigator.themeVariant }
-            description={ related.description }
+            heading={ related.heading }
             showItems={ related.showItems }
             isExpanded={ isExpanded }
             fetchInfo={ related.fetchInfo }

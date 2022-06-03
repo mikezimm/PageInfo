@@ -75,8 +75,10 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
       let linksElement = null;
       
       if ( this.props.parentKey !== 'pageLinks' ) {
+        let noItemsMessage = this.state.errMess ? <div style={{ color: 'red', fontWeight: 600 }}>{this.state.errMess}</div>
+         : 'There are no related items ;(';
         linksElement = this.state.items.length === 0 ? <div style={{ paddingLeft: '20px', paddingBottom: '10px', fontSize: 'larger' }}>
-          There are no related items ;(
+          { noItemsMessage }
         </div> :
         <div>
           { this.state.items.map( item => { 

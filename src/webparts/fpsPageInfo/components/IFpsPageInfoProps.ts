@@ -53,7 +53,7 @@ export interface IFpsPageInfoProps {
   errMessage: any;
   bannerProps: IWebpartBannerProps;
 
-  //ADDED FOR WEBPART HISTORY:  
+  //ADDED FOR WEBPART HISTORY:
   webpartHistory: IWebpartHistory;
 
   pageNavigator: IPageNavigatorProps;
@@ -83,4 +83,5 @@ export interface IFpsPageInfoState {
   related1Expanded: boolean;
   related2Expanded: boolean;
   pageLinksExpanded: boolean;
+
 }

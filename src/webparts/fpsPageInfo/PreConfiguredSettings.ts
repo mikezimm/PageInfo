@@ -21,7 +21,7 @@ export const ForceEverywhere : IPreConfigSettings = {
     props: {
         // relatedStyle: '',
 
-        pageLinksdescription: 'Images and Links',
+        // pageLinksheading: 'Images and Links',
         // pageLinksshowItems: true,
         // pageLinksisExpanded: false,
         // canvasLinks: true,
@@ -42,9 +42,15 @@ export const PresetEverywhere : IPreConfigSettings = {
         related1web: 'current',
         related2web: 'current',
 
+        related1showItems: false,
+        related2showItems: false,
+
+        related1heading: 'Related Items 1',
+        related2heading: 'Related Items 2',
+
         relatedStyle: '',
 
-        // pageLinksdescription: 'Images and Links',
+        pageLinksheading: 'Images and Links',
         pageLinksshowItems: true,
         pageLinksisExpanded: false,
         canvasLinks: true,
@@ -126,7 +132,7 @@ export const ForceFinancialManualSubSite : IPreConfigSettings = {
 
         relatedStyle: '',
 
-        related1description: 'Standards',
+        related1heading: 'Standards',
         related1showItems: true,
         related1isExpanded: true,
 
@@ -135,7 +141,7 @@ export const ForceFinancialManualSubSite : IPreConfigSettings = {
         related1linkProp: 'File/ServerRelativeUrl', // aka FileLeaf to open file name, if empty, will just show the value
         related1displayProp: 'Title',
 
-        related2description: 'Supporting Documents',
+        related2heading: 'Supporting Documents',
         related2showItems: true,
         related2isExpanded: false,
 

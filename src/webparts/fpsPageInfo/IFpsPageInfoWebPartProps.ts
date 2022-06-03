@@ -33,9 +33,9 @@ import { exportIgnorePropsFPS, importBlockPropsFPS } from '@mikezimm/npmfunction
   export const changeTOC = [ 'showTOC', 'minHeadingToShow' ,'description' , 'TOCTitleField', 'tocExpanded' ];
   export const changeProperties = [ 'showSomeProps', 'showCustomProps' , 'showOOTBProps' , 'showApprovalProps' , 'propsTitleField', 'propsExpanded', 'selectedProperties' ];
 
-  export const changeRelated1 = [ 'related1description', 'related1showItems' , 'related1isExpanded' , 'related1web' , 'related1listTitle', 'related1restFilter', 'related1linkProp', 'related1displayProp', 'relatedStyle' ];
-  export const changeRelated2 = [ 'related2description', 'related2showItems' , 'related2isExpanded' , 'related2web' , 'related2listTitle', 'related2restFilter', 'related2linkProp', 'related2displayProp' ];
-  export const changePageLinks = [ 'pageLinksdescription', 'pageLinksshowItems' , 'pageLinksisExpanded' , 'pageLinksweb' , 'pageLinkslistTitle', 'pageLinksrestFilter', 'pageLinkslinkProp', 'pageLinksdisplayProp', 'canvasLinks', 'canvasImgs' ];
+  export const changeRelated1 = [ 'related1heading', 'related1showItems' , 'related1isExpanded' , 'related1web' , 'related1listTitle', 'related1restFilter', 'related1linkProp', 'related1displayProp', 'relatedStyle' ];
+  export const changeRelated2 = [ 'related2heading', 'related2showItems' , 'related2isExpanded' , 'related2web' , 'related2listTitle', 'related2restFilter', 'related2linkProp', 'related2displayProp' ];
+  export const changePageLinks = [ 'pageLinksheading', 'pageLinksshowItems' , 'pageLinksisExpanded' , 'pageLinksweb' , 'pageLinkslistTitle', 'pageLinksrestFilter', 'pageLinkslinkProp', 'pageLinksdisplayProp', 'canvasLinks', 'canvasImgs' ];
 
   export const changeWebPartStyles = [ 'h1Style', 'h2Style' ,'h3Style' , 'pageInfoStyle', 'tocStyle', 'propsStyle' ];
 
@@ -71,7 +71,7 @@ export interface IFpsPageInfoWebPartProps {
 
   relatedStyle: string;
 
-  related1description: string;
+  related1heading: string;
   related1showItems: boolean;
   related1isExpanded: boolean;
   related1web: string;
@@ -80,7 +80,7 @@ export interface IFpsPageInfoWebPartProps {
   related1linkProp: string; // aka FileLeaf to open file name, if empty, will just show the value
   related1displayProp: string;
 
-  related2description: string;
+  related2heading: string;
   related2showItems: boolean;
   related2isExpanded: boolean;
   related2web: string;
@@ -89,7 +89,7 @@ export interface IFpsPageInfoWebPartProps {
   related2linkProp: string; // aka FileLeaf to open file name, if empty, will just show the value
   related2displayProp: string;
 
-  pageLinksdescription: string;
+  pageLinksheading: string;
   pageLinksshowItems: boolean;
   pageLinksisExpanded: boolean;
   pageLinksweb: string;

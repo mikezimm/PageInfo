@@ -45,6 +45,15 @@ function replaceHTMLEntities( str ) {
 
 //Standards are really site pages, supporting docs are files
  export async function getRelatedItems( fetchInfo: IRelatedFetchInfo, updateProgress: any, ) {
+  let errMess = '';
+
+    if ( !fetchInfo.web ) { errMess += 'Web url, ';  }
+    if ( !fetchInfo.listTitle ) { errMess += 'ListTitle, ';  }
+    if ( !fetchInfo.displayProp ) { errMess += 'LabelColumn, ';  }
+    if ( errMess ) {
+      errMess += ' are Required!  Tip:  Click yellow button for prop pane help :)';
+      return { items: [], filtered: [], error: errMess , fetchInfo: fetchInfo };
+    }
 
     // debugger;
     let web = await Web( `${window.location.origin}${fetchInfo.web}` );
@@ -75,7 +84,6 @@ function replaceHTMLEntities( str ) {
     let filtered: IAnyContent[] = [];
 
     console.log('getRelatedItems: fetchInfo', fetchInfo );
-    let errMess = null;
 
     try {
       items = await web.lists.getByTitle( fetchInfo.listTitle ).items
