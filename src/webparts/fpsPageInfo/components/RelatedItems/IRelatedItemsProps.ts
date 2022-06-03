@@ -13,11 +13,13 @@ export interface IRelatedFetchInfo {
   canvasImgs?: boolean;
 }
 
+export type IRelatedKey = 'related1' | 'related2' | 'pageLinks';
+
 export interface IRelatedItemsProps {
 
   context?: WebPartContext;
-  parentKey: string;
-  description: string;
+  parentKey: IRelatedKey;
+  heading: string;
   showItems: boolean;
   isExpanded: boolean;
   fetchInfo: IRelatedFetchInfo;

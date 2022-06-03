@@ -12,6 +12,7 @@ import {
   PropertyPaneButton,
   PropertyPaneButtonType,
   PropertyPaneToggle,
+  IPropertyPaneGroup,
 
 
 } from '@microsoft/sp-property-pane';
@@ -119,7 +120,7 @@ import { HTMLRegEx, IHTMLRegExKeys } from '../../Service/htmlTags';
 import { css } from 'office-ui-fabric-react';
 import { PreConfiguredProps } from './PreConfiguredSettings';
 import { getThisSitesPreConfigProps, IConfigurationProp, ISitePreConfigProps, IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
-import { IRelatedItemsProps } from './components/RelatedItems/IRelatedItemsProps';
+import { IRelatedItemsProps, IRelatedKey } from './components/RelatedItems/IRelatedItemsProps';
 
 //export type IMinHeading = 'h3' | 'h2' | 'h1' ;
 export const MinHeadingOptions = [
@@ -582,7 +583,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
         relatedItemsProps1: {
           parentKey: 'related1',
-          description: replaceHandleBars( this.properties.related1description, this.context ),
+          heading: replaceHandleBars( this.properties.related1heading, this.context ),
           showItems: this.properties.related1showItems,
           fetchInfo: {
             web: this.properties.related1web.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : replaceHandleBars( this.properties.related1web, this.context ),
@@ -598,7 +599,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
         relatedItemsProps2: {
           parentKey: 'related2',
-          description: replaceHandleBars( this.properties.related2description, this.context ) ,
+          heading: replaceHandleBars( this.properties.related2heading, this.context ) ,
           showItems: this.properties.related2showItems,
           fetchInfo: {
             web: this.properties.related2web.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : replaceHandleBars( this.properties.related2web, this.context ),
@@ -614,7 +615,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
         pageLinks: {
           parentKey: 'pageLinks',
-          description: replaceHandleBars( this.properties.pageLinksdescription, this.context ) ,
+          heading: replaceHandleBars( this.properties.pageLinksheading, this.context ) ,
           showItems: this.properties.pageLinksshowItems,
           fetchInfo: {
             web: this.properties.pageLinksweb.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : replaceHandleBars( this.properties.pageLinksweb, this.context ),
@@ -893,6 +894,122 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     this.context.propertyPane.refresh();
   }
 
+  private buildRelatedProps( name: IRelatedKey ) {
+
+    var groupFields: IPropertyPaneField<any>[] = [];
+
+    groupFields.push(PropertyPaneToggle(`${name}showItems`, {
+      label: "Add Related Items",
+      onText: "On",
+      offText: "Off",
+      // disabled: true,
+    }));
+
+    groupFields.push(PropertyPaneTextField(`${name}heading`, {
+      label: 'Heading - accordion',
+      disabled: this.properties[`${name}showItems`] === false ? true : false,
+    }));
+
+    groupFields.push(PropertyPaneTextField(`${name}web`, {
+      label: 'Url to site - starting with /sites/...',
+      disabled: this.properties[`${name}showItems`] === false ? true : false,
+    }));
+
+    groupFields.push(PropertyPaneTextField(`${name}listTitle`, {
+      label: 'Title of the list or library which has related items',
+      disabled: this.properties[`${name}showItems`] === false ? true : false,
+    }));
+
+    groupFields.push(PropertyPaneTextField(`${name}restFilter`, {
+      label: 'Rest filter - click bright yellow icon for examples',
+      disabled: this.properties[`${name}showItems`] === false ? true : false,
+    }));
+
+    groupFields.push(PropertyPaneTextField(`${name}displayProp`, {
+      label: 'Static field name of Related item Label',
+      disabled: this.properties[`${name}showItems`] === false ? true : false,
+    }));
+
+    groupFields.push(PropertyPaneTextField(`${name}linkProp`, {
+      label: 'Static field name of Related item Link',
+      disabled: this.properties[`${name}showItems`] === false ? true : false,
+    }));
+
+    groupFields.push(PropertyPaneToggle(`${name}isExpanded`, {
+      label: "Expand by default",
+      onText: "On",
+      offText: "Off",
+      disabled: this.properties[`${name}showItems`] === false ? true : false,
+    }));
+
+    groupFields.push(PropertyPaneTextField(`relatedStyle`, {
+      label: 'React.CSS Item Styles',
+      disabled: this.properties[`${name}showItems`] === false ? true : false,
+    }));
+    
+    const RelatedGroup: IPropertyPaneGroup = {
+      groupName: `Related Props ${name.replace(/\D/g, '')}`,
+      isCollapsed: true,
+      groupFields: groupFields
+    };
+
+    return RelatedGroup;
+
+  }
+
+  private buildImageLinksProps( ) {
+
+    var groupFields: IPropertyPaneField<any>[] = [];
+    const name = 'pageLinks';
+    groupFields.push(PropertyPaneToggle(`${name}showItems`, {
+      label: "Enable feature",
+      onText: "On",
+      offText: "Off",
+      // disabled: true,
+    }));
+
+    groupFields.push(PropertyPaneTextField(`${name}heading`, {
+      label: 'Heading - accordion',
+      disabled: this.properties[`${name}showItems`] === false ? true : false,
+    }));
+
+    groupFields.push(PropertyPaneToggle(`canvasImgs`, {
+      label: "Show Image Urls",
+      onText: "On",
+      offText: "Off",
+      disabled: this.properties[`${name}showItems`] === false ? true : false,
+    }));
+
+    groupFields.push(PropertyPaneToggle(`canvasLinks`, {
+      label: "Show Link urls",
+      onText: "On",
+      offText: "Off",
+      disabled: this.properties[`${name}showItems`] === false ? true : false,
+    }));
+
+    groupFields.push(PropertyPaneToggle(`${name}isExpanded`, {
+      label: "Expand by default",
+      onText: "On",
+      offText: "Off",
+      disabled: this.properties[`${name}showItems`] === false ? true : false,
+    }));
+
+    groupFields.push(PropertyPaneTextField(`relatedStyle`, {
+      label: 'React.CSS Item Styles',
+      disabled: this.properties[`${name}showItems`] === false ? true : false,
+    }));
+
+    const ImageLinksGroup: IPropertyPaneGroup = {
+      groupName: `Images and Links`,
+      isCollapsed: true,
+      groupFields: groupFields
+    };
+
+    return ImageLinksGroup;
+
+  }
+
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
 
     Log.Write(`getPropertyPaneConfiguration`);
@@ -1026,6 +1143,9 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
               isCollapsed: true,
               groupFields: propDrops
             }, //End this group  
+            this.buildRelatedProps('related1'),
+            this.buildRelatedProps('related2'),
+            this.buildImageLinksProps(),
             {
               groupName: strings.PIStyleGroupName,
               isCollapsed: true,
