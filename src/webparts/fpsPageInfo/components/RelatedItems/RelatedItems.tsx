@@ -197,17 +197,23 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
     if ( ev.altKey === true && altLink ) {
 
       if ( altLink !== 'gotoLink' ) {
-        window.open( altLink, '_none' ) ;
+        window.open( altLink, '_blank' ) ;
 
       } else {
+        let decodedLink = decodeURI(gotoLink);
         try {
-          let web = await Web( `${window.location.origin}${this.props.fetchInfo.web}` );
-          const item = await web.getFileByServerRelativePath( gotoLink ).getItem();
-          console.log('onLinkClick alt-click item: ', gotoLink, item);
+          let web = Web( `${window.location.origin}${this.props.fetchInfo.web}` );
+          const item: any = await web.getFileByServerRelativePath( decodedLink ).select('*,ServerRedirectedEmbedUrl').getItem();
+          console.log('onLinkClick alt-click item: ', decodedLink, item);
+          if ( item.ServerRedirectedEmbedUrl ) {
+            window.open( item.ServerRedirectedEmbedUrl, '_blank' ) ;
+          } else {
+            window.open( decodedLink, '_blank' ) ;
+          }
 
         } catch (e) {
-          console.log('onLinkClick alt-click error: ', gotoLink, e );
-          window.open( gotoLink, '_none' ) ;
+          console.log('onLinkClick alt-click error: ', decodedLink, e );
+          window.open( decodedLink, '_blank' ) ;
         }
 
       }
@@ -215,7 +221,7 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
 
 
     } else {
-      window.open( gotoLink, '_none' ) ;
+      window.open( gotoLink, '_blank' ) ;
     }
 
 }

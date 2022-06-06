@@ -1,4 +1,3 @@
-import { INavLink } from 'office-ui-fabric-react/lib/Nav';
 import { WebPartContext, } from "@microsoft/sp-webpart-base";
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as React from 'react';
