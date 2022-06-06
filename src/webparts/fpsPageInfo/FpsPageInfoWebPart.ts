@@ -589,8 +589,10 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
             web: this.properties.related1web.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : replaceHandleBars( this.properties.related1web, this.context ),
             listTitle: replaceHandleBars( this.properties.related1listTitle, this.context ),
             restFilter: replaceHandleBars( this.properties.related1restFilter, this.context ),
+            itemsAreFiles: this.properties.related1AreFiles, // aka FileLeaf to open file name, if empty, will just show the value
             linkProp: this.properties.related1linkProp, // aka FileLeaf to open file name, if empty, will just show the value
             displayProp: this.properties.related1displayProp,
+            
           },
           isExpanded: this.properties.related1isExpanded,
           themeVariant: this._themeVariant,
@@ -605,6 +607,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
             web: this.properties.related2web.toLowerCase() === 'current' ? this.context.pageContext.web.serverRelativeUrl : replaceHandleBars( this.properties.related2web, this.context ),
             listTitle: replaceHandleBars( this.properties.related2listTitle, this.context ),
             restFilter: replaceHandleBars( this.properties.related2restFilter, this.context ),
+            itemsAreFiles: this.properties.related2AreFiles, // aka FileLeaf to open file name, if empty, will just show the value
             linkProp: this.properties.related2linkProp, // aka FileLeaf to open file name, if empty, will just show the value
             displayProp: this.properties.related2displayProp,
           },
@@ -622,6 +625,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
             listTitle: replaceHandleBars( this.properties.pageLinkslistTitle, this.context ),
             restFilter: replaceHandleBars( this.properties.pageLinksrestFilter, this.context ),
             linkProp: this.properties.pageLinkslinkProp, // aka FileLeaf to open file name, if empty, will just show the value
+            itemsAreFiles: false,
             displayProp: this.properties.pageLinksdisplayProp,
             canvasLinks: this.properties.canvasLinks,
             canvasImgs: this.properties.canvasImgs,

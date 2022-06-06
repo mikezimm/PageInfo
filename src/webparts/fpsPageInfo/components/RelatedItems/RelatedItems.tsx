@@ -4,6 +4,7 @@
  */
 
 import * as React from 'react';
+import { Web, ISite } from '@pnp/sp/presets/all';
 import { IRelatedItemsProps } from './IRelatedItemsProps';
 import { IRelatedItemsState } from './IRelatedItemsState';
 import { Icon, IIconProps } from 'office-ui-fabric-react/lib/Icon';
@@ -92,7 +93,8 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
             let label = <span className={ 'trimText'}>{ item.linkText }</span>;
             if ( item.linkUrl ) {
               let liTitle = `Go to ${item.linkText}`;
-              return <li className = { 'isLink' } style={ this.props.itemsStyle } title={liTitle} onClick={ () => { this.onLinkClick( item.linkUrl  ); }}>{ label }
+              // return <li className = { 'isLink' } style={ this.props.itemsStyle } title={liTitle} onClick={ () => { this.onLinkClick.bind( this, item.linkUrl, item.linkAlt  ); }}>{ label }
+              return <li className = { 'isLink' } style={ this.props.itemsStyle } title={liTitle} onClick={ this.onLinkClick.bind( this, item.linkUrl, item.linkAlt  ) }>{ label }
                 <Icon title={ `Go to ${item.linkUrl}` }iconName='OpenInNewTab'></Icon></li> ;
             } else {
               return <li style={ this.props.itemsStyle }>{ label }</li> ;
@@ -109,13 +111,14 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
         <div>
           <div className={'relatedSubTitle'} onClick={ () => { this.toggleRelated( 'canvasImgsExpanded' ) ; } } title='Click to toggle images'>Embedded Images ( {this.state.items[0].images.length} )</div>
           <div className={ showPropsStyles }>
-            { this.state.items[0].images.map( url => { 
-                let desc = decodeURI(url.replace( this.regExpOrigin, '' ).replace( this.regExpWeb, '/ThisSite' ).replace(/(?<=\/ThisSite\/).*(?=\/)/gi,'...') ) ;
+            { this.state.items[0].images.map( item => { 
+                let desc = decodeURI(item.url.replace( this.regExpOrigin, '' ).replace( this.regExpWeb, '/ThisSite' ).replace(/(?<=\/ThisSite\/).*(?=\/)/gi,'...') ) ;
                 let label = <span className={ 'trimText'}>{ desc }</span>;
-                if ( url ) {
-                  let liTitle = `Go to ${url}`;
-                  return <li className = { 'isLink' } style={ this.props.itemsStyle } title={liTitle} onClick={ () => { this.onLinkClick( url  ); }}>{ label }
-                    <Icon title={ `Go to ${url}` }iconName='OpenInNewTab'></Icon></li> ;
+                if ( item.url ) {
+                  let liTitle = `Go to ${item.url}`;
+                  // return <li className = { 'isLink' } style={ this.props.itemsStyle } title={liTitle} onClick={ () => { this.onLinkClick.bind( this, item.url, item.embed  ); }}>{ label }
+                  return <li className = { 'isLink' } style={ this.props.itemsStyle } title={liTitle} onClick={ this.onLinkClick.bind( this, item.url, item.embed  ) }>{ label }
+                    <Icon title={ `Go to ${item.url}` }iconName='OpenInNewTab'></Icon></li> ;
                 } else {
                   return <li style={ this.props.itemsStyle }>{ label }</li> ;
                 }
@@ -134,13 +137,14 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
         <div style={{ paddingTop: paddingTop }}>
           <div className={'relatedSubTitle'} onClick={ () => { this.toggleRelated( 'canvasLinksExpanded', ) ; } } title='Click to toggle links'>Embedded Links ( {this.state.items[0].links.length} )</div>
           <div className={ showPropsStyles }>
-            { this.state.items[0].links.map( url => { 
-              let desc = decodeURI(url.replace( this.regExpOrigin, '' ).replace( this.regExpWeb, '/ThisSite' ).replace(/(?<=\/ThisSite\/).*(?=\/)/gi,'...')) ;
+            { this.state.items[0].links.map( item => { 
+              let desc = decodeURI(item.url.replace( this.regExpOrigin, '' ).replace( this.regExpWeb, '/ThisSite' ).replace(/(?<=\/ThisSite\/).*(?=\/)/gi,'...')) ;
               let label = <span className={ 'trimText'}>{ desc }</span>;
-              if ( url ) {
-                let liTitle = `Go to ${url}`;
-                return <li className = { 'isLink' } style={ this.props.itemsStyle } title={liTitle} onClick={ () => { this.onLinkClick( url ); }}>{ label }
-                  <Icon title={ `Go to ${url}` }iconName='OpenInNewTab'></Icon></li> ;
+              if ( item.url ) {
+                let liTitle = `Go to ${item.url}`;
+                // return <li className = { 'isLink' } style={ this.props.itemsStyle } title={liTitle} onClick={ () => { this.onLinkClick.bind( this,  item.url, item.embed ); }}>{ label }
+                return <li className = { 'isLink' } style={ this.props.itemsStyle } title={liTitle} onClick={ this.onLinkClick.bind( this,  item.url, item.embed ) }>{ label }
+                  <Icon title={ `Go to ${item.url}` }iconName='OpenInNewTab'></Icon></li> ;
               } else {
                 return <li style={ this.props.itemsStyle }>{ label }</li> ;
               }
@@ -185,9 +189,35 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
 
   }
 
-  private onLinkClick( gotoLink: string ) {
+  private async onLinkClick( gotoLink: string, altLink: string, ev: MouseEvent ) {
     // alert('Going to ' + gotoLink );
-    window.open( gotoLink, '_none' ) ;
+
+    console.log('onLinkClick ev:', ev );
+
+    if ( ev.altKey === true && altLink ) {
+
+      if ( altLink !== 'gotoLink' ) {
+        window.open( altLink, '_none' ) ;
+
+      } else {
+        try {
+          let web = await Web( `${window.location.origin}${this.props.fetchInfo.web}` );
+          const item = await web.getFileByServerRelativePath( gotoLink ).getItem();
+          console.log('onLinkClick alt-click item: ', gotoLink, item);
+
+        } catch (e) {
+          console.log('onLinkClick alt-click error: ', gotoLink, e );
+          window.open( gotoLink, '_none' ) ;
+        }
+
+      }
+
+
+
+    } else {
+      window.open( gotoLink, '_none' ) ;
+    }
+
 }
 
 }

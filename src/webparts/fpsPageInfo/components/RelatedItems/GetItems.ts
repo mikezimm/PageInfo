@@ -20,7 +20,7 @@ import { imageProperties, warnMutuallyExclusive } from 'office-ui-fabric-react';
 
 import { sortObjectArrayByStringKey } from '@mikezimm/npmfunctions/dist/Services/Arrays/sorting';
 import { getHelpfullErrorV2 } from '@mikezimm/npmfunctions/dist/Services/Logging/ErrorHandler';
-import { IReturnErrorType, checkDeepProperty } from "@mikezimm/npmfunctions/dist/Services/Objects/properties"; 
+import { IReturnErrorType, checkDeepProperty } from "@mikezimm/npmfunctions/dist/Services/Objects/properties";
 
 import { IAnyContent, } from './IRelatedItemsState';
 import { divide } from 'lodash';
@@ -63,9 +63,10 @@ function replaceHTMLEntities( str ) {
       fetchInfo.displayProp = '';
     }
 
-    let baseSelectColumns = [];
+    let baseSelectColumns = ['ID'];
     if ( fetchInfo.displayProp ) baseSelectColumns.push( fetchInfo.displayProp );
     if ( fetchInfo.linkProp ) baseSelectColumns.push( fetchInfo.linkProp );
+    if ( fetchInfo.itemsAreFiles ) baseSelectColumns.push( 'ServerRedirectedEmbedUrl' );
 
     let expColumns = getExpandColumns( baseSelectColumns );
     let selColumns = getSelectColumns( baseSelectColumns );
@@ -83,7 +84,7 @@ function replaceHTMLEntities( str ) {
     let items: IAnyContent[] = [];
     let filtered: IAnyContent[] = [];
 
-    console.log('getRelatedItems: fetchInfo', fetchInfo );
+    // console.log('getRelatedItems: fetchInfo', fetchInfo );
 
     try {
       items = await web.lists.getByTitle( fetchInfo.listTitle ).items
@@ -98,6 +99,7 @@ function replaceHTMLEntities( str ) {
     items.map ( item => {
       item.images=[];
       item.links=[];
+      item.linkAlt = '';
       if ( ( fetchInfo.canvasImgs === true || fetchInfo.canvasLinks === true ) && item.CanvasContent1 ) {
         item.CanvasContent1 = replaceHTMLEntities( item.CanvasContent1 );
         if ( fetchInfo.canvasImgs === true ) {
@@ -109,7 +111,7 @@ function replaceHTMLEntities( str ) {
                 let sources = JSON.parse( sourceString );
                 Object.keys(sources).map( key => {
                   let url = decodeURI( sources[key]);
-                  item.images.push( url );
+                  item.images.push( { url: url, embed: 'gotoLink' } );
                 });
               }
             });
@@ -123,7 +125,7 @@ function replaceHTMLEntities( str ) {
               if ( idx > 0 ) { //Always skip index 0 because it is the string before the first tag.
                 let sourceString = source.substring( source.indexOf(' href="') + 7) ;
                 sourceString = sourceString.substring(0, sourceString.indexOf('"'));
-                item.links.push( sourceString );
+                item.links.push( { url: sourceString, embed: 'gotoLink' } );
               }
             });
           }
@@ -134,6 +136,7 @@ function replaceHTMLEntities( str ) {
         item.linkText = checkDeepProperty( item, fetchInfo.displayProp.split('/'), 'ShortError' );
         item.linkText = item.linkText ? decodeURI(item.linkText) : item.linkText;
         item.CanvasContent1 = '';
+        item.linkAlt = item.ServerRedirectedEmbedUrl ? item.ServerRedirectedEmbedUrl : '';
       }
 
     });

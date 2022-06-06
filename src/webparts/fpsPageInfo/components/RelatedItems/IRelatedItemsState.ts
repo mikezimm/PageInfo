@@ -1,5 +1,9 @@
 import { INavLink } from 'office-ui-fabric-react/lib/Nav';
 
+export interface IUrlPairs {
+  url: string;
+  embed: string;
+}
 
 export interface IAnyContent extends Partial<any> {
 
@@ -7,11 +11,12 @@ export interface IAnyContent extends Partial<any> {
   FileRef: string;
 
   linkUrl: string;
+  linkAlt: string;  //For alt-clicking
   linkText: string;
 
   CanvasContent1: string;
-  images: string[];
-  links: string[];
+  images: IUrlPairs[];  //Added this for possible expanding alt-click on item to go to Embed link instead of actual link
+  links: IUrlPairs[];  //Added this for possible expanding alt-click on item to go to Embed link instead of actual link
 
   meta: string[];
 
