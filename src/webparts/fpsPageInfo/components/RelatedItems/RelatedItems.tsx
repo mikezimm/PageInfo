@@ -4,13 +4,13 @@
  */
 
 import * as React from 'react';
-import styles from './RelatedItems.module.scss';
 import { IRelatedItemsProps } from './IRelatedItemsProps';
 import { IRelatedItemsState } from './IRelatedItemsState';
 import { Icon, IIconProps } from 'office-ui-fabric-react/lib/Icon';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import { getRelatedItems } from './GetItems';
-import stylesA from '../AdvPageProps/components/AdvancedPageProperties.module.scss';
+
+require('./RelatedItems.css');
 
 export default class RelatedItems extends React.Component<IRelatedItemsProps, IRelatedItemsState> {
 
@@ -20,10 +20,17 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
   constructor(props: IRelatedItemsProps) {
     super(props);
 
+    let fetched = false;
+    let items = [];
+    if ( this.props.items && this.props.items.length > 0 ) {
+      items = this.props.items;
+      fetched = true;
+    }
+
     this.state = {
-      items: [],
+      items: items,
       errMess: '',
-      fetched: false,
+      fetched: fetched,
       canvasImgsExpanded: false,
       canvasLinksExpanded: false,
     };
@@ -82,32 +89,32 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
         </div> :
         <div>
           { this.state.items.map( item => { 
-            let label = <span className={ styles.trimText}>{ item.linkText }</span>;
+            let label = <span className={ 'trimText'}>{ item.linkText }</span>;
             if ( item.linkUrl ) {
               let liTitle = `Go to ${item.linkText}`;
-              return <li className = { styles.isLink } style={ this.props.itemsStyle } title={liTitle} onClick={ () => { this.onLinkClick( item.linkUrl  ); }}>{ label }
+              return <li className = { 'isLink' } style={ this.props.itemsStyle } title={liTitle} onClick={ () => { this.onLinkClick( item.linkUrl  ); }}>{ label }
                 <Icon title={ `Go to ${item.linkUrl}` }iconName='OpenInNewTab'></Icon></li> ;
             } else {
               return <li style={ this.props.itemsStyle }>{ label }</li> ;
             }
             } )}
         </div>;
-      } 
+      }
 
 
       let imgList = null;
       if ( this.props.fetchInfo.canvasImgs === true && this.state.items.length > 0  && this.state.items[0].images.length > 0 ) {
-        const showPropsStyles = this.state.canvasImgsExpanded === true ? stylesA.showProperties : stylesA.hideProperties;
+        const showPropsStyles = this.state.canvasImgsExpanded === true ? 'showProperties' : 'hideProperties';
         imgList = 
         <div>
-          <div className={styles.relatedSubTitle} onClick={ () => { this.toggleRelated( 'canvasImgsExpanded' ) ; } } title='Click to toggle images'>Embedded Images ( {this.state.items[0].images.length} )</div>
+          <div className={'relatedSubTitle'} onClick={ () => { this.toggleRelated( 'canvasImgsExpanded' ) ; } } title='Click to toggle images'>Embedded Images ( {this.state.items[0].images.length} )</div>
           <div className={ showPropsStyles }>
             { this.state.items[0].images.map( url => { 
                 let desc = decodeURI(url.replace( this.regExpOrigin, '' ).replace( this.regExpWeb, '/ThisSite' ).replace(/(?<=\/ThisSite\/).*(?=\/)/gi,'...') ) ;
-                let label = <span className={ styles.trimText}>{ desc }</span>;
+                let label = <span className={ 'trimText'}>{ desc }</span>;
                 if ( url ) {
                   let liTitle = `Go to ${url}`;
-                  return <li className = { styles.isLink } style={ this.props.itemsStyle } title={liTitle} onClick={ () => { this.onLinkClick( url  ); }}>{ label }
+                  return <li className = { 'isLink' } style={ this.props.itemsStyle } title={liTitle} onClick={ () => { this.onLinkClick( url  ); }}>{ label }
                     <Icon title={ `Go to ${url}` }iconName='OpenInNewTab'></Icon></li> ;
                 } else {
                   return <li style={ this.props.itemsStyle }>{ label }</li> ;
@@ -121,18 +128,18 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
 
       let linksList = null;
       if ( this.props.fetchInfo.canvasLinks === true && this.state.items.length > 0  && this.state.items[0].links.length > 0 ) {
-        const showPropsStyles = this.state.canvasLinksExpanded === true ? stylesA.showProperties : stylesA.hideProperties;
+        const showPropsStyles = this.state.canvasLinksExpanded === true ? 'showProperties' : 'hideProperties';
         let paddingTop = imgList ? '10px': null;
         linksList = 
         <div style={{ paddingTop: paddingTop }}>
-          <div className={styles.relatedSubTitle} onClick={ () => { this.toggleRelated( 'canvasLinksExpanded', ) ; } } title='Click to toggle links'>Embedded Links ( {this.state.items[0].links.length} )</div>
+          <div className={'relatedSubTitle'} onClick={ () => { this.toggleRelated( 'canvasLinksExpanded', ) ; } } title='Click to toggle links'>Embedded Links ( {this.state.items[0].links.length} )</div>
           <div className={ showPropsStyles }>
             { this.state.items[0].links.map( url => { 
               let desc = decodeURI(url.replace( this.regExpOrigin, '' ).replace( this.regExpWeb, '/ThisSite' ).replace(/(?<=\/ThisSite\/).*(?=\/)/gi,'...')) ;
-              let label = <span className={ styles.trimText}>{ desc }</span>;
+              let label = <span className={ 'trimText'}>{ desc }</span>;
               if ( url ) {
                 let liTitle = `Go to ${url}`;
-                return <li className = { styles.isLink } style={ this.props.itemsStyle } title={liTitle} onClick={ () => { this.onLinkClick( url ); }}>{ label }
+                return <li className = { 'isLink' } style={ this.props.itemsStyle } title={liTitle} onClick={ () => { this.onLinkClick( url ); }}>{ label }
                   <Icon title={ `Go to ${url}` }iconName='OpenInNewTab'></Icon></li> ;
               } else {
                 return <li style={ this.props.itemsStyle }>{ label }</li> ;
@@ -144,17 +151,17 @@ export default class RelatedItems extends React.Component<IRelatedItemsProps, IR
       }
 
       return (
-        <div className={styles.relatedItems}>
-          <div className={styles.container}>
-            <div className={styles.row}>
-              <div className={styles.column}>
+        <div className={'relatedItems'}>
+          {/* <div className={container}>
+            <div className={row}>
+              <div className={column}> */}
                 {/* <div style={{ fontSize: '20px', fontWeight: 600, backgroundColor: semanticColors.defaultStateBackground, color: semanticColors.bodyText}}>{ this.props.description ? this.props.description : null }</div> */}
                 { linksElement }
                 { imgList }
                 { linksList }
-              </div>
+              {/* </div>
             </div>
-          </div>
+          </div> */}
         </div>
       );
     }

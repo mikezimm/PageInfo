@@ -2,6 +2,7 @@ import { INavLink } from 'office-ui-fabric-react/lib/Nav';
 import { WebPartContext, } from "@microsoft/sp-webpart-base";
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as React from 'react';
+import { IAnyContent } from './IRelatedItemsState';
 
 export interface IRelatedFetchInfo {
   web: string;
@@ -24,6 +25,7 @@ export interface IRelatedItemsProps {
   isExpanded: boolean;
   fetchInfo: IRelatedFetchInfo;
 
+  items?: IAnyContent[];
 
   themeVariant: IReadonlyTheme | undefined;
 
