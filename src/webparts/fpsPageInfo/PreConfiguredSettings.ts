@@ -48,6 +48,9 @@ export const PresetEverywhere : IPreConfigSettings = {
         related1heading: 'Related Items 1',
         related2heading: 'Related Items 2',
 
+        related1AreFiles: false,
+        related2AreFiles: false,
+
         relatedStyle: '',
 
         pageLinksheading: 'Images and Links',
@@ -138,6 +141,8 @@ export const ForceFinancialManualSubSite : IPreConfigSettings = {
 
         related1listTitle: 'Site Pages',
         related1restFilter: 'StandardDocumentsId eq {{PageId}}',
+        related1AreFiles: true,
+
         related1linkProp: 'File/ServerRelativeUrl', // aka FileLeaf to open file name, if empty, will just show the value
         related1displayProp: 'Title',
 
@@ -147,6 +152,7 @@ export const ForceFinancialManualSubSite : IPreConfigSettings = {
 
         related2listTitle: 'SupportDocuments',
         related2restFilter: 'StandardDocumentsId eq {{PageId}}',
+        related2AreFiles: true,
         related2linkProp: 'File/ServerRelativeUrl', // aka FileLeaf to open file name, if empty, will just show the value
         related2displayProp: 'FileLeafRef',
         

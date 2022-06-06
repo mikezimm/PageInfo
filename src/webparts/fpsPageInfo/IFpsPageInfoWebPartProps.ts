@@ -76,6 +76,7 @@ export interface IFpsPageInfoWebPartProps {
   related1isExpanded: boolean;
   related1web: string;
   related1listTitle: string;
+  related1AreFiles: boolean;   // Used to include ServerRedirectedEmbedUrl in fetch for alt-click
   related1restFilter: string;
   related1linkProp: string; // aka FileLeaf to open file name, if empty, will just show the value
   related1displayProp: string;
@@ -85,6 +86,7 @@ export interface IFpsPageInfoWebPartProps {
   related2isExpanded: boolean;
   related2web: string;
   related2listTitle: string;
+  related2AreFiles: boolean;   // Used to include ServerRedirectedEmbedUrl in fetch for alt-click
   related2restFilter: string;
   related2linkProp: string; // aka FileLeaf to open file name, if empty, will just show the value
   related2displayProp: string;
