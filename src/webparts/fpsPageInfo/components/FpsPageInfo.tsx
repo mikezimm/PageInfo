@@ -13,7 +13,7 @@ import PageNavigator from './PageNavigator/PageNavigator';
 
 import ReactJson from "react-json-view";
 import AdvancedPageProperties from './AdvPageProps/components/AdvancedPageProperties';
-import RelatedItems from './RelatedItems/RelatedItems';
+import RelatedItems from '@mikezimm/npmfunctions/dist/RelatedItems/RelatedItems';
 
 import stylesA from './AdvPageProps/components/AdvancedPageProperties.module.scss';
 import { FPSPinMe, IPinMeState } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu';
@@ -23,7 +23,7 @@ import WebpartBanner from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/banner/onL
 import { getWebPartHelpElement } from './PropPaneHelp/PropPaneHelp';
 
 import { getBannerPages, IBannerPages } from './HelpPanel/AllContent';
-import { IRelatedItemsProps } from './RelatedItems/IRelatedItemsProps';
+import { IRelatedItemsProps } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedItemsProps';
 
 export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFpsPageInfoState> {
 
