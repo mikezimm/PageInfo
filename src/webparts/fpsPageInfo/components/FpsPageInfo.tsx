@@ -6,7 +6,7 @@ import { escape } from '@microsoft/sp-lodash-subset';
 
 import { Icon, IIconProps } from 'office-ui-fabric-react/lib/Icon';
 import { DisplayMode, Version } from '@microsoft/sp-core-library';
-
+import { TextField,  IStyleFunctionOrObject, ITextFieldStyleProps, ITextFieldStyles } from "office-ui-fabric-react";
 import { bannerThemes, bannerThemeKeys, makeCSSPropPaneString, createBannerStyleStr, createBannerStyleObj, baseBannerCmdStyles } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/defaults';
 
 import PageNavigator from './PageNavigator/PageNavigator';
@@ -26,6 +26,12 @@ import { getBannerPages, IBannerPages } from './HelpPanel/AllContent';
 import { IRelatedItemsProps } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedItemsProps';
 
 export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFpsPageInfoState> {
+
+    //Format copied from:  https://developer.microsoft.com/en-us/fluentui#/controls/web/textfield
+    private getWebBoxStyles( props: ITextFieldStyleProps): Partial<ITextFieldStyles> {
+      const { required } = props;
+      return { fieldGroup: [ { width: '90%', maxWidth: '600px', }, { borderColor: 'lightgray', }, ], };
+    }
 
     /***
  *    d8b   db d88888b  .d8b.  d8888b.      d88888b  .d8b.  d8888b.      d88888b db      d88888b 
@@ -97,7 +103,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
   private TOCCollapse = <Icon  title={ 'Collapse Table of Contents' } iconName='ChevronUpMed' style={ this.propsExpandCmdStyles  }></Icon>;
 
 
-  private createRelatedContent( related: IRelatedItemsProps, isExpanded: boolean, pinState: IPinMeState ) {
+  private createRelatedContent( related: IRelatedItemsProps, isExpanded: boolean, pinState: IPinMeState, linkSearchBox: boolean, linkFilter: string, ) {
 
     if ( related.showItems !== true ) {
       return null;
@@ -105,17 +111,31 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     } else {
 
       const fadeMeClass = pinState === 'pinMini' ? `pinMeFadeContent` : `pinMeContent`;
-      const showStyles = isExpanded === true || !related.heading ? stylesA.showProperties : stylesA.hideProperties;
+      const showStyles = isExpanded === true || !related.heading || linkFilter ? stylesA.showProperties : stylesA.hideProperties;
   
       let accordion = !related.showItems || !related.heading ? null : 
       <div className={ stylesA.propsTitle } style={{ display: 'flex', flexWrap: 'nowrap', }} onClick={ () => { this.toggleRelated( related, isExpanded ) ; } }>
         <div style={{ cursor: 'pointer' }} title={'Show or Collapse RelatedItems'}>{ related.heading }</div>
         { isExpanded === true ? this.TOCCollapse : this.TOCExpand }
       </div> ;
-  
+
+      const textFilter = linkSearchBox !== true ? null : <TextField
+        className={ styles.textField }
+        styles={ this.getWebBoxStyles  } //this.getReportingStyles
+        defaultValue={ linkFilter }
+        autoComplete='off'
+        // onChange={ sourceOrDest === 'comment' ? this.commentChange.bind( this ) : sourceOrDest === 'library' ? this.onLibChange.bind( this ) : this._onWebUrlChange.bind( this, sourceOrDest, ) }
+        onChange={ this.textFieldChange.bind( this ) }
+        validateOnFocusIn
+        validateOnFocusOut
+        autoAdjustHeight= { true }
+
+      />;
+
       const relatedComponent = <div className = {`${fadeMeClass}`} style={ related.itemsStyle}>
       { accordion }
       <div className={ showStyles }>
+        { textFilter }
         <RelatedItems 
             context={ this.props.context }
             parentKey={ related.parentKey }
@@ -125,6 +145,8 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
             isExpanded={ isExpanded }
             fetchInfo={ related.fetchInfo }
             itemsStyle={ related.itemsStyle }
+            linkSearchBox={ linkSearchBox }
+            linkFilter={ linkFilter }
           >
         </RelatedItems>
       </div>
@@ -159,6 +181,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       related1Expanded: this.props.relatedItemsProps1.isExpanded,
       related2Expanded: this.props.relatedItemsProps2.isExpanded,
       pageLinksExpanded: this.props.pageLinks.isExpanded,
+      linkFilter: '',
     };
 
 
@@ -412,11 +435,11 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
           { Banner }
           <div style={ this.props.pageInfoStyle }>
             <div style={{ height: '20px' }}></div>
-            { this.createRelatedContent(this.props.relatedItemsProps1, this.state.related1Expanded, this.state.pinState ) }
-            { this.createRelatedContent(this.props.relatedItemsProps2, this.state.related2Expanded, this.state.pinState ) }
+            { this.createRelatedContent(this.props.relatedItemsProps1, this.state.related1Expanded, this.state.pinState, false, '' ) }
+            { this.createRelatedContent(this.props.relatedItemsProps2, this.state.related2Expanded, this.state.pinState, false, '' ) }
             { tocComponent }
             { advancedProps }
-            { this.createRelatedContent(this.props.pageLinks, this.state.pageLinksExpanded, this.state.pinState ) }
+            { this.createRelatedContent(this.props.pageLinks, this.state.pageLinksExpanded, this.state.pinState, this.props.pageLinks.linkSearchBox, this.state.linkFilter ) }
           </div>
         </div>
       </section>
@@ -466,5 +489,12 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     this.setState( { tocExpanded: newState });
   }
 
+    //Caller should be onClick={ this._clickLeft.bind( this, item )}
+    private textFieldChange( ev: any ) {
+      let newValue = ev.target.value;
+
+      this.setState({ linkFilter: newValue, });
+
+    }
 
 }

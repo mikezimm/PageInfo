@@ -629,7 +629,9 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
             displayProp: this.properties.pageLinksdisplayProp,
             canvasLinks: this.properties.canvasLinks,
             canvasImgs: this.properties.canvasImgs,
+            ignoreDefaultImages: this.properties.ignoreDefaultImages,
           },
+          linkSearchBox: this.properties.linkSearchBox,
           isExpanded: this.properties.pageLinksisExpanded,
           themeVariant: this._themeVariant,
           itemsStyle: relatedItemsStyle,
@@ -998,6 +1000,13 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       disabled: this.properties[`${name}showItems`] === false ? true : false,
     }));
 
+    groupFields.push(PropertyPaneToggle(`linkSearchBox`, {
+      label: "Show Link and Image Search",
+      onText: "On",
+      offText: "Off",
+      disabled: this.properties[`${name}showItems`] === false ? true : false,
+    }));
+
     groupFields.push(PropertyPaneTextField(`relatedStyle`, {
       label: 'React.CSS Item Styles',
       disabled: this.properties[`${name}showItems`] === false ? true : false,
@@ -1291,7 +1300,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       if ( this.properties[setting.prop] === setting.value ) { 
         setting.status = 'valid';
 
-      } else if ( !this.properties[setting.prop] ) { 
+      } else if ( this.properties[setting.prop] === undefined || this.properties[setting.prop] === null ) { //Changed from just !this... because if value was 'false' it would set to true
         this.properties[setting.prop] = setting.value ;
         setting.status = 'preset';
 
@@ -1313,29 +1322,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       }
 
     });
-
-
-    // PreConfiguredProps.preset.map( preconfig => {
-    //   if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf( preconfig.location ) > -1 ) {
-    //     Object.keys( preconfig.props ).map( prop => {
-    //       if ( !this.properties[prop] ) { 
-    //         this.properties[prop] = preconfig.props[ prop ];
-    //         presets.push( { prop: prop, value: preconfig.props[ prop ] });
-    //       }
-    //     });
-    //   }
-    // });
-
-    // PreConfiguredProps.forced.map( preconfig => {
-    //   if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf( preconfig.location ) > -1 ) {
-    //     Object.keys( preconfig.props ).map( prop => {
-    //       if ( this.properties[prop] !== preconfig.props[ prop ] ) {
-    //         this.properties[prop] = preconfig.props[ prop ];
-    //         forces.push( { prop: prop, value: preconfig.props[ prop ] });
-    //       }
-    //     });
-    //   }
-    // });
 
     console.log('Preset props used:', this.sitePresets );
 

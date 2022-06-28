@@ -32,3 +32,20 @@
     }
   }
 }
+
+.textField {
+  display: table-cell;
+  width: 100%;
+  padding-bottom: 15px;
+
+  label {
+    font-weight: bold;
+  }
+
+  input {
+    //height: 32px;
+    min-width: 200px;
+    font-size: larger;
+  }
+
+}

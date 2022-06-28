@@ -68,7 +68,6 @@ export interface IFpsPageInfoProps {
 
   saveLoadAnalytics: any;
 
-
 }
 
 export interface IFpsPageInfoState {
@@ -83,5 +82,7 @@ export interface IFpsPageInfoState {
   related1Expanded: boolean;
   related2Expanded: boolean;
   pageLinksExpanded: boolean;
+
+  linkFilter: string;
 
 }
