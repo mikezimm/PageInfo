@@ -1,22 +1,7 @@
 import { INavLink } from 'office-ui-fabric-react/lib/Nav';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { SPHttpClient } from '@microsoft/sp-http';
-
 import { HTMLRegEx, IHTMLRegExKeys, IRegExTag } from './htmlTags';
-//This should go into npmFunctions v1.0.231 ish
-// export const RegexHeading14StartG = HTMLRegEx.h14.openG;
-// export const RegexHeading14StartN = /<h[1-4](.*?)>/;
-// export const RegexHeading14EndG = /<\/h[1-4]>/g;
-
-// export const RegexHeading13StartG = /<h[1-3](.*?)>/g;
-// export const RegexHeading13StartN = /<h[1-3](.*?)>/;
-// export const RegexHeading13EndG = /<\/h[1-3]>/g;
-
-// export const RegexHeading12StartG = /<h[1-2](.*?)>/g;
-// export const RegexHeading12StartN = /<h[1-2](.*?)>/;
-// export const RegexHeading12EndG = /<\/h[1-2]>/g;
-
-
 
 export class SPService {
   /* Array to store all unique anchor URLs */
@@ -28,66 +13,59 @@ export class SPService {
    * @returns anchorUrl
    */
   private static GetAnchorUrl(headingValue: string): string {
-    let urlExists = true;
-
-    // Great catch @mikezimm, I included all the extra chars you suggested.
-    // Is it a prior function or regex are replacing the & with empty string before that point so your line 21 is not finding it?
-    // So, for this part. The problem with line 21 not finding the & char is due to line 20 removing the char. With adding the & char to line 20 we exclude it from our regex expression. .replace(/[^a-zA-Z0-9.,()\-& ]/g, "")
-
-    // .replace(/[^a-zA-Z0-9.,()\-& ]/g, "") replaces chars except a - z, 0 - 9 , & ( ) and a . with ""
-    // .replace(/'|?|\|/| |&/g, "-") replaces any blanks and special characters (list is for sure not complete) with "-"
-    // .replace(/--+/g, "-") replaces any additional - with only one -; e.g. --- get replaced with -, -- get replaced with - etc.
-
-    // let anchorUrl = `#${headingValue
-    //   .replace(/[^a-zA-Z0-9.,()\-& ]/g, "") //https://github.com/mikezimm/PageInfo/issues/20
-    //   .replace(/\'|\?|\\|\/| |\&/g, "-")
-    //   .replace(/--+/g, "-")}`.toLowerCase();
-
     let anchorUrl = `#${headingValue
-      .replace(/[^a-zA-Z0-9.,()!\-& ]/g, "")
+      .toLowerCase()
+      .trim()
+      .replace(/[{}|\[\]\<\>#@"'^%`?;:/=~\\]/g, " ")
+      // .replace(/[^a-zA-Z0-9.,()!\-& ]/g, "") // was in 1.0.1.07
+      // .replace( /^\-*|\-*$/g , "")
+      .trim()
       .replace(/\'|\?|\\|\/| |\&/g, "-")
       .replace(/--+/g, "-")
       //This line must be last to clean up any leading-trailing -
-      .replace( /^\-*|\-*$/g , "")} 
-      `.toLowerCase();
+      .replace( /^\-*|\-*$/g , "")
+    }`;
 
-    let urlSuffix = 1;
-    while (urlExists === true) {
-      urlExists = (this.allUrls.indexOf(anchorUrl) === -1) ? false : true;
-      if (urlExists) {
-        anchorUrl = anchorUrl + `-${urlSuffix}`;
-        urlSuffix++;
-      }
-    }
+    let counter = 1;
+    this.allUrls.forEach(url => {
+      if (url === anchorUrl) {
+        if (counter != 1) {
+          anchorUrl = anchorUrl.slice(0, -((counter - 1).toString().length + 1)) + '-' + counter;
+
+        } else {
+          anchorUrl += '-1';
+        }
+
+        counter++;
+      }      
+    });
+
     return anchorUrl;
   }
-  
-  /**
-   * Returns the decoded html string
-   * @param input the html string
-   * @returns decoded string
-   */
-  private static htmlDecode(input: string) {
-    var doc = new DOMParser().parseFromString(input, "text/html");
-    return doc.documentElement.textContent;
-  }
-
-
-  
-
 
   /**
    * Returns the Anchor Links for Nav element
    * @param context Web part context
    * @returns anchorLinks
    */
-
   public static async GetAnchorLinks(context: WebPartContext, anchors: IHTMLRegExKeys = 'h14' ) {
-
-    //This gets all the required regex expressions for finding the requested anchors
-    const regObj :IRegExTag = HTMLRegEx[ anchors ];
-
     const anchorLinks: INavLink[] = [];
+
+    let querySelectList = 'h1, h2, h3, h4';
+    switch ( anchors ) {
+
+      case 'h1': querySelectList = 'h1'; break;
+      case 'h2': querySelectList = 'h2'; break;
+      case 'h3': querySelectList = 'h3'; break;
+      case 'h4': querySelectList = 'h4'; break;
+
+      case 'h12': querySelectList = 'h1, h2'; break;
+      case 'h13': querySelectList = 'h1, h2, h3'; break;
+      case 'h14': querySelectList = 'h1, h2, h3, h4'; break;
+
+      default: querySelectList = 'h1, h2, h3, h4';
+
+    }
 
     try {
       /* Page ID on which the web part is added */
@@ -102,20 +80,23 @@ export class SPService {
       /* Initialize variables to be used for sorting and adding the Navigation links */
       let headingIndex = 0;
       let subHeadingIndex = -1;
-      let headingOrder = 0;
       let prevHeadingOrder = 0;
+
+      this.allUrls = [];
 
       /* Traverse through all the Text web parts in the page */
       canvasContent1JSON.map((webPart) => {
         if (webPart.innerHTML) {
-          let HTMLString: string = webPart.innerHTML;
+          const HTMLString: string = webPart.innerHTML;
 
-          while (HTMLString.search(regObj.openG) !== -1) {
-            const lengthFirstOccurence = HTMLString.match(regObj.openG)[0].length;
-            /* The Header Text value */
-            const headingValue = this.htmlDecode(HTMLString.substring(HTMLString.search(regObj.openG) + lengthFirstOccurence, HTMLString.search(regObj.closeG)));
+          const htmlObject = document.createElement('div');
+          htmlObject.innerHTML = HTMLString;
 
-            headingOrder = parseInt(HTMLString.charAt(HTMLString.search(regObj.openG) + 2));
+          const headers = htmlObject.querySelectorAll( querySelectList );
+
+          headers.forEach(header => {
+            const headingValue = header.textContent;
+            const headingOrder = parseInt(header.tagName.substring(1));
 
             const anchorUrl = this.GetAnchorUrl(headingValue);
             this.allUrls.push(anchorUrl);
@@ -159,10 +140,7 @@ export class SPService {
               }
             }
             prevHeadingOrder = headingOrder;
-
-            /* Replace the added header links from the string so they don't get processed again */
-            HTMLString = HTMLString.replace(regObj.open, '').replace(`</h${headingOrder}>`, '');
-          }
+          });
         }
       });
     } catch (error) {
@@ -170,6 +148,7 @@ export class SPService {
     }
 
     console.log('FPS Page Info AnchorLinks', anchorLinks);
+
     return anchorLinks;
   }
 }
