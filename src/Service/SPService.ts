@@ -12,18 +12,21 @@ export class SPService {
    * @param headingValue The text value of the heading
    * @returns anchorUrl
    */
-  private static GetAnchorUrl(headingValue: string): string {
+   private static GetAnchorUrl(headingValue: string): string {
     let anchorUrl = `#${headingValue
       .toLowerCase()
       .trim()
-      .replace(/[{}|\[\]\<\>#@"'^%`?;:/=~\\]/g, " ")
-      // .replace(/[^a-zA-Z0-9.,()!\-& ]/g, "") // was in 1.0.1.07
-      // .replace( /^\-*|\-*$/g , "")
+      .replace(/[{}|\[\]\<\>#@"'^%`?;:\/=~\\]/g, " ")
+      .replace( /^\-*|\-*$/g , "")
       .trim()
       .replace(/\'|\?|\\|\/| |\&/g, "-")
+      //2022-06-28:  MZ Added this to fix when headingValue has multiple spaces in a row such as:  "4)       Test       heading        te       x          t"
+      //Up until this point, it would convert 5 spaces to something like '- - -' - basically every other one.
+      //Could not duplicate on CodePen io like it was using a different version of something.
+      .replace(/\s/g, "")
       .replace(/--+/g, "-")
-      //This line must be last to clean up any leading-trailing -
-      .replace( /^\-*|\-*$/g , "")
+      //Added this for case where the hash is > 128 chars.  SharePoint cuts it off at 128.
+      .substring( 0, 128 )
     }`;
 
     let counter = 1;
@@ -37,7 +40,7 @@ export class SPService {
         }
 
         counter++;
-      }      
+      }
     });
 
     return anchorUrl;
@@ -46,11 +49,13 @@ export class SPService {
   /**
    * Returns the Anchor Links for Nav element
    * @param context Web part context
+   * @param anchors //2022-06-28:  MZ Added this adjustment to accomodate for more flexible use
    * @returns anchorLinks
    */
   public static async GetAnchorLinks(context: WebPartContext, anchors: IHTMLRegExKeys = 'h14' ) {
     const anchorLinks: INavLink[] = [];
 
+    //2022-06-28:  MZ Added this adjustment to accomodate for more flexible use
     let querySelectList = 'h1, h2, h3, h4';
     switch ( anchors ) {
 
