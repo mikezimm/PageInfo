@@ -1323,29 +1323,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
     });
 
-
-    // PreConfiguredProps.preset.map( preconfig => {
-    //   if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf( preconfig.location ) > -1 ) {
-    //     Object.keys( preconfig.props ).map( prop => {
-    //       if ( !this.properties[prop] ) { 
-    //         this.properties[prop] = preconfig.props[ prop ];
-    //         presets.push( { prop: prop, value: preconfig.props[ prop ] });
-    //       }
-    //     });
-    //   }
-    // });
-
-    // PreConfiguredProps.forced.map( preconfig => {
-    //   if ( this.context.pageContext.web.serverRelativeUrl.toLowerCase().indexOf( preconfig.location ) > -1 ) {
-    //     Object.keys( preconfig.props ).map( prop => {
-    //       if ( this.properties[prop] !== preconfig.props[ prop ] ) {
-    //         this.properties[prop] = preconfig.props[ prop ];
-    //         forces.push( { prop: prop, value: preconfig.props[ prop ] });
-    //       }
-    //     });
-    //   }
-    // });
-
     console.log('Preset props used:', this.sitePresets );
 
   }
