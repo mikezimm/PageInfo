@@ -32,6 +32,9 @@ export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
      * WARNING:  DO NOT add any CDNs to Global Warn or Approve unless you want it to apply to JS as well.
      */
 
+    table.rows.push( createAboutRow('2022-06-27',"1.0.1.07","#79 - DefImageLinks, #80 - FinMan ALGroups>ReportingForms, ", showRepoLinks === true ? repoLinks : null ) );
+    table.rows.push( createAboutRow('2022-06-27',"1.0.1.07","#72 - add Filter to Images and Links, ", showRepoLinks === true ? repoLinks : null ) );
+
     table.rows.push( createAboutRow('2022-06-07',"1.0.1.06","#74 - Add alt-click to Related Items, move to npmFunctions", showRepoLinks === true ? repoLinks : null ) );
 
     table.rows.push( createAboutRow('2022-06-03',"1.0.1.05","#56, #71 - Presets and Error Messages, #69 - Prop Pane updates", showRepoLinks === true ? repoLinks : null ) );

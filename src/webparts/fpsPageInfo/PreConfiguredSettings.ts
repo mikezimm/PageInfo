@@ -58,6 +58,9 @@ export const PresetEverywhere : IPreConfigSettings = {
         pageLinksisExpanded: false,
         canvasLinks: true,
         canvasImgs: true,
+        linkSearchBox: true,
+        
+        ignoreDefaultImages: true,
         // pageLinksweb: 'current',
         // pageLinkslistTitle: 'Site Pages',
         // pageLinksrestFilter: 'ID eq {{PageId}}',
@@ -124,7 +127,7 @@ export const ForceFinancialManualSubSite : IPreConfigSettings = {
     props: {
 
         selectedProperties: [
-            "ALGroup",
+            "ReportingForms",
             "DocumentType",
             "Functions",
             "Processes",
