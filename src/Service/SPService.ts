@@ -12,7 +12,7 @@ export class SPService {
    * @param headingValue The text value of the heading
    * @returns anchorUrl
    */
-   private static GetAnchorUrl(headingValue: string): string {
+   private static GetAnchorUrl(headingValue: string = 'Empty Heading'): string {
     let anchorUrl = `#${headingValue
       .toLowerCase()
       .replace(/[{}|\[\]\<\>#@"'^%`?;:\/=~\\\s\s+]/g, " ")
