@@ -15,18 +15,11 @@ export class SPService {
    private static GetAnchorUrl(headingValue: string): string {
     let anchorUrl = `#${headingValue
       .toLowerCase()
-      .trim()
-      .replace(/[{}|\[\]\<\>#@"'^%`?;:\/=~\\]/g, " ")
-      .replace( /^\-*|\-*$/g , "")
-      .trim()
+      .replace(/[{}|\[\]\<\>#@"'^%`?;:\/=~\\\s\s+]/g, " ")
+      .replace(/^(-|\s)*|(-|\s)*$/g, "")
       .replace(/\'|\?|\\|\/| |\&/g, "-")
-      //2022-06-28:  MZ Added this to fix when headingValue has multiple spaces in a row such as:  "4)       Test       heading        te       x          t"
-      //Up until this point, it would convert 5 spaces to something like '- - -' - basically every other one.
-      //Could not duplicate on CodePen io like it was using a different version of something.
-      .replace(/\s/g, "")
-      .replace(/--+/g, "-")
-      //Added this for case where the hash is > 128 chars.  SharePoint cuts it off at 128.
-      .substring( 0, 128 )
+      .replace(/-+/g, "-")
+      .substring(0, 128)
     }`;
 
     let counter = 1;
@@ -91,6 +84,18 @@ export class SPService {
 
       /* Traverse through all the Text web parts in the page */
       canvasContent1JSON.map((webPart) => {
+
+        // V V V V Added per sample update https://github.com/pnp/sp-dev-fx-webparts/pull/2804/commits/0e09e2a0b879ecf8d889540e1eba4cf23363ae72
+        if (webPart.zoneGroupMetadata) {
+          const headingValue = webPart.zoneGroupMetadata.displayName;
+          const anchorUrl = this.GetAnchorUrl(headingValue);
+          this.allUrls.push(anchorUrl);
+
+          /* Add link to Nav element */
+          anchorLinks.push({ name: headingValue, key: anchorUrl, url: anchorUrl, links: [], isExpanded: webPart.zoneGroupMetadata.isExpanded });
+        }
+        // ^ ^ ^ ^ Added per sample update https://github.com/pnp/sp-dev-fx-webparts/pull/2804/commits/0e09e2a0b879ecf8d889540e1eba4cf23363ae72
+
         if (webPart.innerHTML) {
           const HTMLString: string = webPart.innerHTML;
 
@@ -101,7 +106,14 @@ export class SPService {
 
           headers.forEach(header => {
             const headingValue = header.textContent;
-            const headingOrder = parseInt(header.tagName.substring(1));
+
+            // V V V V Added per sample update https://github.com/pnp/sp-dev-fx-webparts/pull/2804/commits/0e09e2a0b879ecf8d889540e1eba4cf23363ae72
+            let headingOrder = parseInt(header.tagName.substring(1));
+
+            if (webPart.zoneGroupMetadata) {
+              headingOrder++;
+            }
+            // ^ ^ ^ ^ Added per sample update https://github.com/pnp/sp-dev-fx-webparts/pull/2804/commits/0e09e2a0b879ecf8d889540e1eba4cf23363ae72
 
             const anchorUrl = this.GetAnchorUrl(headingValue);
             this.allUrls.push(anchorUrl);
