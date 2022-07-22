@@ -1,8 +1,7 @@
 import * as React from 'react';
 
-import { IFpsPageInfoWebPartProps } from '../../IFpsPageInfoWebPartProps';
 import { IPropertyFieldGroupOrPerson } from "@pnp/spfx-property-controls/lib/PropertyFieldPeoplePicker";
-import { WebPartContext } from "@microsoft/sp-webpart-base";
+
 // import { ILoadPerformanceALVFM } from '../Performance/IPerformance';
 // import { createPerformanceTableVisitor } from '../Performance/tables';
 

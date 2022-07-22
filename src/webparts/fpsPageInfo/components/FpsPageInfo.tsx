@@ -301,11 +301,11 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
     let Banner = <WebpartBanner 
 
-      displayMode={ this.props.bannerProps.displayMode }
+      displayMode={ bannerProps.displayMode }
       WebPartHelpElement={ this.WebPartHelpElement }
       forceNarrowStyles= { this.state.pinState === 'pinFull' || this.state.pinState === 'pinMini' ? true : false }
       contentPages= { this.contentPages }
-      feedbackEmail= { this.props.bannerProps.feedbackEmail }
+      feedbackEmail= { bannerProps.feedbackEmail }
       FPSUser={ bannerProps.FPSUser }
       exportProps={ bannerProps.exportProps }
       showBanner={ bannerProps.showBanner }
