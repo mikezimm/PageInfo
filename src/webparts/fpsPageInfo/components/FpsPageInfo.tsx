@@ -19,10 +19,11 @@ import stylesA from './AdvPageProps/components/AdvancedPageProperties.module.scs
 import { FPSPinMe, IPinMeState } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu';
 
 import WebpartBanner from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/banner/onLocal/component";
+import { IBannerPages } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/bannerProps';
 
 import { getWebPartHelpElement } from './PropPaneHelp/PropPaneHelp';
 
-import { getBannerPages, IBannerPages } from './HelpPanel/AllContent';
+import { getBannerPages } from './HelpPanel/AllContent';
 import { IRelatedItemsProps } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedItemsProps';
 
 export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFpsPageInfoState> {

@@ -66,7 +66,7 @@ import { sortStringArray, sortObjectArrayByStringKey, sortNumberArray, sortObjec
 
 import { IBuildBannerSettings , buildBannerProps, IMinWPBannerProps } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/BannerSetup';
 
-import { buildExportProps, buildFPSAnalyticsProps } from './BuildExportProps';
+import { buildExportProps, buildFPSAnalyticsProps } from './CoreFPS/BuildExportProps';
 
 import { setExpandoRamicMode } from '@mikezimm/npmfunctions/dist/Services/DOM/FPSExpandoramic';
 import { getUrlVars } from '@mikezimm/npmfunctions/dist/Services/Logging/LogFunctions';
@@ -105,7 +105,7 @@ require('@mikezimm/npmfunctions/dist/PropPaneHelp/PropPanelHelp.css');
 
 import { SPService } from '../../Service/SPService';
 
-import { visitorPanelInfo } from './components/VisitorPanel/PanelComponent';
+import { visitorPanelInfo } from '@mikezimm/npmfunctions/dist/CoreFPS/VisitorPanelComponent';
 import * as strings from 'FpsPageInfoWebPartStrings';
 import FpsPageInfo from './components/FpsPageInfo';
 import { IFpsPageInfoProps } from './components/IFpsPageInfoProps';
@@ -118,7 +118,7 @@ import { createStyleFromString } from '@mikezimm/npmfunctions/dist/Services/Prop
 import { FPSApplyHeadingCSS, FPSApplyTagCSSAndStyles, FPSApplyHeadingStyle } from './components/HeadingCSS/FPSTagFunctions';
 import { HTMLRegEx, IHTMLRegExKeys } from '../../Service/htmlTags';
 import { css } from 'office-ui-fabric-react';
-import { PreConfiguredProps } from './PreConfiguredSettings';
+import { PreConfiguredProps } from './CoreFPS/PreConfiguredSettings';
 import { getThisSitesPreConfigProps, IConfigurationProp, ISitePreConfigProps, IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
 import { IRelatedItemsProps, IRelatedKey } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedItemsProps';
 
@@ -496,7 +496,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     // if ( this.bannerProps.showBeAUserIcon === true ) { this.bannerProps.beAUserFunction = this.beAUserFunction.bind(this); }
 
     // console.log('mainWebPart: visitorPanelInfo ~ 405',   );
-    this.properties.replacePanelHTML = visitorPanelInfo( this.properties, );
+    this.properties.replacePanelHTML = visitorPanelInfo( this.properties, repoLink, '', '' );
 
     this.bannerProps.replacePanelHTML = this.properties.replacePanelHTML;
 

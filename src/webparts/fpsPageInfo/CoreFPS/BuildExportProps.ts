@@ -46,8 +46,8 @@
 
  import * as strings from 'FpsPageInfoWebPartStrings';
 
-import { changePageLinks, IFpsPageInfoWebPartProps } from './IFpsPageInfoWebPartProps';
-import { exportIgnoreProps, importBlockProps, } from './IFpsPageInfoWebPartProps';
+import { changePageLinks, IFpsPageInfoWebPartProps } from '../IFpsPageInfoWebPartProps';
+import { exportIgnoreProps, importBlockProps, } from '../IFpsPageInfoWebPartProps';
 
 import { changeVisitor, changeExpando, changeBanner, changefpsOptions1, changefpsOptions2, exportIgnorePropsFPS, importBlockPropsFPS,  } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
 
@@ -94,7 +94,7 @@ import { changeBannerBasics, changeBannerNav, changeBannerTheme, changeBannerOth
  * @returns exportObject
  */
 
-import { changePinMe, changeTOC, changeProperties, changeWebPartStyles, changeRelated1, changeRelated2 } from './IFpsPageInfoWebPartProps';
+import { changePinMe, changeTOC, changeProperties, changeWebPartStyles, changeRelated1, changeRelated2 } from '../IFpsPageInfoWebPartProps';
 
  export function buildExportProps( wpProps : IFpsPageInfoWebPartProps, wpInstanceID: string, currentWeb: string, ) {
     let exportStructure :any = {};
