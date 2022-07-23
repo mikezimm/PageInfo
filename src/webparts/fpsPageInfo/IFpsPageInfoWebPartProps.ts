@@ -40,8 +40,8 @@ import { IMinWPBannerProps } from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/on
 
   export const changeWebPartStyles = [ 'h1Style', 'h2Style' ,'h3Style' , 'pageInfoStyle', 'tocStyle', 'propsStyle' ];
 
-export interface IFpsPageInfoWebPartProps  extends IMinWPBannerProps {
-  
+export interface IFpsPageInfoWebPartProps extends IMinWPBannerProps {
+
   showTOC: boolean;
   minHeadingToShow: IMinHeading;
   description: string;

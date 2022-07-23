@@ -7,6 +7,8 @@ import * as devLinks from '@mikezimm/npmfunctions/dist/Links/LinksDevDocs';
 
 import { IRepoLinks } from '@mikezimm/npmfunctions/dist/Links/CreateLinks';
 
+import { createAboutRow } from '@mikezimm/npmfunctions/dist/CoreFPS/BannerPageMisc';
+
 import { convertIssuesMarkdownStringToSpan } from '@mikezimm/npmfunctions/dist/Elements/Markdown';
 
 export const panelVersionNumber = '2022-06-28 -  1.0.1.09'; //Added to show in panel
@@ -32,7 +34,7 @@ export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
      * WARNING:  DO NOT add any CDNs to Global Warn or Approve unless you want it to apply to JS as well.
      */
 
-    table.rows.push( createAboutRow('2022-07-xx',"1.0.1.09?","Standarize Code:  #85, #86, #87", showRepoLinks === true ? repoLinks : null ) );
+    table.rows.push( createAboutRow('2022-07-xx',"1.0.1.09?","Standarize Code:  #85, #86, #87, #88, #89, #90", showRepoLinks === true ? repoLinks : null ) );
 
     table.rows.push( createAboutRow('2022-07-01',"1.0.1.09","Update Regex per open source", showRepoLinks === true ? repoLinks : null ) );
 
@@ -67,15 +69,4 @@ export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
     
     return { table: table };
 
-}
-
-export function createAboutRow( date: string, version: string, focus: any, repoLinks: IRepoLinks | null ) {
-
-    let fullFocus = convertIssuesMarkdownStringToSpan( focus, repoLinks );
-
-    let tds = [<span style={{whiteSpace: 'nowrap'}} >{ date }</span>, 
-        <span style={{whiteSpace: 'nowrap'}} >{ version }</span>, 
-        <span>{ fullFocus }</span>,] ;
-
-    return tds;
 }

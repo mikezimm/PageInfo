@@ -21,7 +21,7 @@ import { FPSPinMe, IPinMeState } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinM
 import WebpartBanner from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/banner/onLocal/component";
 import { IBannerPages } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/bannerProps';
 
-import { getWebPartHelpElement } from './PropPaneHelp/PropPaneHelp';
+import { getWebPartHelpElement } from '../CoreFPS/PropPaneHelp';
 
 import { getBannerPages } from './HelpPanel/AllContent';
 import { IRelatedItemsProps } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedItemsProps';
