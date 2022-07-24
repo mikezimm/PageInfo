@@ -1,7 +1,6 @@
 import * as React from 'react';
-import styles from './FpsPageInfo.module.scss';
 
-import { IFpsPageInfoProps, IFpsPageInfoState } from './IFpsPageInfoProps';
+import { IFpsPageInfoProps, IFpsPageInfoState } from '../components/IFpsPageInfoProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 
 import { Icon, IIconProps } from 'office-ui-fabric-react/lib/Icon';
