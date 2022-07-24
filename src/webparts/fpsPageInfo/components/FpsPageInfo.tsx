@@ -297,60 +297,63 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
    */
 
     let forceNarrowStyles = this.state.pinState === 'pinFull' || this.state.pinState === 'pinMini' ? true : false ;
-    let Banner = <WebpartBanner 
+    let Banner = <FetchBanner 
+      parentProps={ this.props }
+      parentState={ this.state }
+    ></FetchBanner>;
 
-      displayMode={ bannerProps.displayMode }
-      WebPartHelpElement={ this.WebPartHelpElement }
-      forceNarrowStyles= { forceNarrowStyles }
-      contentPages= { this.contentPages }
-      feedbackEmail= { bannerProps.feedbackEmail }
-      FPSUser={ bannerProps.FPSUser }
-      exportProps={ bannerProps.exportProps }
-      showBanner={ bannerProps.showBanner }
-      // Adding this to adjust expected width for when prop pane could be opened
-      bannerWidth={ ( bannerProps.bannerWidth ) }
-      pageContext={ bannerProps.pageContext }
-      pageLayout={ bannerProps.pageLayout }
-      title ={ bannerTitle }
-      panelTitle = { bannerProps.panelTitle }
-      infoElement = { bannerProps.infoElement }
-      bannerReactCSS={ bannerProps.bannerReactCSS }
-      bannerCmdReactCSS={ bannerProps.bannerCmdReactCSS }
-      showTricks={ bannerProps.showTricks }
-      showGoToParent={ bannerProps.showGoToParent }
-      showGoToHome={ bannerProps.showGoToHome }
-      onHomePage={ bannerProps.onHomePage }
+    //   displayMode={ bannerProps.displayMode }
+    //   WebPartHelpElement={ this.WebPartHelpElement }
+    //   forceNarrowStyles= { forceNarrowStyles }
+    //   contentPages= { this.contentPages }
+    //   feedbackEmail= { bannerProps.feedbackEmail }
+    //   FPSUser={ bannerProps.FPSUser }
+    //   exportProps={ bannerProps.exportProps }
+    //   showBanner={ bannerProps.showBanner }
+    //   // Adding this to adjust expected width for when prop pane could be opened
+    //   bannerWidth={ ( bannerProps.bannerWidth ) }
+    //   pageContext={ bannerProps.pageContext }
+    //   pageLayout={ bannerProps.pageLayout }
+    //   title ={ bannerTitle }
+    //   panelTitle = { bannerProps.panelTitle }
+    //   infoElement = { bannerProps.infoElement }
+    //   bannerReactCSS={ bannerProps.bannerReactCSS }
+    //   bannerCmdReactCSS={ bannerProps.bannerCmdReactCSS }
+    //   showTricks={ bannerProps.showTricks }
+    //   showGoToParent={ bannerProps.showGoToParent }
+    //   showGoToHome={ bannerProps.showGoToHome }
+    //   onHomePage={ bannerProps.onHomePage }
 
-      webpartHistory={ bannerProps.webpartHistory }
+    //   webpartHistory={ bannerProps.webpartHistory }
 
-      showBannerGear={ bannerProps.showBannerGear }
+    //   showBannerGear={ bannerProps.showBannerGear }
 
-      showFullPanel={ bannerProps.showFullPanel }
-      replacePanelHTML={ bannerProps.replacePanelHTML }
-      replacePanelWarning={ bannerProps.replacePanelWarning }
+    //   showFullPanel={ bannerProps.showFullPanel }
+    //   replacePanelHTML={ bannerProps.replacePanelHTML }
+    //   replacePanelWarning={ bannerProps.replacePanelWarning }
 
-      hoverEffect={ bannerProps.hoverEffect }
-      gitHubRepo={ bannerProps.gitHubRepo }
-      earyAccess={ bannerProps.earyAccess }
-      wideToggle={ bannerProps.wideToggle }
-      nearElements = { this.nearBannerElements }
-      farElements = { farBannerElementsArray }
+    //   hoverEffect={ bannerProps.hoverEffect }
+    //   gitHubRepo={ bannerProps.gitHubRepo }
+    //   earyAccess={ bannerProps.earyAccess }
+    //   wideToggle={ bannerProps.wideToggle }
+    //   nearElements = { this.nearBannerElements }
+    //   farElements = { farBannerElementsArray }
 
-      showRepoLinks={ bannerProps.showRepoLinks }
-      showExport={ bannerProps.showExport }
-      //2022-02-17:  Added these for expandoramic mode
-      domElement = { bannerProps.domElement }
-      enableExpandoramic = { bannerProps.enableExpandoramic }
-      expandoDefault = { bannerProps.expandoDefault }
-      expandoStyle = { bannerProps.expandoStyle}
-      expandAlert = { bannerProps.expandAlert }
-      expandConsole = { bannerProps.expandConsole }
-      expandoPadding = { bannerProps.expandoPadding }
-      beAUser = { bannerProps.beAUser }
-      showBeAUserIcon = { bannerProps.showBeAUserIcon }
-      beAUserFunction={ bannerProps.beAUserFunction }
+    //   showRepoLinks={ bannerProps.showRepoLinks }
+    //   showExport={ bannerProps.showExport }
+    //   //2022-02-17:  Added these for expandoramic mode
+    //   domElement = { bannerProps.domElement }
+    //   enableExpandoramic = { bannerProps.enableExpandoramic }
+    //   expandoDefault = { bannerProps.expandoDefault }
+    //   expandoStyle = { bannerProps.expandoStyle}
+    //   expandAlert = { bannerProps.expandAlert }
+    //   expandConsole = { bannerProps.expandConsole }
+    //   expandoPadding = { bannerProps.expandoPadding }
+    //   beAUser = { bannerProps.beAUser }
+    //   showBeAUserIcon = { bannerProps.showBeAUserIcon }
+    //   beAUserFunction={ bannerProps.beAUserFunction }
 
-    ></WebpartBanner>;
+    // ></WebpartBanner>;
 
     // bannerStyle = createStyleFromString( this.props.styleString, { background: 'green' }, 'bannerStyle in banner/component.tsx ~ 81' );
 

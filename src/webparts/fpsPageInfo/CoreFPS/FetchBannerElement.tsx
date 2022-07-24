@@ -19,8 +19,8 @@ import { getBannerPages } from '../components/HelpPanel/AllContent';
 
 export interface IFetchBannerProps {
 
-    parentProps:    IFpsPageInfoProps,
-    parentState:    IFpsPageInfoState,
+    parentProps:    IFpsPageInfoProps;
+    parentState:    IFpsPageInfoState;
 
 }
 
