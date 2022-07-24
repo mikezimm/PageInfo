@@ -246,13 +246,6 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     // this.props.showCodeIcon !== true ? null : <div title={'Show Code Details'}><Icon iconName={ 'Code' } onClick={ this.toggleOriginal.bind(this) } style={ bannerProps.bannerCmdReactCSS }></Icon></div>,
   ];
 
-
-  // if ( this.props.displayMode === DisplayMode.Edit ) {
-  //   farBannerElementsArray.push( 
-  //     <Icon iconName='OpenEnrollment' onClick={ this.togglePropsHelp.bind(this) } style={ bannerProps.bannerCmdReactCSS }></Icon>
-  //   );
-  // }
-
   // if ( this.props.fpsPinMenu.forcePinState !== true ) {
     if ( this.props.fpsPinMenu.forcePinState !== true && this.state.pinState === 'normal' ) {
       farBannerElementsArray.push( this.PinFullIcon );
@@ -300,11 +293,12 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
    *                                                                                                                        
    */
 
+    let forceNarrowStyles = this.state.pinState === 'pinFull' || this.state.pinState === 'pinMini' ? true : false ;
     let Banner = <WebpartBanner 
 
       displayMode={ bannerProps.displayMode }
       WebPartHelpElement={ this.WebPartHelpElement }
-      forceNarrowStyles= { this.state.pinState === 'pinFull' || this.state.pinState === 'pinMini' ? true : false }
+      forceNarrowStyles= { forceNarrowStyles }
       contentPages= { this.contentPages }
       feedbackEmail= { bannerProps.feedbackEmail }
       FPSUser={ bannerProps.FPSUser }
@@ -324,7 +318,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       showGoToHome={ bannerProps.showGoToHome }
       onHomePage={ bannerProps.onHomePage }
 
-      webpartHistory={ this.props.webpartHistory }
+      webpartHistory={ bannerProps.webpartHistory }
 
       showBannerGear={ bannerProps.showBannerGear }
 
