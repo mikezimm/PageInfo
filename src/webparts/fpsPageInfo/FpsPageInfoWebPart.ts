@@ -1518,7 +1518,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
         zzzText5: `${ this.properties.showOOTBProps } - ${ this.properties.showCustomProps } - ${ this.properties.showApprovalProps }}`,
 
         //Info1 in some webparts.  Simple category defining results.   Like Unique / Inherited / Collection
-        zzzText6: `${   this.properties.selectedProperties.join('; ') }`, //Info2 in some webparts.  Phrase describing important details such as "Time to check old Permissions: 86 snaps / 353ms"
+        zzzText6: `${   this.properties.selectedProperties ? this.properties.selectedProperties.join('; ') : '' }`, //Info2 in some webparts.  Phrase describing important details such as "Time to check old Permissions: 86 snaps / 353ms"
 
         // zzzNumber1: fetchInfo.fetchTime,
         // zzzNumber2: fetchInfo.regexTime,

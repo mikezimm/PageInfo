@@ -34,7 +34,7 @@ export function aboutTable( repoLinks: IRepoLinks, showRepoLinks: boolean ) {
      * WARNING:  DO NOT add any CDNs to Global Warn or Approve unless you want it to apply to JS as well.
      */
 
-    table.rows.push( createAboutRow('2022-07-xx',"1.0.1.09?","Standarize Code:  #85, #86, #87, #88, #89, #90, #91", showRepoLinks === true ? repoLinks : null ) );
+    table.rows.push( createAboutRow('2022-07-xx',"1.0.1.09?","Standarize Code:  #85, #86, #87, #88, #89, #90, #91, #93", showRepoLinks === true ? repoLinks : null ) );
 
     table.rows.push( createAboutRow('2022-07-01',"1.0.1.09","Update Regex per open source", showRepoLinks === true ? repoLinks : null ) );
 

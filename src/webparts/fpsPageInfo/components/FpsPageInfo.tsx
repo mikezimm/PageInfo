@@ -18,19 +18,38 @@ import RelatedItems from '@mikezimm/npmfunctions/dist/RelatedItems/RelatedItems'
 import stylesA from './AdvPageProps/components/AdvancedPageProperties.module.scss';
 import { FPSPinMe, IPinMeState } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu';
 
-import WebpartBanner from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/banner/onLocal/component";
-import { IBannerPages } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/bannerProps';
+import FetchBanner, {  } from '../CoreFPS/FetchBannerElement';
 
-import FetchBanner, { getDefaultPinState } from '../CoreFPS/FetchBannerElement';
-import { IFetchBannerProps } from '../CoreFPS/FetchBannerElement';
-
-import { getWebPartHelpElement } from '../CoreFPS/PropPaneHelp';
-
-import { getBannerPages } from './HelpPanel/AllContent';
 import { IRelatedItemsProps } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedItemsProps';
+
+
+
+export function getDefaultPinState ( prevProps, props ){
+  const { displayMode, fpsPinMenu } = props;
+
+  let refresh = false;
+  let defPinState =fpsPinMenu.defPinState;
+  if ( defPinState !== prevProps.fpsPinMenu.defPinState ) {
+    refresh = true;
+  } else if ( prevProps.fpsPinMenu.forcePinState !== fpsPinMenu.forcePinState ) {
+    refresh = true;
+  }
+  //This fixed https://github.com/mikezimm/PageInfo/issues/47
+  if ( displayMode === DisplayMode.Edit ) {
+    defPinState = 'normal';
+  } 
+
+  return { defPinState: defPinState, refresh: refresh };
+}
+
 
 export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFpsPageInfoState> {
 
+  
+  private _updatePinState( newValue ) {
+    this.setState({ pinState: newValue, });
+  }
+  
     //Format copied from:  https://developer.microsoft.com/en-us/fluentui#/controls/web/textfield
     private getWebBoxStyles( props: ITextFieldStyleProps): Partial<ITextFieldStyles> {
       const { required } = props;
@@ -44,6 +63,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     smaller.fontSize = 'larger';
     return smaller;
   }
+  private smallerCmdStyles: React.CSSProperties = this.makeSmallerCmdStyles();
 
   private makeExpandPropsCmdStyles( withLeftMargin: boolean ) {
     let propsCmdCSS: React.CSSProperties = JSON.parse(JSON.stringify( this.props.bannerProps.bannerCmdReactCSS ));
@@ -54,7 +74,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     return propsCmdCSS;
   }
 
-  private smallerCmdStyles: React.CSSProperties = this.makeSmallerCmdStyles();
+
   private propsExpandCmdStyles: React.CSSProperties = this.makeExpandPropsCmdStyles( true );
 
   private PropsExpand = <Icon  title={ 'Expand Properties' } iconName='ChevronDownMed' style={ this.propsExpandCmdStyles  }></Icon>;
@@ -255,6 +275,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       parentProps={ this.props }
       parentState={ this.state }
       updatePinState = { this._updatePinState.bind(this) }
+      pinState = { this.state.pinState }
     ></FetchBanner>;
 
     return (
@@ -273,10 +294,6 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
         </div>
       </section>
     );
-  }
-
-  private _updatePinState( newValue ) {
-    this.setState({ pinState: newValue, });
   }
 
   private toggleRelated( related: IRelatedItemsProps, isExpanded: boolean ) {

@@ -16,6 +16,7 @@ import { IBannerPages } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/b
 import { getWebPartHelpElement } from '../CoreFPS/PropPaneHelp';
 
 import { getBannerPages } from '../components/HelpPanel/AllContent';
+import { getDefaultPinState } from '../components/FpsPageInfo';
 
 export interface IFetchBannerProps {
 
@@ -23,36 +24,50 @@ export interface IFetchBannerProps {
     parentState:    IFpsPageInfoState;
 
     updatePinState: any;
+    pinState: IPinMeState;
 
 }
 
 
 export interface IFetchBannerState {
     pinState: IPinMeState;
-
 }
 
-export function getDefaultPinState ( prevProps, props ){
-    const { displayMode, fpsPinMenu } = props;
-
-    let refresh = false;
-    let defPinState =fpsPinMenu.defPinState;
-    if ( defPinState !== prevProps.fpsPinMenu.defPinState ) {
-      refresh = true;
-    } else if ( prevProps.fpsPinMenu.forcePinState !== fpsPinMenu.forcePinState ) {
-      refresh = true;
-    }
-    //This fixed https://github.com/mikezimm/PageInfo/issues/47
-    if ( displayMode === DisplayMode.Edit ) {
-      defPinState = 'normal';
-    } 
-
-    return { defPinState: defPinState, refresh: refresh };
-}
-
+const consoleFunctions: boolean = true;
 
 export default class FetchBanner extends React.Component<IFetchBannerProps, IFetchBannerState> {
 
+    
+  private baseCmdStyles: React.CSSProperties = createBannerStyleObj( 'corpDark1', 'cmd' );
+
+  private makeSmallerCmdStyles() {
+    let smaller: React.CSSProperties = JSON.parse(JSON.stringify( this.baseCmdStyles ));
+    smaller.fontSize = 'larger';
+    return smaller;
+  }
+
+  private smallerCmdStyles: React.CSSProperties = this.makeSmallerCmdStyles();
+
+  // private FeedbackIcon = <Icon title={ 'Submit Feedback' } iconName='Feedback' onClick={ this.sendFeedback.bind(this) } style={ this.makeExpandPropsCmdStyles( false ) }></Icon>;
+
+  private PinFullIcon = <Icon title={ 'Pin to top' } iconName='Pinned' onClick={ this.setPinFull.bind(this) } style={ this.smallerCmdStyles }></Icon>;
+  private PinMinIcon = <Icon  title={ 'Minimize' } iconName='CollapseMenu' onClick={ this.setPinMin.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
+  private PinExpandIcon = <Icon  title={ 'Expand' } iconName='DoubleChevronDown' onClick={ this.setPinFull.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
+  private PinDefault = <Icon  title={ 'Set to default' } iconName='ArrowDownRightMirrored8' onClick={ this.setPinDefault.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
+
+
+
+    
+    private makeExpandPropsCmdStyles( withLeftMargin: boolean ) {
+      let propsCmdCSS: React.CSSProperties = JSON.parse(JSON.stringify( this.props.parentProps.bannerProps.bannerCmdReactCSS ));
+      propsCmdCSS.backgroundColor = 'transparent';
+      if ( withLeftMargin === true ) propsCmdCSS.marginLeft = '30px';
+      propsCmdCSS.color = null; //Make sure icon is always visible
+  
+      return propsCmdCSS;
+    }
+
+    
 /***
  *    d8b   db d88888b  .d8b.  d8888b.      d88888b  .d8b.  d8888b.      d88888b db      d88888b 
  *    888o  88 88'     d8' `8b 88  `8D      88'     d8' `8b 88  `8D      88'     88      88'     
@@ -89,32 +104,6 @@ export default class FetchBanner extends React.Component<IFetchBannerProps, IFet
   }
 
 
-  private baseCmdStyles: React.CSSProperties = createBannerStyleObj( 'corpDark1', 'cmd' );
-
-  private makeSmallerCmdStyles() {
-    let smaller: React.CSSProperties = JSON.parse(JSON.stringify( this.baseCmdStyles ));
-    smaller.fontSize = 'larger';
-    return smaller;
-  }
-
-  private makeExpandPropsCmdStyles( withLeftMargin: boolean ) {
-    let propsCmdCSS: React.CSSProperties = JSON.parse(JSON.stringify( this.props.parentProps.bannerProps.bannerCmdReactCSS ));
-    propsCmdCSS.backgroundColor = 'transparent';
-    if ( withLeftMargin === true ) propsCmdCSS.marginLeft = '30px';
-    propsCmdCSS.color = null; //Make sure icon is always visible
-
-    return propsCmdCSS;
-  }
-
-  private smallerCmdStyles: React.CSSProperties = this.makeSmallerCmdStyles();
-
-  // private FeedbackIcon = <Icon title={ 'Submit Feedback' } iconName='Feedback' onClick={ this.sendFeedback.bind(this) } style={ this.makeExpandPropsCmdStyles( false ) }></Icon>;
-
-  private PinFullIcon = <Icon title={ 'Pin to top' } iconName='Pinned' onClick={ this.setPinFull.bind(this) } style={ this.smallerCmdStyles }></Icon>;
-  private PinMinIcon = <Icon  title={ 'Minimize' } iconName='CollapseMenu' onClick={ this.setPinMin.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
-  private PinExpandIcon = <Icon  title={ 'Expand' } iconName='DoubleChevronDown' onClick={ this.setPinFull.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
-  private PinDefault = <Icon  title={ 'Set to default' } iconName='ArrowDownRightMirrored8' onClick={ this.setPinDefault.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
-
   /***
   *     .o88b.  .d88b.  d8b   db .d8888. d888888b d8888b. db    db  .o88b. d888888b  .d88b.  d8888b. 
   *    d8P  Y8 .8P  Y8. 888o  88 88'  YP `~~88~~' 88  `8D 88    88 d8P  Y8 `~~88~~' .8P  Y8. 88  `8D 
@@ -129,18 +118,14 @@ export default class FetchBanner extends React.Component<IFetchBannerProps, IFet
 
   public constructor(props:IFetchBannerProps){
     super(props);
-
+    if ( consoleFunctions === true ) console.log('FetchBannerElement ~ constructor');
     this.state = {
-      pinState: this.props.parentProps.fpsPinMenu.defPinState ? this.props.parentProps.fpsPinMenu.defPinState : 'normal',
+        pinState: this.props.pinState,
     };
   }
 
   public componentDidMount() {
-    const { displayMode, fpsPinMenu } = this.props.parentProps;
-
-    let tempPinState: IPinMeState = displayMode === DisplayMode.Edit ? 'normal' : this.state.pinState;
-    FPSPinMe( fpsPinMenu.domElement, tempPinState, null,  false, true, null, fpsPinMenu.pageLayout, displayMode );
-
+    if ( consoleFunctions === true ) console.log('FetchBannerElement ~ componentDidMount');
   }
 
 
@@ -157,19 +142,19 @@ export default class FetchBanner extends React.Component<IFetchBannerProps, IFet
    */
 
   public componentDidUpdate(prevProps){
-    const { displayMode, fpsPinMenu } = this.props.parentProps;
+    console.log('FetchBannerElement ~ componentDidUpdate');
+    // const { displayMode, fpsPinMenu } = this.props.parentProps;
+    // let pinStatus = getDefaultPinState( prevProps, this.props );
 
-    let pinStatus = getDefaultPinState( prevProps.parentProps, this.props.parentProps );
-
-    if ( pinStatus.refresh === true ) {
-      // FPSPinMenu( this.props.fpsPinMenu.domElement, defPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
-      FPSPinMe( fpsPinMenu.domElement, pinStatus.defPinState, null,  false, true, null, fpsPinMenu.pageLayout, displayMode );
-      this.setState({ pinState: pinStatus.defPinState });
-    }
+    // if ( pinStatus.refresh === true ) {
+    //   FPSPinMe( fpsPinMenu.domElement, pinStatus.defPinState, null,  false, true, null, fpsPinMenu.pageLayout, displayMode );
+    //   this.setState({ pinState: pinStatus.defPinState });
+    // }
 
   }
 
   public render(): React.ReactElement<IFetchBannerProps> {
+    if ( consoleFunctions === true ) console.log('FetchBannerElement ~ render');
     const { bannerProps, } = this.props.parentProps;
     const { displayMode, fpsPinMenu } = this.props.parentProps;
 
@@ -181,14 +166,14 @@ export default class FetchBanner extends React.Component<IFetchBannerProps, IFet
   ];
 
   // if ( this.props.fpsPinMenu.forcePinState !== true ) {
-    if ( fpsPinMenu.forcePinState !== true && this.state.pinState === 'normal' ) {
+    if ( fpsPinMenu.forcePinState !== true && this.props.pinState === 'normal' ) {
       farBannerElementsArray.push( this.PinFullIcon );
   
-    } else if ( this.state.pinState === 'pinFull' ) {
+    } else if ( this.props.pinState === 'pinFull' ) {
       farBannerElementsArray.push( this.PinMinIcon );
       if ( fpsPinMenu.forcePinState !== true ) farBannerElementsArray.push( this.PinDefault );
   
-    } else if ( this.state.pinState === 'pinMini' ) {
+    } else if ( this.props.pinState === 'pinMini' ) {
       farBannerElementsArray.push( this.PinExpandIcon );
       if ( fpsPinMenu.forcePinState !== true ) farBannerElementsArray.push( this.PinDefault );
     }
@@ -225,7 +210,7 @@ export default class FetchBanner extends React.Component<IFetchBannerProps, IFet
    *                                                                                                                        
    */
 
-    let forceNarrowStyles = this.state.pinState === 'pinFull' || this.state.pinState === 'pinMini' ? true : false ;
+    let forceNarrowStyles = this.props.pinState === 'pinFull' || this.props.pinState === 'pinMini' ? true : false ;
     return ( <WebpartBanner 
 
       displayMode={ bannerProps.displayMode }
@@ -284,24 +269,27 @@ export default class FetchBanner extends React.Component<IFetchBannerProps, IFet
   }
 
   private setPinFull() {
+    if ( consoleFunctions === true ) console.log('FetchBannerElement ~ setPinFull');
     const { displayMode, fpsPinMenu } = this.props.parentProps;
     FPSPinMe( fpsPinMenu.domElement, 'pinFull', null,  false, true, null, fpsPinMenu.pageLayout, displayMode );
-    this.setState({ pinState: 'pinFull' });
+    // this.setState({ pinState: 'pinFull' });
     if ( this.props.updatePinState ) this.props.updatePinState( 'pinFull' );
   }
 
   private setPinMin() {
+    if ( consoleFunctions === true ) console.log('FetchBannerElement ~ setPinMin');
     const { displayMode, fpsPinMenu } = this.props.parentProps;
     FPSPinMe( fpsPinMenu.domElement, 'pinMini', null,  false, true, null, fpsPinMenu.pageLayout, displayMode );
-    this.setState({ pinState: 'pinMini' });
-    if ( this.props.updatePinState ) this.props.updatePinState( 'pinFull' );
+    // this.setState({ pinState: 'pinMini' });
+    if ( this.props.updatePinState ) this.props.updatePinState( 'pinMini' );
   }
 
   private setPinDefault() {
+    if ( consoleFunctions === true ) console.log('FetchBannerElement ~ setPinDefault');
     const { displayMode, fpsPinMenu } = this.props.parentProps;
     FPSPinMe( fpsPinMenu.domElement, 'normal', null,  false, true, null, fpsPinMenu.pageLayout, displayMode );
-    this.setState({ pinState: 'normal' });
-    if ( this.props.updatePinState ) this.props.updatePinState( 'pinFull' );
+    // this.setState({ pinState: 'normal' });
+    if ( this.props.updatePinState ) this.props.updatePinState( 'normal' );
   }
 
 }
