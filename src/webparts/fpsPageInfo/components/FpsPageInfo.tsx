@@ -21,6 +21,9 @@ import { FPSPinMe, IPinMeState } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinM
 import WebpartBanner from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/banner/onLocal/component";
 import { IBannerPages } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/bannerProps';
 
+import FetchBanner from '../CoreFPS/FetchBannerElement';
+import { IFetchBannerProps } from '../CoreFPS/FetchBannerElement';
+
 import { getWebPartHelpElement } from '../CoreFPS/PropPaneHelp';
 
 import { getBannerPages } from './HelpPanel/AllContent';
@@ -34,7 +37,7 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       return { fieldGroup: [ { width: '90%', maxWidth: '600px', }, { borderColor: 'lightgray', }, ], };
     }
 
-    /***
+/***
  *    d8b   db d88888b  .d8b.  d8888b.      d88888b  .d8b.  d8888b.      d88888b db      d88888b 
  *    888o  88 88'     d8' `8b 88  `8D      88'     d8' `8b 88  `8D      88'     88      88'     
  *    88V8o 88 88ooooo 88ooo88 88oobY'      88ooo   88ooo88 88oobY'      88ooooo 88      88ooooo 
