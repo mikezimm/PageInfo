@@ -22,12 +22,32 @@ export interface IFetchBannerProps {
     parentProps:    IFpsPageInfoProps;
     parentState:    IFpsPageInfoState;
 
+    updatePinState: any;
+
 }
 
 
 export interface IFetchBannerState {
     pinState: IPinMeState;
 
+}
+
+export function getDefaultPinState ( prevProps, props ){
+    const { displayMode, fpsPinMenu } = props;
+
+    let refresh = false;
+    let defPinState =fpsPinMenu.defPinState;
+    if ( defPinState !== prevProps.fpsPinMenu.defPinState ) {
+      refresh = true;
+    } else if ( prevProps.fpsPinMenu.forcePinState !== fpsPinMenu.forcePinState ) {
+      refresh = true;
+    }
+    //This fixed https://github.com/mikezimm/PageInfo/issues/47
+    if ( displayMode === DisplayMode.Edit ) {
+      defPinState = 'normal';
+    } 
+
+    return { defPinState: defPinState, refresh: refresh };
 }
 
 
@@ -139,22 +159,12 @@ export default class FetchBanner extends React.Component<IFetchBannerProps, IFet
   public componentDidUpdate(prevProps){
     const { displayMode, fpsPinMenu } = this.props.parentProps;
 
-    let refresh = false;
-    let defPinState =fpsPinMenu.defPinState;
-    if ( defPinState !== prevProps.fpsPinMenu.defPinState ) {
-      refresh = true;
-    } else if ( prevProps.fpsPinMenu.forcePinState !== fpsPinMenu.forcePinState ) {
-      refresh = true;
-    }
-    //This fixed https://github.com/mikezimm/PageInfo/issues/47
-    if ( displayMode === DisplayMode.Edit ) {
-      defPinState = 'normal';
-    } 
+    let pinStatus = getDefaultPinState( prevProps.parentProps, this.props.parentProps );
 
-    if ( refresh === true ) {
+    if ( pinStatus.refresh === true ) {
       // FPSPinMenu( this.props.fpsPinMenu.domElement, defPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
-      FPSPinMe( fpsPinMenu.domElement, defPinState, null,  false, true, null, fpsPinMenu.pageLayout, displayMode );
-      this.setState({ pinState: defPinState });
+      FPSPinMe( fpsPinMenu.domElement, pinStatus.defPinState, null,  false, true, null, fpsPinMenu.pageLayout, displayMode );
+      this.setState({ pinState: pinStatus.defPinState });
     }
 
   }
@@ -277,18 +287,21 @@ export default class FetchBanner extends React.Component<IFetchBannerProps, IFet
     const { displayMode, fpsPinMenu } = this.props.parentProps;
     FPSPinMe( fpsPinMenu.domElement, 'pinFull', null,  false, true, null, fpsPinMenu.pageLayout, displayMode );
     this.setState({ pinState: 'pinFull' });
+    if ( this.props.updatePinState ) this.props.updatePinState( 'pinFull' );
   }
 
   private setPinMin() {
     const { displayMode, fpsPinMenu } = this.props.parentProps;
     FPSPinMe( fpsPinMenu.domElement, 'pinMini', null,  false, true, null, fpsPinMenu.pageLayout, displayMode );
     this.setState({ pinState: 'pinMini' });
+    if ( this.props.updatePinState ) this.props.updatePinState( 'pinFull' );
   }
 
   private setPinDefault() {
     const { displayMode, fpsPinMenu } = this.props.parentProps;
     FPSPinMe( fpsPinMenu.domElement, 'normal', null,  false, true, null, fpsPinMenu.pageLayout, displayMode );
     this.setState({ pinState: 'normal' });
+    if ( this.props.updatePinState ) this.props.updatePinState( 'pinFull' );
   }
 
 }

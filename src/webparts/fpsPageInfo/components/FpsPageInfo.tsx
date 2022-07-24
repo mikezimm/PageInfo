@@ -21,7 +21,7 @@ import { FPSPinMe, IPinMeState } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinM
 import WebpartBanner from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/banner/onLocal/component";
 import { IBannerPages } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/bannerProps';
 
-import FetchBanner from '../CoreFPS/FetchBannerElement';
+import FetchBanner, { getDefaultPinState } from '../CoreFPS/FetchBannerElement';
 import { IFetchBannerProps } from '../CoreFPS/FetchBannerElement';
 
 import { getWebPartHelpElement } from '../CoreFPS/PropPaneHelp';
@@ -36,42 +36,6 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       const { required } = props;
       return { fieldGroup: [ { width: '90%', maxWidth: '600px', }, { borderColor: 'lightgray', }, ], };
     }
-
-/***
- *    d8b   db d88888b  .d8b.  d8888b.      d88888b  .d8b.  d8888b.      d88888b db      d88888b 
- *    888o  88 88'     d8' `8b 88  `8D      88'     d8' `8b 88  `8D      88'     88      88'     
- *    88V8o 88 88ooooo 88ooo88 88oobY'      88ooo   88ooo88 88oobY'      88ooooo 88      88ooooo 
- *    88 V8o88 88~~~~~ 88~~~88 88`8b        88~~~   88~~~88 88`8b        88~~~~~ 88      88~~~~~ 
- *    88  V888 88.     88   88 88 `88.      88      88   88 88 `88.      88.     88booo. 88.     
- *    VP   V8P Y88888P YP   YP 88   YD      YP      YP   YP 88   YD      Y88888P Y88888P Y88888P 
- *                                                                                               
- *                                                                                               
- */
-
-  private WebPartHelpElement = getWebPartHelpElement( this.props.sitePresets );
-  private contentPages : IBannerPages = getBannerPages( this.props.bannerProps );
-  private nearBannerElements = this.buildNearBannerElements();
-  private farBannerElements = this.buildFarBannerElements();
-
-  private buildNearBannerElements() {
-    //See banner/NearAndFarSample.js for how to build this.
-    let elements = [];
-    // defaultBannerCommandStyles.fontWeight = 'bolder';
-    // elements.push(<div style={{ paddingRight: null }} className={ '' } title={ title}>
-    //   <Icon iconName='WindDirection' onClick={ this.jumpToParentSite.bind(this) } style={ defaultBannerCommandStyles }></Icon>
-    // </div>);
-    return elements;
-  }
-
-  private buildFarBannerElements() {
-    let farElements: any[] = [];
-
-    if ( this.props.bannerProps.showTricks === true ) {
-      farElements.push( null );
-    }
-    return farElements;
-  }
-
 
   private baseCmdStyles: React.CSSProperties = createBannerStyleObj( 'corpDark1', 'cmd' );
 
@@ -92,13 +56,6 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
   private smallerCmdStyles: React.CSSProperties = this.makeSmallerCmdStyles();
   private propsExpandCmdStyles: React.CSSProperties = this.makeExpandPropsCmdStyles( true );
-
-  // private FeedbackIcon = <Icon title={ 'Submit Feedback' } iconName='Feedback' onClick={ this.sendFeedback.bind(this) } style={ this.makeExpandPropsCmdStyles( false ) }></Icon>;
-
-  private PinFullIcon = <Icon title={ 'Pin to top' } iconName='Pinned' onClick={ this.setPinFull.bind(this) } style={ this.smallerCmdStyles }></Icon>;
-  private PinMinIcon = <Icon  title={ 'Minimize' } iconName='CollapseMenu' onClick={ this.setPinMin.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
-  private PinExpandIcon = <Icon  title={ 'Expand' } iconName='DoubleChevronDown' onClick={ this.setPinFull.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
-  private PinDefault = <Icon  title={ 'Set to default' } iconName='ArrowDownRightMirrored8' onClick={ this.setPinDefault.bind(this) } style={ this.smallerCmdStyles  }></Icon>;
 
   private PropsExpand = <Icon  title={ 'Expand Properties' } iconName='ChevronDownMed' style={ this.propsExpandCmdStyles  }></Icon>;
   private PropsCollapse = <Icon  title={ 'Collapse Properties' } iconName='ChevronUpMed' style={ this.propsExpandCmdStyles  }></Icon>;
@@ -211,152 +168,18 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
    */
 
   public componentDidUpdate(prevProps){
-    let refresh = false;
-    let defPinState = this.props.fpsPinMenu.defPinState;
-    if ( defPinState !== prevProps.fpsPinMenu.defPinState ) {
-      refresh = true;
-    } else if ( prevProps.fpsPinMenu.forcePinState !== this.props.fpsPinMenu.forcePinState ) {
-      refresh = true;
-    }
-    //This fixed https://github.com/mikezimm/PageInfo/issues/47
-    if ( this.props.displayMode === DisplayMode.Edit ) {
-      defPinState = 'normal';
-    } 
 
-    if ( refresh === true ) {
-      // FPSPinMenu( this.props.fpsPinMenu.domElement, defPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
-      FPSPinMe( this.props.fpsPinMenu.domElement, defPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
-      this.setState({ pinState: defPinState });
+    let pinStatus = getDefaultPinState( prevProps, this.props );
+
+    if ( pinStatus.refresh === true ) {
+      FPSPinMe( this.props.fpsPinMenu.domElement, pinStatus.defPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
+      this.setState({ pinState: pinStatus.defPinState });
     }
 
   }
 
   public render(): React.ReactElement<IFpsPageInfoProps> {
-    const {
-      bannerProps,
-      description,
-      isDarkTheme,
-      environmentMessage,
-      hasTeamsContext,
-      userDisplayName,
-    } = this.props;
-
-
-    const PinMenuIcons: any [] = [];
-
-   // let farBannerElementsArray = [];
-   let farBannerElementsArray = [...this.farBannerElements,
-    // this.props.showCodeIcon !== true ? null : <div title={'Show Code Details'}><Icon iconName={ 'Code' } onClick={ this.toggleOriginal.bind(this) } style={ bannerProps.bannerCmdReactCSS }></Icon></div>,
-  ];
-
-  // if ( this.props.fpsPinMenu.forcePinState !== true ) {
-    if ( this.props.fpsPinMenu.forcePinState !== true && this.state.pinState === 'normal' ) {
-      farBannerElementsArray.push( this.PinFullIcon );
-  
-    } else if ( this.state.pinState === 'pinFull' ) {
-      farBannerElementsArray.push( this.PinMinIcon );
-      if ( this.props.fpsPinMenu.forcePinState !== true ) farBannerElementsArray.push( this.PinDefault );
-  
-    } else if ( this.state.pinState === 'pinMini' ) {
-      farBannerElementsArray.push( this.PinExpandIcon );
-      if ( this.props.fpsPinMenu.forcePinState !== true ) farBannerElementsArray.push( this.PinDefault );
-    }
-
-  // }
-
-  /***
-   *    d8888b.  .d8b.  d8b   db d8b   db d88888b d8888b. 
-   *    88  `8D d8' `8b 888o  88 888o  88 88'     88  `8D 
-   *    88oooY' 88ooo88 88V8o 88 88V8o 88 88ooooo 88oobY' 
-   *    88~~~b. 88~~~88 88 V8o88 88 V8o88 88~~~~~ 88`8b   
-   *    88   8D 88   88 88  V888 88  V888 88.     88 `88. 
-   *    Y8888P' YP   YP VP   V8P VP   V8P Y88888P 88   YD 
-   *                                                      
-   *                                                      
-   */
-
-
-
-  let bannerSuffix = '';
-  //Exclude the props.bannerProps.title if the webpart is narrow to make more responsive
-  let bannerTitle = bannerProps.bannerWidth < 900 ? bannerProps.title : `${bannerProps.title} ${ ( bannerSuffix ? ' - ' + bannerSuffix : '' ) }`;
-  
-  if ( bannerTitle === '' ) { bannerTitle = 'ignore' ; }
-  if ( this.props.displayMode === DisplayMode.Edit ) { bannerTitle += '' ; }
-
-
-    /***
-   *    d8888b.  .d8b.  d8b   db d8b   db d88888b d8888b.      d88888b db      d88888b .88b  d88. d88888b d8b   db d888888b 
-   *    88  `8D d8' `8b 888o  88 888o  88 88'     88  `8D      88'     88      88'     88'YbdP`88 88'     888o  88 `~~88~~' 
-   *    88oooY' 88ooo88 88V8o 88 88V8o 88 88ooooo 88oobY'      88ooooo 88      88ooooo 88  88  88 88ooooo 88V8o 88    88    
-   *    88~~~b. 88~~~88 88 V8o88 88 V8o88 88~~~~~ 88`8b        88~~~~~ 88      88~~~~~ 88  88  88 88~~~~~ 88 V8o88    88    
-   *    88   8D 88   88 88  V888 88  V888 88.     88 `88.      88.     88booo. 88.     88  88  88 88.     88  V888    88    
-   *    Y8888P' YP   YP VP   V8P VP   V8P Y88888P 88   YD      Y88888P Y88888P Y88888P YP  YP  YP Y88888P VP   V8P    YP    
-   *                                                                                                                        
-   *                                                                                                                        
-   */
-
-    let forceNarrowStyles = this.state.pinState === 'pinFull' || this.state.pinState === 'pinMini' ? true : false ;
-    let Banner = <FetchBanner 
-      parentProps={ this.props }
-      parentState={ this.state }
-    ></FetchBanner>;
-
-    //   displayMode={ bannerProps.displayMode }
-    //   WebPartHelpElement={ this.WebPartHelpElement }
-    //   forceNarrowStyles= { forceNarrowStyles }
-    //   contentPages= { this.contentPages }
-    //   feedbackEmail= { bannerProps.feedbackEmail }
-    //   FPSUser={ bannerProps.FPSUser }
-    //   exportProps={ bannerProps.exportProps }
-    //   showBanner={ bannerProps.showBanner }
-    //   // Adding this to adjust expected width for when prop pane could be opened
-    //   bannerWidth={ ( bannerProps.bannerWidth ) }
-    //   pageContext={ bannerProps.pageContext }
-    //   pageLayout={ bannerProps.pageLayout }
-    //   title ={ bannerTitle }
-    //   panelTitle = { bannerProps.panelTitle }
-    //   infoElement = { bannerProps.infoElement }
-    //   bannerReactCSS={ bannerProps.bannerReactCSS }
-    //   bannerCmdReactCSS={ bannerProps.bannerCmdReactCSS }
-    //   showTricks={ bannerProps.showTricks }
-    //   showGoToParent={ bannerProps.showGoToParent }
-    //   showGoToHome={ bannerProps.showGoToHome }
-    //   onHomePage={ bannerProps.onHomePage }
-
-    //   webpartHistory={ bannerProps.webpartHistory }
-
-    //   showBannerGear={ bannerProps.showBannerGear }
-
-    //   showFullPanel={ bannerProps.showFullPanel }
-    //   replacePanelHTML={ bannerProps.replacePanelHTML }
-    //   replacePanelWarning={ bannerProps.replacePanelWarning }
-
-    //   hoverEffect={ bannerProps.hoverEffect }
-    //   gitHubRepo={ bannerProps.gitHubRepo }
-    //   earyAccess={ bannerProps.earyAccess }
-    //   wideToggle={ bannerProps.wideToggle }
-    //   nearElements = { this.nearBannerElements }
-    //   farElements = { farBannerElementsArray }
-
-    //   showRepoLinks={ bannerProps.showRepoLinks }
-    //   showExport={ bannerProps.showExport }
-    //   //2022-02-17:  Added these for expandoramic mode
-    //   domElement = { bannerProps.domElement }
-    //   enableExpandoramic = { bannerProps.enableExpandoramic }
-    //   expandoDefault = { bannerProps.expandoDefault }
-    //   expandoStyle = { bannerProps.expandoStyle}
-    //   expandAlert = { bannerProps.expandAlert }
-    //   expandConsole = { bannerProps.expandConsole }
-    //   expandoPadding = { bannerProps.expandoPadding }
-    //   beAUser = { bannerProps.beAUser }
-    //   showBeAUserIcon = { bannerProps.showBeAUserIcon }
-    //   beAUserFunction={ bannerProps.beAUserFunction }
-
-    // ></WebpartBanner>;
-
-    // bannerStyle = createStyleFromString( this.props.styleString, { background: 'green' }, 'bannerStyle in banner/component.tsx ~ 81' );
-
+    const { hasTeamsContext, } = this.props;
 
     let advPropsAccordion = !this.props.advPageProps.showSomeProps || !this.props.advPageProps.title ? null : 
       <div className={ stylesA.propsTitle } style={{ display: 'flex', flexWrap: 'nowrap' }} onClick={ this.toggleAdvAccordion.bind(this) }>
@@ -426,8 +249,13 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     </div>
     </div>;
 
-
     let devHeader = this.state.showDevHeader === true ? <div><b>Props: </b> { 'this.props.lastPropChange' + ', ' + 'this.props.lastPropDetailChange' } - <b>State: lastStateChange: </b> { this.state.lastStateChange  } </div> : null ;
+
+    const Banner = <FetchBanner 
+      parentProps={ this.props }
+      parentState={ this.state }
+      updatePinState = { this._updatePinState.bind(this) }
+    ></FetchBanner>;
 
     return (
       <section className={`${styles.fpsPageInfo} ${hasTeamsContext ? styles.teams : ''}`}>
@@ -445,6 +273,10 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
         </div>
       </section>
     );
+  }
+
+  private _updatePinState( newValue ) {
+    this.setState({ pinState: newValue, });
   }
 
   private toggleRelated( related: IRelatedItemsProps, isExpanded: boolean ) {
@@ -465,21 +297,6 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
   }
 
-  private setPinFull() {
-    FPSPinMe( this.props.fpsPinMenu.domElement, 'pinFull', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
-    this.setState({ pinState: 'pinFull' });
-  }
-
-  private setPinMin() {
-    FPSPinMe( this.props.fpsPinMenu.domElement, 'pinMini', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
-    this.setState({ pinState: 'pinMini' });
-  }
-
-  private setPinDefault() {
-    FPSPinMe( this.props.fpsPinMenu.domElement, 'normal', null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
-    this.setState({ pinState: 'normal' });
-  }
-
   private toggleAdvAccordion() {
     let newState = this.state.propsExpanded === true ? false : true;
     this.setState( { propsExpanded: newState });
@@ -490,12 +307,12 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
     this.setState( { tocExpanded: newState });
   }
 
-    //Caller should be onClick={ this._clickLeft.bind( this, item )}
-    private textFieldChange( ev: any ) {
-      let newValue = ev.target.value;
+  //Caller should be onClick={ this._clickLeft.bind( this, item )}
+  private textFieldChange( ev: any ) {
+    let newValue = ev.target.value;
 
-      this.setState({ linkFilter: newValue, });
+    this.setState({ linkFilter: newValue, });
 
-    }
+  }
 
 }
