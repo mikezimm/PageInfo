@@ -48,7 +48,7 @@ import { replaceHandleBars } from '@mikezimm/npmfunctions/dist/Services/Strings/
 // import { FPSOptionsGroupBasic, FPSBanner2Group, FPSOptionsGroupAdvanced } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup2';
 import { FPSOptionsGroupBasic, FPSBanner3Group, FPSOptionsGroupAdvanced } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup3';
 import { FPSBanner3BasicGroup,FPSBanner3NavGroup, FPSBanner3ThemeGroup } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup3';
-import { FPSBanner3VisHelpGroup } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroupVisHelp';
+import { FPSBanner3VisHelpGroup } from '@mikezimm/npmfunctions/dist/CoreFPS/FPSOptionsGroupVisHelp';
 import { FPSPinMePropsGroup } from '@mikezimm/npmfunctions/dist/PinMe/FPSOptionsGroupPinMe';
 import { buildRelatedItemsPropsGroup } from '@mikezimm/npmfunctions/dist/RelatedItems/RelatedItemsPropGroup';
 
