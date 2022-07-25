@@ -14,32 +14,32 @@ import { exportIgnorePropsFPS, importBlockPropsFPS } from '@mikezimm/npmfunction
 import { IMinWPBannerProps } from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/BannerSetup";
 import { IMinRelatedWPProps, IMinPageLinksProps } from "@mikezimm/npmfunctions/dist/RelatedItems/IRelatedWebPartProps";
 
-  //Specific for this web part
-  export const exportIgnorePropsThis = [ ];
+//Specific for this web part
+export const exportIgnorePropsThis = [ ];
 
-  export const exportIgnoreProps = [ ...exportIgnorePropsFPS, ...exportIgnorePropsThis  ];
+export const exportIgnoreProps = [ ...exportIgnorePropsFPS, ...exportIgnorePropsThis  ];
 
-  //These props will not be imported even if they are in one of the change arrays above (fail-safe)
-  //This was done so user could not manually insert specific props to over-right fail-safes built in to the webpart
+//These props will not be imported even if they are in one of the change arrays above (fail-safe)
+//This was done so user could not manually insert specific props to over-right fail-safes built in to the webpart
 
-  //Specific for this web part
-  export const importBlockPropsThis = [ 'showSomeProps' ];
+//Specific for this web part
+export const importBlockPropsThis = [ 'showSomeProps' ];
 
-  export const importBlockProps = [ ...importBlockPropsFPS, ...importBlockPropsThis ];
+export const importBlockProps = [ ...importBlockPropsFPS, ...importBlockPropsThis ];
 
-  //This will be in npmFunctions > Services/PropPane/FPSOptionsExpando in next release.
-  //  export type IExpandAudiences = 'Site Admins' | 'Site Owners' | 'Page Editors' | 'WWWone';
+//This will be in npmFunctions > Services/PropPane/FPSOptionsExpando in next release.
+//  export type IExpandAudiences = 'Site Admins' | 'Site Owners' | 'Page Editors' | 'WWWone';
 
 
-  export const changePinMe = [ 'defPinState', 'forcePinState' ];
-  export const changeTOC = [ 'showTOC', 'minHeadingToShow' ,'description' , 'TOCTitleField', 'tocExpanded' ];
-  export const changeProperties = [ 'showSomeProps', 'showCustomProps' , 'showOOTBProps' , 'showApprovalProps' , 'propsTitleField', 'propsExpanded', 'selectedProperties' ];
+export const changePinMe = [ 'defPinState', 'forcePinState' ];
+export const changeTOC = [ 'showTOC', 'minHeadingToShow' ,'description' , 'TOCTitleField', 'tocExpanded' ];
+export const changeProperties = [ 'showSomeProps', 'showCustomProps' , 'showOOTBProps' , 'showApprovalProps' , 'propsTitleField', 'propsExpanded', 'selectedProperties' ];
 
-  export const changeRelated1 = [ 'related1heading', 'related1showItems' , 'related1isExpanded' , 'related1web' , 'related1listTitle', 'related1restFilter', 'related1linkProp', 'related1displayProp', 'relatedStyle' ];
-  export const changeRelated2 = [ 'related2heading', 'related2showItems' , 'related2isExpanded' , 'related2web' , 'related2listTitle', 'related2restFilter', 'related2linkProp', 'related2displayProp' ];
-  export const changePageLinks = [ 'pageLinksheading', 'pageLinksshowItems' , 'pageLinksisExpanded' , 'pageLinksweb' , 'pageLinkslistTitle', 'pageLinksrestFilter', 'pageLinkslinkProp', 'pageLinksdisplayProp', 'canvasLinks', 'canvasImgs', 'linkSearchBox' ];
+export const changeRelated1 = [ 'related1heading', 'related1showItems' , 'related1isExpanded' , 'related1web' , 'related1listTitle', 'related1restFilter', 'related1linkProp', 'related1displayProp', 'relatedStyle' ];
+export const changeRelated2 = [ 'related2heading', 'related2showItems' , 'related2isExpanded' , 'related2web' , 'related2listTitle', 'related2restFilter', 'related2linkProp', 'related2displayProp' ];
+export const changePageLinks = [ 'pageLinksheading', 'pageLinksshowItems' , 'pageLinksisExpanded' , 'pageLinksweb' , 'pageLinkslistTitle', 'pageLinksrestFilter', 'pageLinkslinkProp', 'pageLinksdisplayProp', 'canvasLinks', 'canvasImgs', 'linkSearchBox' ];
 
-  export const changeWebPartStyles = [ 'h1Style', 'h2Style' ,'h3Style' , 'pageInfoStyle', 'tocStyle', 'propsStyle' ];
+export const changeWebPartStyles = [ 'h1Style', 'h2Style' ,'h3Style' , 'pageInfoStyle', 'tocStyle', 'propsStyle' ];
 
 export interface IFpsPageInfoWebPartProps extends IMinWPBannerProps, IMinRelatedWPProps, IMinPageLinksProps {
 
@@ -67,7 +67,7 @@ export interface IFpsPageInfoWebPartProps extends IMinWPBannerProps, IMinRelated
   selectedProperties: string[];
 
   //2022-07-25:  Moved all related and pageLinks interfaces to npmFunctions where rest of code actually is.
-  
+
   // relatedStyle: string;
 
   // related1heading: string;
