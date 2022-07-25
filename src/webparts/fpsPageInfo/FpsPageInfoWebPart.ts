@@ -121,6 +121,7 @@ import { HTMLRegEx, IHTMLRegExKeys } from '../../Service/htmlTags';
 import { css } from 'office-ui-fabric-react';
 import { PreConfiguredProps } from './CoreFPS/PreConfiguredSettings';
 import { getThisSitesPreConfigProps, IConfigurationProp, ISitePreConfigProps, IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
+import { applyPresetCollectionDefaults } from '@mikezimm/npmfunctions/dist/PropPaneHelp/ApplyPresets';
 import { IRelatedItemsProps, IRelatedKey } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedItemsProps';
 import { pagePropertiesGroup } from './PropPaneGroups/PageProps';
 import { getImageLinksGroup } from './PropPaneGroups/ImageLinks';
@@ -255,7 +256,8 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
      */
 
       //NEED TO APPLY THIS HERE as well as follow-up in render for it to not visibly change
-      this.presetCollectionDefaults();
+      // this.presetCollectionDefaults();
+      this.sitePresets = applyPresetCollectionDefaults( this.sitePresets, PreConfiguredProps, this.properties, this.context.pageContext.web.serverRelativeUrl ) ;
       this.applyHeadingCSS();
 
       this.properties.pageLayout =  this.context['_pageLayoutType']?this.context['_pageLayoutType'] : this.context['_pageLayoutType'];
@@ -506,23 +508,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     let tocStyle: React.CSSProperties = createStyleFromString( this.properties.tocStyle, null, 'FPSPageInfoWP in ~ 512' );
     let propsStyle: React.CSSProperties = createStyleFromString( this.properties.propsStyle, null, 'FPSPageInfoWP in ~ 513' );
     let relatedItemsStyle: React.CSSProperties = createStyleFromString( this.properties.relatedStyle, null, 'FPSPageInfoWP in ~ 514' );
-
-    // let relatedItems1: IRelatedItemsProps = {
-    //   description: '',
-    //   showItems: false,
-    //   fetchInfo: {
-    //     web: '',
-    //     listTitle: '',
-    //     restFilter: '',
-    //     linkProp: '', // aka FileLeaf to open file name, if empty, will just show the value
-    //     displayProp: '',
-    //   },
-    
-    //   isExpanded: false,
-    //   themeVariant: this._themeVariant,
-    
-    //   itemsStyle: relatedItemsStyle,
-    // }
 
     const element: React.ReactElement<IFpsPageInfoProps> = React.createElement(
       FpsPageInfo,
@@ -871,43 +856,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       ]
     };
   }
-
-  private presetCollectionDefaults() {
-    
-    this.sitePresets = getThisSitesPreConfigProps( PreConfiguredProps, this.properties, this.context.pageContext.web.serverRelativeUrl );
-
-    this.sitePresets.presets.map( setting => {
-      if ( this.properties[setting.prop] === setting.value ) { 
-        setting.status = 'valid';
-
-      } else if ( this.properties[setting.prop] === undefined || this.properties[setting.prop] === null ) { //Changed from just !this... because if value was 'false' it would set to true
-        this.properties[setting.prop] = setting.value ;
-        setting.status = 'preset';
-
-      }
-    });
-
-    this.sitePresets.forces.map( setting => {
-      if ( this.properties[setting.prop] === setting.value ) { 
-        setting.status = 'valid';
-
-      } else if ( !this.properties[setting.prop] ) { 
-        this.properties[setting.prop] = setting.value ;
-        setting.status = 'preset';
-
-      } else if ( this.properties[setting.prop] !== setting.value ) { 
-        this.properties[setting.prop] = setting.value ;
-        setting.status = 'changed';
-
-      }
-
-    });
-
-    console.log('Preset props used:', this.sitePresets );
-
-  }
-
-
 
   /***
  *    d88888b d8888b. .d8888.       .d88b.  d8888b. d888888b d888888b  .d88b.  d8b   db .d8888. 
