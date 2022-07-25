@@ -3,7 +3,6 @@ declare interface IFpsPageInfoWebPartStrings {
   PropertyPaneDescription: string;
   TOCGroupName: string;
   PIStyleGroupName: string;
-  PinMeGroupName: string;
   DescriptionFieldLabel: string;
   AppLocalEnvironmentSharePoint: string;
   AppLocalEnvironmentTeams: string;

@@ -13,8 +13,6 @@ import {
   PropertyPaneButtonType,
   PropertyPaneToggle,
   IPropertyPaneGroup,
-
-
 } from '@microsoft/sp-property-pane';
 
 
@@ -122,20 +120,10 @@ import { css } from 'office-ui-fabric-react';
 import { PreConfiguredProps } from './CoreFPS/PreConfiguredSettings';
 import { getThisSitesPreConfigProps, IConfigurationProp, ISitePreConfigProps, IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
 import { IRelatedItemsProps, IRelatedKey } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedItemsProps';
+import { pagePropertiesGroup, tOCGroup } from './PropPaneGroups/PageProps';
+import { getImageLinksGroup } from './PropPaneGroups/ImageLinks';
+import { buildRelatedProps } from './PropPaneGroups/Related';
 
-//export type IMinHeading = 'h3' | 'h2' | 'h1' ;
-export const MinHeadingOptions = [
-  { index: 0, key: 'h3', text: "h3" },
-  { index: 1, key: 'h2', text: "h2" },
-  { index: 2, key: 'h1', text: "h1" },
-];
-
-//export type IPinMeState = 'normal' | 'pinFull' | 'pinMini';
-export const PinMeLocations = [
-  { index: 0, key: 'normal', text: "normal" },
-  { index: 1, key: 'pinFull', text: "Pin Expanded" },
-  { index: 2, key: 'pinMini', text: "Pin Collapsed" },
-];
 
 export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageInfoWebPartProps> {
 
@@ -652,51 +640,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
 
   // private replaceHandleBars( str: string , context: WebPartContext ) {
-
-  //   if ( !str ) { return '' ; } else {
-
-  //     if ( str.indexOf('{{') === -1 || str.indexOf('}}') === -1 ) {
-  //       return str;
-
-  //     } else {
-
-  //       let newStr = str.replace( /{{PageId}}/gi , `${context.pageContext.listItem.id.toFixed()}` );
-
-  //       if ( str.indexOf('{{List') > -1 ) {
-  //         newStr = newStr.replace( /{{ListTitle}}/gi , `${context.pageContext.list.title}` );
-  //         newStr = newStr.replace( /{{ListId}}/gi , `${context.pageContext.list.id}` );
-  //         newStr = newStr.replace( /{{ListUrl}}/gi , `${context.pageContext.list.serverRelativeUrl}` );
-  //       }
-
-  //       if ( str.indexOf('{{User') > -1 ) {
-  //         newStr = newStr.replace( /{{UserName}}/gi , `${ context.pageContext.user.displayName }` );
-  //         newStr = newStr.replace( /{{UserLogin}}/gi , `${ context.pageContext.user.loginName }` );
-  //         newStr = newStr.replace( /{{UserEmail}}/gi , `${ context.pageContext.user.email }` );
-  //       }
-
-  //       if ( str.indexOf('{{Web') > -1 ) {
-  //         newStr = newStr.replace( /{{WebTitle}}/gi , `${context.pageContext.web.title}` );
-  //         newStr = newStr.replace( /{{WebUrl}}/gi , `${context.pageContext.web.serverRelativeUrl}` );
-  //         newStr = newStr.replace( /{{WebId}}/gi , `${context.pageContext.web.id}` );
-  //       }
-
-  //       if ( str.indexOf('{{Site') > -1 ) {
-  //         newStr = newStr.replace( /{{SiteTitle}}/gi , `${context.pageContext.web.title}` );
-  //         newStr = newStr.replace( /{{SiteUrl}}/gi , `${context.pageContext.web.serverRelativeUrl}` );
-  //         newStr = newStr.replace( /{{SiteId}}/gi , `${context.pageContext.web.id}` );
-  //       }
-
-  //       let now = new Date();
-
-  //       newStr = newStr.replace( /{{Now}}/gi , `${ now.toLocaleString() }` );
-  //       newStr = newStr.replace( /{{Today}}/gi , `${ now.toLocaleDateString() }` );
-
-  //       return newStr;
-
-  //     }
-
-  //   }
-
+  // If needed, see npmFunctions\src\Services\Strings\handleBars.ts
   // }
 
   private beAUserFunction() {
@@ -814,20 +758,10 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
     } else {
       if ( !this.properties.documentationIsValid ) { this.properties.documentationIsValid = false; }
+
     }
 
-    //ADDED FOR WEBPART HISTORY:  This sets the webpartHistory
-    let trimThis: ITrimThis = 'end';
-    if ( [].indexOf(propertyPath) > -1 ) {
-      trimThis = 'none';
-    } else if ( [].indexOf(propertyPath) > -1 ) {
-      trimThis = 'start';
-    }
-
-    this.properties.webpartHistory = updateWebpartHistory( this.properties.webpartHistory , propertyPath , newValue, this.context.pageContext.user.displayName, trimThis );
-
-    // console.log('webpartHistory:', this.thisHistoryInstance, this.properties.webpartHistory );
-
+    this.properties.webpartHistory = updateWebpartHistoryV2( this.properties.webpartHistory , propertyPath , newValue, this.context.pageContext.user.displayName, [], [] );
 
     if ( propertyPath === 'fpsImportProps' ) {
 
@@ -899,7 +833,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     this.context.propertyPane.refresh();
   }
 
-  private buildRelatedProps( name: IRelatedKey ) {
+  private buildRelatedPropsOriginal( name: IRelatedKey ) {
 
     var groupFields: IPropertyPaneField<any>[] = [];
 
@@ -1063,8 +997,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       // disabled: true,
     }));
 
-    let banner3BasicGroup = FPSBanner3BasicGroup( this.forceBanner , this.modifyBannerTitle, this.properties.showBanner, this.properties.infoElementChoice === 'Text' ? true : false, true );
-
     propDrops.push(PropertyPaneHorizontalRule());
     // Determine how many page property dropdowns we currently have
     this.properties.selectedProperties.forEach((prop, index) => {
@@ -1103,61 +1035,20 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           displayGroupsAsAccordion: true, //DONT FORGET THIS IF PROP PANE GROUPS DO NOT EXPAND
           groups: [
             WebPartInfoGroup( links.gitRepoPageInfoSmall, 'Best TOC and Page Info available :)' ),
-            {
-              groupName: strings.PinMeGroupName,
-              groupFields: [
-                PropertyPaneDropdown('defPinState', <IPropertyPaneDropdownProps>{
-                  label: 'Default Location - "Pin Expanded" updates after save',
-                  options: PinMeLocations, //MinHeadingOptions
-                }),
-                //
-                PropertyPaneToggle("forcePinState", {
-                  label: "Force Pin State",
-                  onText: "Enforce - No toggle",
-                  offText: "Let user change",
-                  // disabled: true,
-                }),
-              ]
-            }, //End this group  
-            {
-              groupName: strings.TOCGroupName,
-              isCollapsed: true,
-              groupFields: [
-                //showTOC
-                PropertyPaneToggle("showTOC", {
-                  label: "Show Table of Contents",
-                  onText: "On",
-                  offText: "Off",
-                  // disabled: true,
-                }),
-                PropertyPaneTextField('TOCTitleField', {
-                  label: strings.DescriptionFieldLabel,
-                  disabled: this.properties.showTOC === false ? true : false,
-                }),
-
-                PropertyPaneToggle("tocExpanded", {
-                  label: "Default state",
-                  onText: "Expanded",
-                  offText: "Collapsed",
-                  // disabled: true,
-                }),
-
-                PropertyPaneDropdown('minHeadingToShow', <IPropertyPaneDropdownProps>{
-                  label: 'Min heading to show - refresh required',
-                  options: MinHeadingOptions, //MinHeadingOptions
-                  disabled: this.properties.showTOC === false ? true : false,
-
-                }),
-              ]
-            }, //End this group
+            FPSPinMePropsGroup, //End this group  
+            tOCGroup( this.properties ), //End this group
+            pagePropertiesGroup( this.properties, this.availableProperties, this ),
             {
               groupName: strings.PropertiesGroupName,
               isCollapsed: true,
               groupFields: propDrops
             }, //End this group  
-            this.buildRelatedProps('related1'),
-            this.buildRelatedProps('related2'),
+            buildRelatedProps( this.properties, 'related1' ),
+            this.buildRelatedPropsOriginal('related1'),
+            buildRelatedProps( this.properties, 'related2' ),
+            this.buildRelatedPropsOriginal('related2'),
             this.buildImageLinksProps(),
+            getImageLinksGroup( this.properties ),
             {
               groupName: strings.PIStyleGroupName,
               isCollapsed: true,
@@ -1208,84 +1099,14 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
             }, //End this group
 
             FPSBanner3VisHelpGroup( this.context, this.onPropertyPaneFieldChanged, this.properties ),
-            // {
-            //   groupName: 'Visitor Help Info (required)',
-            //   isCollapsed: true,
-            //   groupFields: [
+            FPSBanner3BasicGroup( this.forceBanner , this.modifyBannerTitle, this.properties.showBanner, this.properties.infoElementChoice === 'Text' ? true : false, true ),
+            FPSBanner3NavGroup(), 
+            FPSBanner3ThemeGroup( this.modifyBannerStyle, this.properties.showBanner, this.properties.lockStyles, ),
 
-            //     PropertyPaneDropdown('fullPanelAudience', <IPropertyPaneDropdownProps>{
-            //       label: 'Full Help Panel Audience',
-            //       options: expandAudienceChoicesAll,
-            //     }),
-
-            //     PropertyPaneTextField('panelMessageDescription1',{
-            //       label: 'Panel Description',
-            //       description: 'Optional message displayed at the top of the panel for the end user to see.'
-            //     }),
-
-            //     PropertyPaneTextField('panelMessageSupport',{
-            //       label: 'Support Message',
-            //       description: 'Optional message to the user when looking for support',
-            //     }),
-
-            //     PropertyPaneTextField('panelMessageDocumentation',{
-            //       label: 'Documentation message',
-            //       description: 'Optional message to the user shown directly above the Documentation link',
-            //     }),
-
-            //     PropertyPaneTextField('documentationLinkUrl',{
-            //       label: 'PASTE a Documentation Link',
-            //       description: 'REQUIRED:  A valid link to documentation - DO NOT TYPE in or webpart will lage'
-            //     }),
-
-            //     PropertyPaneTextField('documentationLinkDesc',{
-            //       label: 'Documentation Description',
-            //       description: 'Optional:  Text user sees as the clickable documentation link',
-            //     }),
-
-            //     PropertyPaneTextField('panelMessageIfYouStill',{
-            //       label: 'If you still have... message',
-            //       description: 'If you have more than one contact, explain who to call for what'
-            //     }),
-
-            //     PropertyFieldPeoplePicker('supportContacts', {
-            //       label: 'Support Contacts',
-            //       initialData: this.properties.supportContacts,
-            //       allowDuplicate: false,
-            //       principalType: [ PrincipalType.Users, ],
-            //       onPropertyChange: this.onPropertyPaneFieldChanged,
-            //       //Had to cast  to get it to work
-            //       //https://github.com/pnp/sp-dev-fx-controls-react/issues/851#issuecomment-978990638
-            //       context: this.context as any,
-            //       properties: this.properties,
-            //       onGetErrorMessage: null,
-            //       deferredValidationTime: 0,
-            //       key: 'peopleFieldId'
-            //     }),
-
-
-
-            //   ]}, // this group
-
-              // FPSBanner3Group( this.forceBanner , this.modifyBannerTitle, this.modifyBannerStyle, this.properties.showBanner, null, true, this.properties.lockStyles, this.properties.infoElementChoice === 'Text' ? true : false ),
-
-              banner3BasicGroup,
-              FPSBanner3NavGroup(), 
-              FPSBanner3ThemeGroup( this.modifyBannerStyle, this.properties.showBanner, this.properties.lockStyles, ),
-
-              FPSOptionsGroupBasic( false, true, true, true, this.properties.allSectionMaxWidthEnable, true, this.properties.allSectionMarginEnable, true ), // this group
-              // FPSOptionsExpando( this.properties.enableExpandoramic, this.properties.enableExpandoramic,null, null ),
+            FPSOptionsGroupBasic( false, true, true, true, this.properties.allSectionMaxWidthEnable, true, this.properties.allSectionMarginEnable, true ), // this group
+            // FPSOptionsExpando( this.properties.enableExpandoramic, this.properties.enableExpandoramic,null, null ),
   
-            { groupName: 'Import Props',
-            isCollapsed: true ,
-            groupFields: [
-              PropertyPaneTextField('fpsImportProps', {
-                label: `Import settings from another FPS PageInfo Web part`,
-                description: 'For complex settings, use the link below to edit as JSON Object',
-                multiline: true,
-              }),
-              JSON_Edit_Link,
-            ]}, // this group
+            FPSImportPropsGroup, // this group
           ]
         }
       ]
