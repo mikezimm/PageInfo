@@ -123,10 +123,10 @@ import { PreConfiguredProps } from './CoreFPS/PreConfiguredSettings';
 import { getThisSitesPreConfigProps, IConfigurationProp, ISitePreConfigProps, IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
 import { applyPresetCollectionDefaults } from '@mikezimm/npmfunctions/dist/PropPaneHelp/ApplyPresets';
 import { IRelatedItemsProps, IRelatedKey } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedItemsProps';
-import { pagePropertiesGroup } from './PropPaneGroups/PageProps';
-import { getImageLinksGroup } from './PropPaneGroups/ImageLinks';
+import { buildPagePropertiesGroup } from './PropPaneGroups/PageProps';
+import { buildImageLinksGroup } from './PropPaneGroups/ImageLinks';
 
-import { tOCGroup } from './PropPaneGroups/TOC';
+import { buildTOCGroup } from './PropPaneGroups/TOC';
 import { buildPageInfoStylesGroup } from './PropPaneGroups/PageInfoStyles';
 
 
@@ -837,11 +837,11 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
           groups: [
             WebPartInfoGroup( links.gitRepoPageInfoSmall, 'Best TOC and Page Info available :)' ),
             FPSPinMePropsGroup, //End this group  
-            tOCGroup( this.properties ), //End this group
-            pagePropertiesGroup( this.properties, this.availableProperties, this ),
+            buildTOCGroup( this.properties ), //End this group
+            buildPagePropertiesGroup( this.properties, this.availableProperties, this ),
             buildRelatedItemsPropsGroup( this.properties, 'related1' ),
             buildRelatedItemsPropsGroup( this.properties, 'related2' ),
-            getImageLinksGroup( this.properties ),
+            buildImageLinksGroup( this.properties ),
             buildPageInfoStylesGroup( this.properties, this.modifyBannerStyle ), //End this group
             FPSBanner3VisHelpGroup( this.context, this.onPropertyPaneFieldChanged, this.properties ),
             FPSBanner3BasicGroup( this.forceBanner , this.modifyBannerTitle, this.properties.showBanner, this.properties.infoElementChoice === 'Text' ? true : false, true ),

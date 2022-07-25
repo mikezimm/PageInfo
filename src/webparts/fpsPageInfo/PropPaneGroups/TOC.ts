@@ -32,7 +32,7 @@ export const MinHeadingOptions = [
   { index: 2, key: 'h1', text: "h1" },
 ];
 
-export function tOCGroup( wpProps: IFpsPageInfoWebPartProps ) {
+export function buildTOCGroup( wpProps: IFpsPageInfoWebPartProps ) {
 
   const group : IPropertyPaneGroup = {
     groupName: strings.TOCGroupName,

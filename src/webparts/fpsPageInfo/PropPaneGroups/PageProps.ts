@@ -27,7 +27,7 @@ import { IFpsPageInfoWebPartProps } from '../IFpsPageInfoWebPartProps';
 
 import { Log } from '../components/AdvPageProps/utilities/Log';
 
-export function pagePropertiesGroup( wpProps: IFpsPageInfoWebPartProps, availableProperties: IPropertyPaneDropdownOption[], thisFromWP: any ) {
+export function buildPagePropertiesGroup( wpProps: IFpsPageInfoWebPartProps, availableProperties: IPropertyPaneDropdownOption[], thisFromWP: any ) {
 
   const group : IPropertyPaneGroup = {
     groupName: strings.PropertiesGroupName,

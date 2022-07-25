@@ -25,7 +25,7 @@ import {
 // import * as strings from 'FpsPageInfoWebPartStrings';
 import { IFpsPageInfoWebPartProps } from '../IFpsPageInfoWebPartProps';
 
-export function getImageLinksGroup( wpProps: IFpsPageInfoWebPartProps ) {
+export function buildImageLinksGroup( wpProps: IFpsPageInfoWebPartProps ) {
 
   var groupFields: IPropertyPaneField<any>[] = [];
   const name = 'pageLinks';
