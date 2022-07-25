@@ -4,10 +4,12 @@ import {
     //  PropertyPaneLabel,
     //  IPropertyPaneLabelProps,
     //  PropertyPaneHorizontalRule,
-      PropertyPaneTextField, IPropertyPaneTextFieldProps,
+      PropertyPaneTextField, 
+      // IPropertyPaneTextFieldProps,
     //   PropertyPaneLink, IPropertyPaneLinkProps,
      PropertyPaneDropdown, IPropertyPaneDropdownProps,
-      IPropertyPaneDropdownOption,PropertyPaneToggle,
+      // IPropertyPaneDropdownOption,
+      PropertyPaneToggle,
     //  IPropertyPaneConfiguration,
     //  PropertyPaneButton,
     //  PropertyPaneButtonType,
@@ -30,7 +32,7 @@ export const MinHeadingOptions = [
   { index: 2, key: 'h1', text: "h1" },
 ];
 
-export function tOCGroupName( wpProps: IFpsPageInfoWebPartProps ) {
+export function tOCGroup( wpProps: IFpsPageInfoWebPartProps ) {
 
   const group : IPropertyPaneGroup = {
     groupName: strings.TOCGroupName,

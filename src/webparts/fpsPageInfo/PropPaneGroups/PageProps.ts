@@ -1,20 +1,22 @@
 import {
-    //  IPropertyPanePage,
-     IPropertyPaneGroup,
-    //  PropertyPaneLabel,
-    //  IPropertyPaneLabelProps,
-    IPropertyPaneField,
-    PropertyPaneHorizontalRule,
-      PropertyPaneTextField, IPropertyPaneTextFieldProps,
-    //   PropertyPaneLink, IPropertyPaneLinkProps,
-     PropertyPaneDropdown, IPropertyPaneDropdownProps,
-      IPropertyPaneDropdownOption,PropertyPaneToggle,
-    //  IPropertyPaneConfiguration,
-     PropertyPaneButton,
-     PropertyPaneButtonType,
-    //   PropertyPaneSlider, IPropertyPaneSliderProps,
-    // PropertyPaneHorizontalRule,
-    // PropertyPaneSlider
+  //  IPropertyPanePage,
+  IPropertyPaneGroup,
+  //  PropertyPaneLabel,
+  //  IPropertyPaneLabelProps,
+  IPropertyPaneField,
+  PropertyPaneHorizontalRule,
+  PropertyPaneTextField, 
+  // IPropertyPaneTextFieldProps,
+  //   PropertyPaneLink, IPropertyPaneLinkProps,
+  PropertyPaneDropdown, 
+  // IPropertyPaneDropdownProps,
+  IPropertyPaneDropdownOption,PropertyPaneToggle,
+  //  IPropertyPaneConfiguration,
+  PropertyPaneButton,
+  PropertyPaneButtonType,
+  //   PropertyPaneSlider, IPropertyPaneSliderProps,
+  // PropertyPaneHorizontalRule,
+  // PropertyPaneSlider
 } from '@microsoft/sp-property-pane';
 
 // import { getHelpfullErrorV2 } from '../Logging/ErrorHandler';

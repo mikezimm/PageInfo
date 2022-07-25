@@ -49,6 +49,8 @@ import { replaceHandleBars } from '@mikezimm/npmfunctions/dist/Services/Strings/
 import { FPSOptionsGroupBasic, FPSBanner3Group, FPSOptionsGroupAdvanced } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup3';
 import { FPSBanner3BasicGroup,FPSBanner3NavGroup, FPSBanner3ThemeGroup } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup3';
 import { FPSBanner3VisHelpGroup } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroupVisHelp';
+import { FPSPinMePropsGroup } from '@mikezimm/npmfunctions/dist/PinMe/FPSOptionsGroupPinMe';
+import { buildRelatedItemsPropsGroup } from '@mikezimm/npmfunctions/dist/RelatedItems/RelatedItemsPropGroup';
 
 import { FPSOptionsExpando, expandAudienceChoicesAll } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsExpando'; //expandAudienceChoicesAll
 
@@ -58,7 +60,7 @@ import { WebPartInfoGroup, JSON_Edit_Link } from '@mikezimm/npmfunctions/dist/Se
 import { _LinkIsValid } from '@mikezimm/npmfunctions/dist/Links/AllLinks';
 import * as links from '@mikezimm/npmfunctions/dist/Links/LinksRepos';
 
-import { importProps, } from '@mikezimm/npmfunctions/dist/Services/PropPane/ImportFunctions';
+import { importProps, FPSImportPropsGroup } from '@mikezimm/npmfunctions/dist/Services/PropPane/ImportFunctions';
 
 import { sortStringArray, sortObjectArrayByStringKey, sortNumberArray, sortObjectArrayByNumberKey, sortKeysByOtherKey 
 } from '@mikezimm/npmfunctions/dist/Services/Arrays/sorting';
@@ -80,7 +82,7 @@ import { bannerThemes, bannerThemeKeys, makeCSSPropPaneString, createBannerStyle
 import { IRepoLinks } from '@mikezimm/npmfunctions/dist/Links/CreateLinks';
 
 import { IWebpartHistory, IWebpartHistoryItem2 } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistoryInterface';
-import { createWebpartHistory, ITrimThis, updateWebpartHistory, upgradeV1History } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistoryFunctions';
+import { createWebpartHistory, ITrimThis, updateWebpartHistoryV2, upgradeV1History } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistoryFunctions';
 
 import { saveAnalytics3 } from '@mikezimm/npmfunctions/dist/Services/Analytics/analytics2';
 import { IZLoadAnalytics, IZSentAnalytics, } from '@mikezimm/npmfunctions/dist/Services/Analytics/interfaces';
@@ -120,9 +122,11 @@ import { css } from 'office-ui-fabric-react';
 import { PreConfiguredProps } from './CoreFPS/PreConfiguredSettings';
 import { getThisSitesPreConfigProps, IConfigurationProp, ISitePreConfigProps, IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
 import { IRelatedItemsProps, IRelatedKey } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedItemsProps';
-import { pagePropertiesGroup, tOCGroup } from './PropPaneGroups/PageProps';
+import { pagePropertiesGroup } from './PropPaneGroups/PageProps';
 import { getImageLinksGroup } from './PropPaneGroups/ImageLinks';
-import { buildRelatedProps } from './PropPaneGroups/Related';
+
+import { tOCGroup } from './PropPaneGroups/TOC';
+import { buildPageInfoStylesGroup } from './PropPaneGroups/PageInfoStyles';
 
 
 export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageInfoWebPartProps> {
@@ -833,198 +837,10 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     this.context.propertyPane.refresh();
   }
 
-  private buildRelatedPropsOriginal( name: IRelatedKey ) {
-
-    var groupFields: IPropertyPaneField<any>[] = [];
-
-    groupFields.push(PropertyPaneToggle(`${name}showItems`, {
-      label: "Add Related Items",
-      onText: "On",
-      offText: "Off",
-      // disabled: true,
-    }));
-
-    groupFields.push(PropertyPaneTextField(`${name}heading`, {
-      label: 'Heading - accordion',
-      disabled: this.properties[`${name}showItems`] === false ? true : false,
-    }));
-
-    groupFields.push(PropertyPaneTextField(`${name}web`, {
-      label: 'Url to site - starting with /sites/...',
-      disabled: this.properties[`${name}showItems`] === false ? true : false,
-    }));
-
-    groupFields.push(PropertyPaneTextField(`${name}listTitle`, {
-      label: 'Title of the list or library which has related items',
-      disabled: this.properties[`${name}showItems`] === false ? true : false,
-    }));
-
-    groupFields.push(PropertyPaneTextField(`${name}restFilter`, {
-      label: 'Rest filter - click bright yellow icon for examples',
-      disabled: this.properties[`${name}showItems`] === false ? true : false,
-    }));
-
-    groupFields.push(PropertyPaneTextField(`${name}displayProp`, {
-      label: 'Static field name of Related item Label',
-      disabled: this.properties[`${name}showItems`] === false ? true : false,
-    }));
-
-    groupFields.push(PropertyPaneTextField(`${name}linkProp`, {
-      label: 'Static field name of Related item Link',
-      disabled: this.properties[`${name}showItems`] === false ? true : false,
-    }));
-
-    groupFields.push(PropertyPaneToggle(`${name}isExpanded`, {
-      label: "Expand by default",
-      onText: "On",
-      offText: "Off",
-      disabled: this.properties[`${name}showItems`] === false ? true : false,
-    }));
-
-    groupFields.push(PropertyPaneTextField(`relatedStyle`, {
-      label: 'React.CSS Item Styles',
-      disabled: this.properties[`${name}showItems`] === false ? true : false,
-    }));
-    
-    const RelatedGroup: IPropertyPaneGroup = {
-      groupName: `Related Props ${name.replace(/\D/g, '')}`,
-      isCollapsed: true,
-      groupFields: groupFields
-    };
-
-    return RelatedGroup;
-
-  }
-
-  private buildImageLinksProps( ) {
-
-    var groupFields: IPropertyPaneField<any>[] = [];
-    const name = 'pageLinks';
-    groupFields.push(PropertyPaneToggle(`${name}showItems`, {
-      label: "Enable feature",
-      onText: "On",
-      offText: "Off",
-      // disabled: true,
-    }));
-
-    groupFields.push(PropertyPaneTextField(`${name}heading`, {
-      label: 'Heading - accordion',
-      disabled: this.properties[`${name}showItems`] === false ? true : false,
-    }));
-
-    groupFields.push(PropertyPaneToggle(`canvasImgs`, {
-      label: "Show Image Urls",
-      onText: "On",
-      offText: "Off",
-      disabled: this.properties[`${name}showItems`] === false ? true : false,
-    }));
-
-    groupFields.push(PropertyPaneToggle(`canvasLinks`, {
-      label: "Show Link urls",
-      onText: "On",
-      offText: "Off",
-      disabled: this.properties[`${name}showItems`] === false ? true : false,
-    }));
-
-    groupFields.push(PropertyPaneToggle(`${name}isExpanded`, {
-      label: "Expand by default",
-      onText: "On",
-      offText: "Off",
-      disabled: this.properties[`${name}showItems`] === false ? true : false,
-    }));
-
-    groupFields.push(PropertyPaneToggle(`linkSearchBox`, {
-      label: "Show Link and Image Search",
-      onText: "On",
-      offText: "Off",
-      disabled: this.properties[`${name}showItems`] === false ? true : false,
-    }));
-
-    groupFields.push(PropertyPaneTextField(`relatedStyle`, {
-      label: 'React.CSS Item Styles',
-      disabled: this.properties[`${name}showItems`] === false ? true : false,
-    }));
-
-    const ImageLinksGroup: IPropertyPaneGroup = {
-      groupName: `Images and Links`,
-      isCollapsed: true,
-      groupFields: groupFields
-    };
-
-    return ImageLinksGroup;
-
-  }
-
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
 
     Log.Write(`getPropertyPaneConfiguration`);
-
-    // Initialize with the Title entry
-    var propDrops: IPropertyPaneField<any>[] = [];
-    const disableCustomProps = this.properties.showCustomProps === false ? true : false;
-
-    propDrops.push(PropertyPaneToggle("showOOTBProps", {
-      label: "Show Created/Modified Props",
-      onText: "On",
-      offText: "Off",
-      // disabled: true,
-    }));
-
-    propDrops.push( PropertyPaneToggle("showCustomProps", {
-      label: "Show Custom Props",
-      onText: "On",
-      offText: "Off",
-      // disabled: true,
-    }));
-
-    propDrops.push(PropertyPaneToggle("showApprovalProps", {
-      label: "Show Approval Status Props",
-      onText: "On",
-      offText: "Off",
-      disabled: true, //Not sure what props will be for this.
-    }));
-
-    propDrops.push(PropertyPaneTextField('propsTitleField', {
-      label: strings.PropsTitleFieldLabel,
-      disabled: this.properties.showSomeProps === false ? true : false,
-    }));
-
-    propDrops.push(PropertyPaneToggle("propsExpanded", {
-      label: "Default state",
-      onText: "Expanded",
-      offText: "Collapsed",
-      // disabled: true,
-    }));
-
-    propDrops.push(PropertyPaneHorizontalRule());
-    // Determine how many page property dropdowns we currently have
-    this.properties.selectedProperties.forEach((prop, index) => {
-      propDrops.push(PropertyPaneDropdown(`selectedProperty${index.toString()}`,
-        {
-          label: strings.SelectedPropertiesFieldLabel,
-          options: this.availableProperties,
-          selectedKey: prop,
-          disabled: disableCustomProps,
-        }));
-      // Every drop down gets its own delete button
-      propDrops.push(PropertyPaneButton(`deleteButton${index.toString()}`,
-      {
-        text: strings.PropPaneDeleteButtonText,
-        buttonType: PropertyPaneButtonType.Command,
-        icon: "RecycleBin",
-        onClick: this.onDeleteButtonClick.bind(this, index)
-      }));
-      propDrops.push(PropertyPaneHorizontalRule());
-    });
-    // Always have the Add button
-    propDrops.push(PropertyPaneButton('addButton',
-    {
-      text: strings.PropPaneAddButtonText,
-      buttonType: PropertyPaneButtonType.Command,
-      icon: "CirclePlus",
-      onClick: this.onAddButtonClick.bind(this)
-    }));
 
     return {
       pages: [
@@ -1038,71 +854,14 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
             FPSPinMePropsGroup, //End this group  
             tOCGroup( this.properties ), //End this group
             pagePropertiesGroup( this.properties, this.availableProperties, this ),
-            {
-              groupName: strings.PropertiesGroupName,
-              isCollapsed: true,
-              groupFields: propDrops
-            }, //End this group  
-            buildRelatedProps( this.properties, 'related1' ),
-            this.buildRelatedPropsOriginal('related1'),
-            buildRelatedProps( this.properties, 'related2' ),
-            this.buildRelatedPropsOriginal('related2'),
-            this.buildImageLinksProps(),
+            buildRelatedItemsPropsGroup( this.properties, 'related1' ),
+            buildRelatedItemsPropsGroup( this.properties, 'related2' ),
             getImageLinksGroup( this.properties ),
-            {
-              groupName: strings.PIStyleGroupName,
-              isCollapsed: true,
-              groupFields: [
-
-                PropertyPaneTextField('h1Style', {
-                  label: 'Heading 1 Styles',
-                  description: '; separated classNames or straight css like:  color: red',
-                  disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
-                  multiline: true,
-                  }),
-
-                PropertyPaneTextField('h2Style', {
-                  label: 'Heading 2 Styles',
-                  description: '; separated classNames or straight css like:  color: red',
-                  disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
-                  multiline: true,
-                  }),
-
-                PropertyPaneTextField('h3Style', {
-                  label: 'Heading 3 Styles',
-                  description: '; separated classNames or straight css like:  color: red',
-                  disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
-                  multiline: true,
-                  }),
-
-                PropertyPaneTextField('pageInfoStyle', {
-                    label: 'Page Info Style options',
-                    description: 'React.CSSProperties format like:  "fontSize":"larger","color":"red"',
-                    disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
-                    multiline: true,
-                    }),
-
-                PropertyPaneTextField('tocStyle', {
-                    label: 'Table of Contents Style options',
-                    description: 'React.CSSProperties format like:  "fontSize":"larger","color":"red"',
-                    disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
-                    multiline: true,
-                    }),
-
-                PropertyPaneTextField('propsStyle', {
-                    label: 'Properties Style options',
-                    description: 'React.CSSProperties format like:  "fontSize":"larger","color":"red"',
-                    disabled: this.modifyBannerStyle !== true || this.properties.showBanner !== true || this.properties.lockStyles === true ? true : false,
-                    multiline: true,
-                    }),
-              ]
-            }, //End this group
-
+            buildPageInfoStylesGroup( this.properties, this.modifyBannerStyle ), //End this group
             FPSBanner3VisHelpGroup( this.context, this.onPropertyPaneFieldChanged, this.properties ),
             FPSBanner3BasicGroup( this.forceBanner , this.modifyBannerTitle, this.properties.showBanner, this.properties.infoElementChoice === 'Text' ? true : false, true ),
             FPSBanner3NavGroup(), 
             FPSBanner3ThemeGroup( this.modifyBannerStyle, this.properties.showBanner, this.properties.lockStyles, ),
-
             FPSOptionsGroupBasic( false, true, true, true, this.properties.allSectionMaxWidthEnable, true, this.properties.allSectionMarginEnable, true ), // this group
             // FPSOptionsExpando( this.properties.enableExpandoramic, this.properties.enableExpandoramic,null, null ),
   
