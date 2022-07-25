@@ -165,7 +165,8 @@ export default class FetchBanner extends React.Component<IFetchBannerProps, IFet
     // this.props.showCodeIcon !== true ? null : <div title={'Show Code Details'}><Icon iconName={ 'Code' } onClick={ this.toggleOriginal.bind(this) } style={ bannerProps.bannerCmdReactCSS }></Icon></div>,
   ];
 
-  // if ( this.props.fpsPinMenu.forcePinState !== true ) {
+  //If there is no updatePinState function, then the web part does not use it so ignore this code.
+  if ( this.props.updatePinState ) {
     if ( fpsPinMenu.forcePinState !== true && this.props.pinState === 'normal' ) {
       farBannerElementsArray.push( this.PinFullIcon );
   
@@ -177,6 +178,10 @@ export default class FetchBanner extends React.Component<IFetchBannerProps, IFet
       farBannerElementsArray.push( this.PinExpandIcon );
       if ( fpsPinMenu.forcePinState !== true ) farBannerElementsArray.push( this.PinDefault );
     }
+  }
+
+  // if ( this.props.fpsPinMenu.forcePinState !== true ) {
+
 
   // }
 
@@ -210,7 +215,14 @@ export default class FetchBanner extends React.Component<IFetchBannerProps, IFet
    *                                                                                                                        
    */
 
+
     let forceNarrowStyles = this.props.pinState === 'pinFull' || this.props.pinState === 'pinMini' ? true : false ;
+
+    //If there is no updatePinState function, then the web part does not use it so ignore this code.
+    if ( !this.props.updatePinState ) {
+      forceNarrowStyles = false;
+    }
+
     return ( <WebpartBanner 
 
       displayMode={ bannerProps.displayMode }

@@ -50,6 +50,7 @@ import { replaceHandleBars } from '@mikezimm/npmfunctions/dist/Services/Strings/
 // import { FPSOptionsGroupBasic, FPSBanner2Group, FPSOptionsGroupAdvanced } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup2';
 import { FPSOptionsGroupBasic, FPSBanner3Group, FPSOptionsGroupAdvanced } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup3';
 import { FPSBanner3BasicGroup,FPSBanner3NavGroup, FPSBanner3ThemeGroup } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroup3';
+import { FPSBanner3VisHelpGroup } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsGroupVisHelp';
 
 import { FPSOptionsExpando, expandAudienceChoicesAll } from '@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsExpando'; //expandAudienceChoicesAll
 
@@ -1206,64 +1207,65 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
               ]
             }, //End this group
 
-            {
-              groupName: 'Visitor Help Info (required)',
-              isCollapsed: true,
-              groupFields: [
+            FPSBanner3VisHelpGroup( this.context, this.onPropertyPaneFieldChanged, this.properties ),
+            // {
+            //   groupName: 'Visitor Help Info (required)',
+            //   isCollapsed: true,
+            //   groupFields: [
 
-                PropertyPaneDropdown('fullPanelAudience', <IPropertyPaneDropdownProps>{
-                  label: 'Full Help Panel Audience',
-                  options: expandAudienceChoicesAll,
-                }),
+            //     PropertyPaneDropdown('fullPanelAudience', <IPropertyPaneDropdownProps>{
+            //       label: 'Full Help Panel Audience',
+            //       options: expandAudienceChoicesAll,
+            //     }),
 
-                PropertyPaneTextField('panelMessageDescription1',{
-                  label: 'Panel Description',
-                  description: 'Optional message displayed at the top of the panel for the end user to see.'
-                }),
+            //     PropertyPaneTextField('panelMessageDescription1',{
+            //       label: 'Panel Description',
+            //       description: 'Optional message displayed at the top of the panel for the end user to see.'
+            //     }),
 
-                PropertyPaneTextField('panelMessageSupport',{
-                  label: 'Support Message',
-                  description: 'Optional message to the user when looking for support',
-                }),
+            //     PropertyPaneTextField('panelMessageSupport',{
+            //       label: 'Support Message',
+            //       description: 'Optional message to the user when looking for support',
+            //     }),
 
-                PropertyPaneTextField('panelMessageDocumentation',{
-                  label: 'Documentation message',
-                  description: 'Optional message to the user shown directly above the Documentation link',
-                }),
+            //     PropertyPaneTextField('panelMessageDocumentation',{
+            //       label: 'Documentation message',
+            //       description: 'Optional message to the user shown directly above the Documentation link',
+            //     }),
 
-                PropertyPaneTextField('documentationLinkUrl',{
-                  label: 'PASTE a Documentation Link',
-                  description: 'REQUIRED:  A valid link to documentation - DO NOT TYPE in or webpart will lage'
-                }),
+            //     PropertyPaneTextField('documentationLinkUrl',{
+            //       label: 'PASTE a Documentation Link',
+            //       description: 'REQUIRED:  A valid link to documentation - DO NOT TYPE in or webpart will lage'
+            //     }),
 
-                PropertyPaneTextField('documentationLinkDesc',{
-                  label: 'Documentation Description',
-                  description: 'Optional:  Text user sees as the clickable documentation link',
-                }),
+            //     PropertyPaneTextField('documentationLinkDesc',{
+            //       label: 'Documentation Description',
+            //       description: 'Optional:  Text user sees as the clickable documentation link',
+            //     }),
 
-                PropertyPaneTextField('panelMessageIfYouStill',{
-                  label: 'If you still have... message',
-                  description: 'If you have more than one contact, explain who to call for what'
-                }),
+            //     PropertyPaneTextField('panelMessageIfYouStill',{
+            //       label: 'If you still have... message',
+            //       description: 'If you have more than one contact, explain who to call for what'
+            //     }),
 
-                PropertyFieldPeoplePicker('supportContacts', {
-                  label: 'Support Contacts',
-                  initialData: this.properties.supportContacts,
-                  allowDuplicate: false,
-                  principalType: [ PrincipalType.Users, ],
-                  onPropertyChange: this.onPropertyPaneFieldChanged,
-                  //Had to cast  to get it to work
-                  //https://github.com/pnp/sp-dev-fx-controls-react/issues/851#issuecomment-978990638
-                  context: this.context as any,
-                  properties: this.properties,
-                  onGetErrorMessage: null,
-                  deferredValidationTime: 0,
-                  key: 'peopleFieldId'
-                }),
+            //     PropertyFieldPeoplePicker('supportContacts', {
+            //       label: 'Support Contacts',
+            //       initialData: this.properties.supportContacts,
+            //       allowDuplicate: false,
+            //       principalType: [ PrincipalType.Users, ],
+            //       onPropertyChange: this.onPropertyPaneFieldChanged,
+            //       //Had to cast  to get it to work
+            //       //https://github.com/pnp/sp-dev-fx-controls-react/issues/851#issuecomment-978990638
+            //       context: this.context as any,
+            //       properties: this.properties,
+            //       onGetErrorMessage: null,
+            //       deferredValidationTime: 0,
+            //       key: 'peopleFieldId'
+            //     }),
 
 
 
-              ]}, // this group
+            //   ]}, // this group
 
               // FPSBanner3Group( this.forceBanner , this.modifyBannerTitle, this.modifyBannerStyle, this.properties.showBanner, null, true, this.properties.lockStyles, this.properties.infoElementChoice === 'Text' ? true : false ),
 
@@ -1366,14 +1368,12 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
    * @param quickLaunchHide 
    */
   private setToolbar( hideToolbar: boolean ) {
-
       if(this.displayMode == DisplayMode.Read && this.urlParameters.tool !== 'true' ){
         let value = hideToolbar === true ? 'none' : null;
         let toolBarStyle: IFPSSectionStyle = initializeMinimalStyle( 'Miminze Toolbar', this.wpInstanceID, 'display', value );
         minimizeToolbar( document, toolBarStyle, false, true );
         this.minHideToolbar = true;
       }
-
   }
 
   /**
