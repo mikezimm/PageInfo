@@ -12,20 +12,12 @@ import { IWebpartHistory, IWebpartHistoryItem2, } from '@mikezimm/npmfunctions/d
 
 import { IAdvancedPagePropertiesProps } from "./AdvPageProps/components/IAdvancedPagePropertiesProps";
 import { IPageNavigatorProps } from "./PageNavigator/IPageNavigatorProps";
-import { IPinMeState } from "@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu";
+import { IPinMeState, IFPSPinMenu } from "@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu";
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as React from 'react';
 import { ISitePreConfigProps, } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
 import { IRelatedItemsProps } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedItemsProps';
 
-
-export interface IFPSPinMenu {
-  defPinState: IPinMeState;
-  forcePinState: boolean;
-  domElement: HTMLElement;
-  pageLayout: ISupportedHost ;// like SinglePageApp etc... this.context[_pageLayout];
-
-}
 
 export interface IFpsPageInfoProps {
 

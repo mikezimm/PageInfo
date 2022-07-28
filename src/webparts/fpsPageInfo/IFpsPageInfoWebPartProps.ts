@@ -9,6 +9,7 @@ import { IExpandAudiences } from "@mikezimm/npmfunctions/dist/Services/PropPane/
 import { IWebpartHistory, IWebpartHistoryItem2, } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistoryInterface';
 import { IPinMeState } from "@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu";
 import { IMinHeading } from "./components/PageNavigator/IPageNavigatorProps";
+import { IMinHeadingStyleProps } from "@mikezimm/npmfunctions/dist/HeadingCSS/FPSHeadingFunctions";
 
 import { exportIgnorePropsFPS, importBlockPropsFPS } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
 import { IMinWPBannerProps } from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/BannerSetup";
@@ -31,17 +32,12 @@ export const importBlockProps = [ ...importBlockPropsFPS, ...importBlockPropsThi
 //  export type IExpandAudiences = 'Site Admins' | 'Site Owners' | 'Page Editors' | 'WWWone';
 
 
-export const changePinMe = [ 'defPinState', 'forcePinState' ];
 export const changeTOC = [ 'showTOC', 'minHeadingToShow' ,'description' , 'TOCTitleField', 'tocExpanded' ];
 export const changeProperties = [ 'showSomeProps', 'showCustomProps' , 'showOOTBProps' , 'showApprovalProps' , 'propsTitleField', 'propsExpanded', 'selectedProperties' ];
 
-export const changeRelated1 = [ 'related1heading', 'related1showItems' , 'related1isExpanded' , 'related1web' , 'related1listTitle', 'related1restFilter', 'related1linkProp', 'related1displayProp', 'relatedStyle' ];
-export const changeRelated2 = [ 'related2heading', 'related2showItems' , 'related2isExpanded' , 'related2web' , 'related2listTitle', 'related2restFilter', 'related2linkProp', 'related2displayProp' ];
-export const changePageLinks = [ 'pageLinksheading', 'pageLinksshowItems' , 'pageLinksisExpanded' , 'pageLinksweb' , 'pageLinkslistTitle', 'pageLinksrestFilter', 'pageLinkslinkProp', 'pageLinksdisplayProp', 'canvasLinks', 'canvasImgs', 'linkSearchBox' ];
+export const changeWebPartStyles = [ 'pageInfoStyle', 'tocStyle', 'propsStyle' ];
 
-export const changeWebPartStyles = [ 'h1Style', 'h2Style' ,'h3Style' , 'pageInfoStyle', 'tocStyle', 'propsStyle' ];
-
-export interface IFpsPageInfoWebPartProps extends IMinWPBannerProps, IMinRelatedWPProps, IMinPageLinksProps {
+export interface IFpsPageInfoWebPartProps extends IMinWPBannerProps, IMinRelatedWPProps, IMinPageLinksProps, IMinHeadingStyleProps {
 
   showTOC: boolean;
   minHeadingToShow: IMinHeading;
@@ -49,9 +45,11 @@ export interface IFpsPageInfoWebPartProps extends IMinWPBannerProps, IMinRelated
   TOCTitleField: string;
   tocExpanded: boolean;
 
-  h1Style: string;
-  h2Style: string;
-  h3Style: string;
+  // Moved these to IMinHeadingStyleProps
+  // h1Style: string;
+  // h2Style: string;
+  // h3Style: string;
+
   pageInfoStyle: string;
   tocStyle: string;
   propsStyle: string;

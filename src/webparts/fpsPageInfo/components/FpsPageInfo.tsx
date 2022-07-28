@@ -16,45 +16,27 @@ import AdvancedPageProperties from './AdvPageProps/components/AdvancedPageProper
 import RelatedItems from '@mikezimm/npmfunctions/dist/RelatedItems/RelatedItems';
 
 import stylesA from './AdvPageProps/components/AdvancedPageProperties.module.scss';
-import { FPSPinMe, IPinMeState } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu';
+import { FPSPinMe, IPinMeState, getDefaultFPSPinState } from '@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu';
 
 import FetchBanner, {  } from '../CoreFPS/FetchBannerElement';
 
 import { IRelatedItemsProps } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedItemsProps';
 
-
-
-export function getDefaultPinState ( prevProps, props ){
-  const { displayMode, fpsPinMenu } = props;
-
-  let refresh = false;
-  let defPinState =fpsPinMenu.defPinState;
-  if ( defPinState !== prevProps.fpsPinMenu.defPinState ) {
-    refresh = true;
-  } else if ( prevProps.fpsPinMenu.forcePinState !== fpsPinMenu.forcePinState ) {
-    refresh = true;
-  }
-  //This fixed https://github.com/mikezimm/PageInfo/issues/47
-  if ( displayMode === DisplayMode.Edit ) {
-    defPinState = 'normal';
-  } 
-
-  return { defPinState: defPinState, refresh: refresh };
-}
-
+//Use this to add more console.logs for this component
+const consoleFunctions: boolean = true;
 
 export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFpsPageInfoState> {
 
   
   private _updatePinState( newValue ) {
-    this.setState({ pinState: newValue, });
+     this.setState({ pinState: newValue, });
   }
-  
-    //Format copied from:  https://developer.microsoft.com/en-us/fluentui#/controls/web/textfield
-    private getWebBoxStyles( props: ITextFieldStyleProps): Partial<ITextFieldStyles> {
-      const { required } = props;
-      return { fieldGroup: [ { width: '90%', maxWidth: '600px', }, { borderColor: 'lightgray', }, ], };
-    }
+
+  //Format copied from:  https://developer.microsoft.com/en-us/fluentui#/controls/web/textfield
+  private getWebBoxStyles( props: ITextFieldStyleProps): Partial<ITextFieldStyles> {
+    const { required } = props;
+    return { fieldGroup: [ { width: '90%', maxWidth: '600px', }, { borderColor: 'lightgray', }, ], };
+  }
 
   private baseCmdStyles: React.CSSProperties = createBannerStyleObj( 'corpDark1', 'cmd' );
 
@@ -136,7 +118,6 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
       return relatedComponent;
     }
 
-
   }
  /***
   *     .o88b.  .d88b.  d8b   db .d8888. d888888b d8888b. db    db  .o88b. d888888b  .d88b.  d8888b. 
@@ -169,8 +150,9 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
   }
 
   public componentDidMount() {
-    let tempPinState: IPinMeState = this.props.displayMode === DisplayMode.Edit ? 'normal' : this.state.pinState;
-    FPSPinMe( this.props.fpsPinMenu.domElement, tempPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
+    if ( consoleFunctions === true ) console.log( 'FpsPageInfo.tsx ~ componentDidMount' );
+    // let tempPinState: IPinMeState = this.props.displayMode === DisplayMode.Edit ? 'normal' : this.state.pinState;
+    // FPSPinMe( this.props.fpsPinMenu.domElement, tempPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
     this.props.saveLoadAnalytics( 'FPS Page Info View', 'didMount');
   }
 
@@ -189,13 +171,14 @@ export default class FpsPageInfo extends React.Component<IFpsPageInfoProps, IFps
 
   public componentDidUpdate(prevProps){
 
-    let pinStatus = getDefaultPinState( prevProps, this.props );
+    if ( consoleFunctions === true ) console.log( 'FpsPageInfo.tsx ~ componentDidUpdate' );
+    // let pinStatus = getDefaultFPSPinState ( prevProps.fpsPinMenu, this.props.fpsPinMenu, this.props.displayMode );
 
-    if ( pinStatus.refresh === true ) {
-      FPSPinMe( this.props.fpsPinMenu.domElement, pinStatus.defPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
-      this.setState({ pinState: pinStatus.defPinState });
-    }
-
+    // if ( pinStatus.refresh === true ) {
+    //   FPSPinMe( this.props.fpsPinMenu.domElement, pinStatus.defPinState, null,  false, true, null, this.props.fpsPinMenu.pageLayout, this.props.displayMode );
+    //   this.setState({ pinState: pinStatus.defPinState });
+    // }
+    // this.setState({ pinState: this.state.pinState });
   }
 
   public render(): React.ReactElement<IFpsPageInfoProps> {

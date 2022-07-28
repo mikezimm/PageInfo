@@ -46,12 +46,15 @@
 
  import * as strings from 'FpsPageInfoWebPartStrings';
 
-import { changePageLinks, IFpsPageInfoWebPartProps } from '../IFpsPageInfoWebPartProps';
+import { IFpsPageInfoWebPartProps } from '../IFpsPageInfoWebPartProps';
 import { exportIgnoreProps, importBlockProps, } from '../IFpsPageInfoWebPartProps';
 
-import { changeVisitor, changeExpando, changeBanner, changefpsOptions1, changefpsOptions2, exportIgnorePropsFPS, importBlockPropsFPS,  } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
+import { changeVisitor, changeExpando, changeBanner, changefpsOptions1, changefpsOptions2, exportIgnorePropsFPS, importBlockPropsFPS, } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
 
 import { changeBannerBasics, changeBannerNav, changeBannerTheme, changeBannerOther,  } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
+import { changeRelated1, changeRelated2, changePageLinks,  } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedWebPartProps';
+import { changeHeadingStyleProps,  } from '@mikezimm/npmfunctions/dist/HeadingCSS/FPSHeadingFunctions';
+import { changePinMe,  } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/BannerSetup';
 
 // import { ILoadPerformanceALVFM, IPerformanceOp } from './components/Performance/IFpsPageInfoWebPartProps';
 
@@ -94,7 +97,7 @@ import { changeBannerBasics, changeBannerNav, changeBannerTheme, changeBannerOth
  * @returns exportObject
  */
 
-import { changePinMe, changeTOC, changeProperties, changeWebPartStyles, changeRelated1, changeRelated2 } from '../IFpsPageInfoWebPartProps';
+import { changeTOC, changeProperties, changeWebPartStyles, } from '../IFpsPageInfoWebPartProps';
 
  export function buildExportProps( wpProps : IFpsPageInfoWebPartProps, wpInstanceID: string, currentWeb: string, ) {
     let exportStructure :any = {};
@@ -111,6 +114,7 @@ import { changePinMe, changeTOC, changeProperties, changeWebPartStyles, changeRe
     exportStructure.changeRelated2 = changeRelated2;
     exportStructure.pageLinks = changePageLinks;
 
+    exportStructure.changeHeadingStyleProps = changeHeadingStyleProps;
     exportStructure.changeWebPartStyles = changeWebPartStyles;
 
     // exportStructure.Script = changeScript;

@@ -42,6 +42,8 @@ import { setSectionStyles } from '@mikezimm/npmfunctions/dist/Services/DOM/setAl
 import { minimizeHeader } from '@mikezimm/npmfunctions/dist/Services/DOM/minimzeHeader';
 import { minimizeToolbar } from '@mikezimm/npmfunctions/dist/Services/DOM/minimzeToolbar';
 import { minimizeQuickLaunch } from '@mikezimm/npmfunctions/dist/Services/DOM/quickLaunch';
+import { applyHeadingCSS } from '@mikezimm/npmfunctions/dist/HeadingCSS/FPSHeadingFunctions';
+import { renderCustomStyles } from '@mikezimm/npmfunctions/dist/WebPartFunctions/MainWebPartStyleFunctions';
 
 import { replaceHandleBars } from '@mikezimm/npmfunctions/dist/Services/Strings/handleBars';
 
@@ -101,7 +103,7 @@ export const repoLink: IRepoLinks = links.gitRepoPageInfoSmall;
 
 require('@mikezimm/npmfunctions/dist/Services/PropPane/GrayPropPaneAccordions.css');
 require('@mikezimm/npmfunctions/dist/PinMe/FPSPinMe.css');
-require('./components/HeadingCSS/FPSHeadings.css');
+require('@mikezimm/npmfunctions/dist/HeadingCSS/FPSHeadings.css');
 require('@mikezimm/npmfunctions/dist/PropPaneHelp/PropPanelHelp.css');
 
 import { SPService } from '../../Service/SPService';
@@ -258,7 +260,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       //NEED TO APPLY THIS HERE as well as follow-up in render for it to not visibly change
       // this.presetCollectionDefaults();
       this.sitePresets = applyPresetCollectionDefaults( this.sitePresets, PreConfiguredProps, this.properties, this.context.pageContext.web.serverRelativeUrl ) ;
-      this.applyHeadingCSS();
+      applyHeadingCSS( this.properties );
 
       this.properties.pageLayout =  this.context['_pageLayoutType']?this.context['_pageLayoutType'] : this.context['_pageLayoutType'];
 
@@ -361,7 +363,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       //Have to insure selectedProperties always is an array from AdvancedPagePropertiesWebPart.ts
       // if ( !this.properties.selectedProperties ) { this.properties.selectedProperties = []; }
 
-      this.renderCustomStyles( false );
+      renderCustomStyles( this as any, this.domElement, this.properties, false );
 
     });
   }
@@ -390,7 +392,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
    *                                                                                                  
    *           Source:   PivotTiles 1.5.2.6                                                                                
    */
-   this.renderCustomStyles();
+    renderCustomStyles( this as any, this.domElement, this.properties, false );
 
     this.properties.showSomeProps = this.properties.showOOTBProps === true || this.properties.showCustomProps === true || this.properties.showApprovalProps === true  ? true : false;
 
@@ -868,106 +870,106 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
  *                                                                                              
  */
 
-  private renderCustomStyles( doHeadings: boolean = true ) {
+  // private renderCustomStyles( doHeadings: boolean = true ) {
 
-    if ( doHeadings === true ) this.applyHeadingCSS();
+  //   if ( doHeadings === true ) this.applyHeadingCSS();
 
-    //Used with FPS Options Functions
-    this.setQuickLaunch( this.properties.quickLaunchHide );
-    minimizeHeader( document, this.properties.pageHeaderHide, false, true );
-    this.setThisPageFormatting( this.properties.fpsPageStyle );
-    this.setToolbar( this.properties.toolBarHide );
-    this.updateSectionStyles( );
-  }
+  //   //Used with FPS Options Functions
+  //   this.setQuickLaunch( this.properties.quickLaunchHide );
+  //   minimizeHeader( document, this.properties.pageHeaderHide, false, true );
+  //   this.setThisPageFormatting( this.properties.fpsPageStyle );
+  //   this.setToolbar( this.properties.toolBarHide );
+  //   this.updateSectionStyles( );
+  // }
 
-  /**
-   * Used with FPS Options Functions
-   * @param quickLaunchHide 
-   */
-   private setQuickLaunch( quickLaunchHide: boolean ) {
-    if ( quickLaunchHide === true && this.minQuickLaunch === false ) {
-      minimizeQuickLaunch( document , quickLaunchHide );
-      this.minQuickLaunch = true;
-    }
-  }
+  // /**
+  //  * Used with FPS Options Functions
+  //  * @param quickLaunchHide 
+  //  */
+  //  private setQuickLaunch( quickLaunchHide: boolean ) {
+  //   if ( quickLaunchHide === true && this.minQuickLaunch === false ) {
+  //     minimizeQuickLaunch( document , quickLaunchHide );
+  //     this.minQuickLaunch = true;
+  //   }
+  // }
 
-  /**
-   * Used with FPS Options Functions
-   * @param quickLaunchHide 
-   */
-  private setToolbar( hideToolbar: boolean ) {
-      if(this.displayMode == DisplayMode.Read && this.urlParameters.tool !== 'true' ){
-        let value = hideToolbar === true ? 'none' : null;
-        let toolBarStyle: IFPSSectionStyle = initializeMinimalStyle( 'Miminze Toolbar', this.wpInstanceID, 'display', value );
-        minimizeToolbar( document, toolBarStyle, false, true );
-        this.minHideToolbar = true;
-      }
-  }
+  // /**
+  //  * Used with FPS Options Functions
+  //  * @param quickLaunchHide 
+  //  */
+  // private setToolbar( hideToolbar: boolean ) {
+  //     if(this.displayMode == DisplayMode.Read && this.urlParameters.tool !== 'true' ){
+  //       let value = hideToolbar === true ? 'none' : null;
+  //       let toolBarStyle: IFPSSectionStyle = initializeMinimalStyle( 'Miminze Toolbar', this.wpInstanceID, 'display', value );
+  //       minimizeToolbar( document, toolBarStyle, false, true );
+  //       this.minHideToolbar = true;
+  //     }
+  // }
 
-  /**
-   * Used with FPS Options Functions
-   * @param fpsPageStyle 
-   */
-  private setThisPageFormatting( fpsPageStyle: string ) {
+  // /**
+  //  * Used with FPS Options Functions
+  //  * @param fpsPageStyle 
+  //  */
+  // private setThisPageFormatting( fpsPageStyle: string ) {
 
-    let fpsPage: IFPSPage = initializeFPSPage( this.wpInstanceID, this.fpsPageDone, fpsPageStyle, this.fpsPageArray  );
-    fpsPage = setPageFormatting( this.domElement, fpsPage );
-    this.fpsPageArray = fpsPage.Array;
-    this.fpsPageDone = fpsPage.do;
+  //   let fpsPage: IFPSPage = initializeFPSPage( this.wpInstanceID, this.fpsPageDone, fpsPageStyle, this.fpsPageArray  );
+  //   fpsPage = setPageFormatting( this.domElement, fpsPage );
+  //   this.fpsPageArray = fpsPage.Array;
+  //   this.fpsPageDone = fpsPage.do;
 
-  }
+  // }
 
 
-  private updateSectionStyles( ) {
+  // private updateSectionStyles( ) {
 
-    let allSectionMaxWidth = this.properties.allSectionMaxWidthEnable !== true ? null : this.properties.allSectionMaxWidth;
-    let allSectionMargin = this.properties.allSectionMarginEnable !== true ? null : this.properties.allSectionMargin;
-    let sectionStyles = initializeFPSSection( this.wpInstanceID, allSectionMaxWidth, allSectionMargin,  );
+  //   let allSectionMaxWidth = this.properties.allSectionMaxWidthEnable !== true ? null : this.properties.allSectionMaxWidth;
+  //   let allSectionMargin = this.properties.allSectionMarginEnable !== true ? null : this.properties.allSectionMargin;
+  //   let sectionStyles = initializeFPSSection( this.wpInstanceID, allSectionMaxWidth, allSectionMargin,  );
 
-    setSectionStyles( document, sectionStyles, true, true );
+  //   setSectionStyles( document, sectionStyles, true, true );
 
-  }
+  // }
 
-  private applyHeadingCSS() {
+  // private applyHeadingCSS() {
 
-    if ( this.properties.h1Style ) {
-      let pieces = this.properties.h1Style.split(';');
-      let classes = [];
-      let cssStyles = [];
-      pieces.map( piece => {
-        piece = piece.trim();
-        if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
-      });
+  //   if ( this.properties.h1Style ) {
+  //     let pieces = this.properties.h1Style.split(';');
+  //     let classes = [];
+  //     let cssStyles = [];
+  //     pieces.map( piece => {
+  //       piece = piece.trim();
+  //       if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
+  //     });
 
-      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyTagCSSAndStyles( HTMLRegEx.h2, cssStyles.join( ';' ) , classes, true, false, );
-    }
+  //     if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyTagCSSAndStyles( HTMLRegEx.h2, cssStyles.join( ';' ) , classes, true, false, );
+  //   }
 
-    if ( this.properties.h2Style ) {
-      let pieces = this.properties.h2Style.split(';');
-      let classes = [];
-      let cssStyles = [];
-      pieces.map( piece => {
-        piece = piece.trim();
-        if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
-      });
+  //   if ( this.properties.h2Style ) {
+  //     let pieces = this.properties.h2Style.split(';');
+  //     let classes = [];
+  //     let cssStyles = [];
+  //     pieces.map( piece => {
+  //       piece = piece.trim();
+  //       if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
+  //     });
 
-      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyTagCSSAndStyles( HTMLRegEx.h3, cssStyles.join( ';' ) , classes, true, false, );
+  //     if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyTagCSSAndStyles( HTMLRegEx.h3, cssStyles.join( ';' ) , classes, true, false, );
 
-    }
+  //   }
 
-    if ( this.properties.h3Style ) {
-      let pieces = this.properties.h3Style.split(';');
-      let classes = [];
-      let cssStyles = [];
-      pieces.map( piece => {
-        piece = piece.trim();
-        if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
-      });
+  //   if ( this.properties.h3Style ) {
+  //     let pieces = this.properties.h3Style.split(';');
+  //     let classes = [];
+  //     let cssStyles = [];
+  //     pieces.map( piece => {
+  //       piece = piece.trim();
+  //       if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
+  //     });
 
-      if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyTagCSSAndStyles( HTMLRegEx.h4, cssStyles.join( ';' ) , classes, true, false, );
+  //     if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyTagCSSAndStyles( HTMLRegEx.h4, cssStyles.join( ';' ) , classes, true, false, );
 
-    }
-  }
+  //   }
+  // }
 
 
 /***
