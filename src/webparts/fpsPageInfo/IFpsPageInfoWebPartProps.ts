@@ -6,12 +6,12 @@ import { ISupportedHost } from "@mikezimm/npmfunctions/dist/Services/PropPane/FP
 
 import { IExpandAudiences } from "@mikezimm/npmfunctions/dist/Services/PropPane/FPSOptionsExpando";
 
-import { IWebpartHistory, IWebpartHistoryItem2, } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistoryInterface';
+import { IWebpartHistory, IWebpartHistoryItem2, } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistory/Interface';
 import { IPinMeState } from "@mikezimm/npmfunctions/dist/PinMe/FPSPinMenu";
 import { IMinHeading } from "./components/PageNavigator/IPageNavigatorProps";
 import { IMinHeadingStyleProps } from "@mikezimm/npmfunctions/dist/HeadingCSS/FPSHeadingFunctions";
 
-import { exportIgnorePropsFPS, importBlockPropsFPS } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
+import { exportIgnorePropsFPS, importBlockPropsFPS } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/BannerSetup';
 import { IMinWPBannerProps } from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/BannerSetup";
 import { IMinRelatedWPProps, IMinPageLinksProps } from "@mikezimm/npmfunctions/dist/RelatedItems/IRelatedWebPartProps";
 

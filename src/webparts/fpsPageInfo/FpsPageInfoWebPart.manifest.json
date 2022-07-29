@@ -33,9 +33,10 @@
       
       "pageInfoStyle": "\"paddingBottom\":\"20px\",\"backgroundColor\":\"#dcdcdc\";\"borderLeft\":\"solid 3px #c4c4c4\"",
 
-      "bannerStyleChoice": "corpDark1",
-      "bannerStyle": "{\"color\":\"white\",\"backgroundColor\":\"#005495\",\"fontSize\":\"larger\",\"fontWeight\":600,\"fontStyle\":\"normal\",\"padding\":\"0px 10px\",\"height\":\"48px\",\"cursor\":\"pointer\"}",
-      "bannerCmdStyle": "{\"color\":\"white\",\"backgroundColor\":\"#005495\",\"fontSize\":16,\"fontWeight\":\"normal\",\"fontStyle\":\"normal\",\"padding\":\"7px 4px\",\"marginRight\":\"0px\",\"borderRadius\":\"5px\",\"cursor\":\"pointer\"}",
+      //Added to npmFunctions\dist\PropPaneHelp\PreConfiguredConstants.ts
+      // "bannerStyleChoice": "corpDark1",
+      // "bannerStyle": "{\"color\":\"white\",\"backgroundColor\":\"#005495\",\"fontSize\":\"larger\",\"fontWeight\":600,\"fontStyle\":\"normal\",\"padding\":\"0px 10px\",\"height\":\"48px\",\"cursor\":\"pointer\"}",
+      // "bannerCmdStyle": "{\"color\":\"white\",\"backgroundColor\":\"#005495\",\"fontSize\":16,\"fontWeight\":\"normal\",\"fontStyle\":\"normal\",\"padding\":\"7px 4px\",\"marginRight\":\"0px\",\"borderRadius\":\"5px\",\"cursor\":\"pointer\"}",
 
       "propsTitleField":  "Page Properties",
 
@@ -47,14 +48,16 @@
       "showApprovalProps": false,
 
       "defPinState": "normal",
-      "forcePinState": false,
+      "forcePinState": false
 
-      "infoElementChoice": "IconName=Unknown",
-      "infoElementText": "Question mark circle",
+      //Added to npmFunctions\dist\PropPaneHelp\PreConfiguredConstants.ts
+      // "infoElementChoice": "IconName=Unknown",
+      // "infoElementText": "Question mark circle",
 
-      "showGoToHome": true,
-      "showGoToParent": true,
-      "homeParentGearAudience": "Everyone"
+      //Added to npmFunctions\dist\PropPaneHelp\PreConfiguredConstants.ts
+      // "showGoToHome": true,
+      // "showGoToParent": true,
+      // "homeParentGearAudience": "Everyone"
 
     }
   }]

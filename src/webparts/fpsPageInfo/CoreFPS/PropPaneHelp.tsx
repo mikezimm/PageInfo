@@ -60,6 +60,7 @@ const ReactCSSPropsNote = <span style={{ color: 'darkred', fontWeight: 500 }}>Re
 
 export function getWebPartHelpElement ( sitePresets : ISitePreConfigProps ) {
 
+  console.log( 'PropPaneHelp ~ sitePresets: ', sitePresets );
   let preSetsContent = SitePresetsInfo( sitePresets );
 
   const WebPartHelpElement = <div style={{ overflowX: 'scroll' }}>

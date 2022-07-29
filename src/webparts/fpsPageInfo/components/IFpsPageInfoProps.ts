@@ -7,7 +7,7 @@ import { IWebpartBannerProps, } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM
 
 import { DisplayMode, Version } from '@microsoft/sp-core-library';
 
-import { IWebpartHistory, IWebpartHistoryItem2, } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistoryInterface';
+import { IWebpartHistory, IWebpartHistoryItem2, } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistory/Interface';
 
 
 import { IAdvancedPagePropertiesProps } from "./AdvPageProps/components/IAdvancedPagePropertiesProps";

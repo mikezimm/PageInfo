@@ -83,8 +83,9 @@ import { bannerThemes, bannerThemeKeys, makeCSSPropPaneString, createBannerStyle
 
 import { IRepoLinks } from '@mikezimm/npmfunctions/dist/Links/CreateLinks';
 
-import { IWebpartHistory, IWebpartHistoryItem2 } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistoryInterface';
-import { createWebpartHistory, ITrimThis, updateWebpartHistoryV2, upgradeV1History } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistoryFunctions';
+import { IWebpartHistory, IWebpartHistoryItem2 } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistory/Interface';
+import { createWebpartHistory, ITrimThis, updateWebpartHistoryV2, upgradeV1History } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistory/Functions';
+import { getWebPartHistoryOnInit } from '@mikezimm/npmfunctions/dist/Services/PropPane/WebPartHistory/OnInit';
 
 import { saveAnalytics3 } from '@mikezimm/npmfunctions/dist/Services/Analytics/analytics2';
 import { IZLoadAnalytics, IZSentAnalytics, } from '@mikezimm/npmfunctions/dist/Services/Analytics/interfaces';
@@ -297,16 +298,18 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
       // let padding = this.properties.expandoPadding ? this.properties.expandoPadding : 20;
       // setExpandoRamicMode( this.context.domElement, this.expandoDefault, expandoStyle,  false, false, padding, this.properties.pageLayout  );
-      this.properties.showRepoLinks = false;
-      this.properties.showExport = false;
-      this.properties.enableExpandoramic = false; //Always hide expandoramic for PageInfo Web Part
-      this.properties.showBanner = true; //Always show banner
+
+      // Moved to ForceEverywhere in src\PropPaneHelp\PreConfiguredConstants.ts
+      // this.properties.showRepoLinks = false;
+      // this.properties.showExport = false;
+      // this.properties.enableExpandoramic = false; //Always hide expandoramic for PageInfo Web Part
+      // this.properties.showBanner = true; //Always show banner
 
       // DEFAULTS SECTION:  Banner   <<< ================================================================
       //This updates unlocks styles only when bannerStyleChoice === custom.  Rest are locked in the ui.
       if ( this.properties.bannerStyleChoice === 'custom' ) { this.properties.lockStyles = false ; } else { this.properties.lockStyles = true; }
 
-      if ( this.properties.bannerHoverEffect === undefined ) { this.properties.bannerHoverEffect = false; }
+      // if ( this.properties.bannerHoverEffect === undefined ) { this.properties.bannerHoverEffect = false; }
 
       let defBannerTheme = 'corpDark1';
       if ( this.context.pageContext.site.serverRelativeUrl.toLowerCase().indexOf( '/sites/lifenet') === 0 ) {
@@ -326,12 +329,13 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
        }
 
       // DEFAULTS SECTION:  Panel   <<< ================================================================
-      if ( !this.properties.fullPanelAudience || this.properties.fullPanelAudience.length === 0 ) {
-        this.properties.fullPanelAudience = 'Page Editors';
-      }
-      if ( !this.properties.documentationLinkDesc || this.properties.documentationLinkDesc.length === 0 ) {
-        this.properties.documentationLinkDesc = 'Documentation';
-      }
+      // Moved to PresetFPSBanner in src\PropPaneHelp\PreConfiguredConstants.ts
+      // if ( !this.properties.fullPanelAudience || this.properties.fullPanelAudience.length === 0 ) {
+      //   this.properties.fullPanelAudience = 'Page Editors';
+      // }
+      // if ( !this.properties.documentationLinkDesc || this.properties.documentationLinkDesc.length === 0 ) {
+      //   this.properties.documentationLinkDesc = 'Documentation';
+      // }
 
 
       // DEFAULTS SECTION:  webPartHistory   <<< ================================================================
@@ -340,12 +344,14 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       //   this.properties.forceReloadScripts = false;
       // }
       //ADDED FOR WEBPART HISTORY:  This sets the webpartHistory
-      this.thisHistoryInstance = createWebpartHistory( 'onInit' , 'new', this.context.pageContext.user.displayName );
-      let priorHistory : IWebpartHistoryItem2[] = this.properties.webpartHistory ? upgradeV1History( this.properties.webpartHistory ).history : [];
-      this.properties.webpartHistory = {
-        thisInstance: this.thisHistoryInstance,
-        history: priorHistory,
-      };
+      // this.thisHistoryInstance = createWebpartHistory( 'onInit' , 'new', this.context.pageContext.user.displayName );
+      // let priorHistory : IWebpartHistoryItem2[] = this.properties.webpartHistory ? upgradeV1History( this.properties.webpartHistory ).history : [];
+      // this.properties.webpartHistory = {
+      //   thisInstance: this.thisHistoryInstance,
+      //   history: priorHistory,
+      // };
+
+      this.properties.webpartHistory = getWebPartHistoryOnInit( this.context.pageContext.user.displayName, this.properties.webpartHistory );
 
       //Added from react-page-navigator component
       let tags : IHTMLRegExKeys = 'h14';
@@ -357,8 +363,9 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
       this.anchorLinks = await SPService.GetAnchorLinks( this.context, tags );
 
-      if ( this.properties.propsExpanded === undefined || this.properties.propsExpanded === null ) { this.properties.propsExpanded = true; }
-      if ( this.properties.propsTitleField === undefined || this.properties.propsTitleField === null ) { this.properties.propsTitleField = strings.bannerTitle; }
+      //Moved these to src\webparts\fpsPageInfo\CoreFPS\PreConfiguredSettings.ts
+      // if ( this.properties.propsExpanded === undefined || this.properties.propsExpanded === null ) { this.properties.propsExpanded = true; }
+      // if ( this.properties.propsTitleField === undefined || this.properties.propsTitleField === null ) { this.properties.propsTitleField = strings.bannerTitle; }
 
       //Have to insure selectedProperties always is an array from AdvancedPagePropertiesWebPart.ts
       // if ( !this.properties.selectedProperties ) { this.properties.selectedProperties = []; }
@@ -397,8 +404,8 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     this.properties.showSomeProps = this.properties.showOOTBProps === true || this.properties.showCustomProps === true || this.properties.showApprovalProps === true  ? true : false;
 
     //Preset infoElement to question mark circle for this particular web part if it's not specificed - due to pin icon being important and usage in pinned location
-    if ( !this.properties.infoElementChoice ) { this.properties.infoElementChoice = 'IconName=Unknown'; }  //May not be normally needed if in the presets
-    if ( !this.properties.infoElementText ) { this.properties.infoElementText = 'Question mark circle'; }  //May not be normally needed if in the presets
+    // if ( !this.properties.infoElementChoice ) { this.properties.infoElementChoice = 'IconName=Unknown'; }  //May not be normally needed if in the presets
+    // if ( !this.properties.infoElementText ) { this.properties.infoElementText = 'Question mark circle'; }  //May not be normally needed if in the presets
 
     this._unqiueId = this.context.instanceId;
 
@@ -570,7 +577,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
             itemsAreFiles: this.properties.related1AreFiles, // aka FileLeaf to open file name, if empty, will just show the value
             linkProp: this.properties.related1linkProp, // aka FileLeaf to open file name, if empty, will just show the value
             displayProp: this.properties.related1displayProp,
-            
           },
           isExpanded: this.properties.related1isExpanded,
           themeVariant: this._themeVariant,

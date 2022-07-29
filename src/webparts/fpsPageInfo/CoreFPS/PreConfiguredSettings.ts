@@ -2,8 +2,11 @@ import { IPropertyFieldGroupOrPerson } from "@pnp/spfx-property-controls/lib/Pro
 import { IFpsPageInfoWebPartProps } from "../IFpsPageInfoWebPartProps";
 
 import { IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
+import { PresetFPSBanner } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfiguredConstants';
 import { encrptMeOriginalTest } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/logTest';
 import { ContALVFMContent, ContALVFMWebP } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/constants';
+
+import * as strings from 'FpsPageInfoWebPartStrings';
 
 const FinancialManualContacts: IPropertyFieldGroupOrPerson = {
     id: '1',
@@ -16,7 +19,9 @@ const FinancialManualContacts: IPropertyFieldGroupOrPerson = {
     imageUrl: null,
 };
 
-export const ForceEverywhere : IPreConfigSettings = {
+//Specific to this web part
+export const WPForceEverywhere : IPreConfigSettings = {
+    source: 'WPForceEverywhere',
     location: '*',
     props: {
         // relatedStyle: '',
@@ -26,6 +31,13 @@ export const ForceEverywhere : IPreConfigSettings = {
         // pageLinksisExpanded: false,
         // canvasLinks: true,
         // canvasImgs: true,
+
+        showRepoLinks : true,
+        showExport : false,
+        
+        enableExpandoramic : false,
+        showBanner : true,
+
         pageLinksweb: 'current',
         pageLinkslistTitle: 'Site Pages',
         pageLinksrestFilter: 'ID eq {{PageId}}',
@@ -35,9 +47,14 @@ export const ForceEverywhere : IPreConfigSettings = {
     }
 };
 
-export const PresetEverywhere : IPreConfigSettings = {
+//Specific to this web part
+export const WPPresetEverywhere : IPreConfigSettings = {
+    source: 'WPPresetEverywhere',
     location: '*',
     props: {
+
+        propsExpanded: true,
+        propsTitleField: strings.bannerTitle,
 
         related1web: 'current',
         related2web: 'current',
@@ -71,6 +88,7 @@ export const PresetEverywhere : IPreConfigSettings = {
 };
 
 export const ForceFinancialManualColl : IPreConfigSettings = {
+    source: 'ForceFinancialManualColl',
     location: '/sites/financemanual/',
     props: {
         // Pin Me props that are not preset in manifest.json
@@ -123,6 +141,7 @@ export const ForceFinancialManualColl : IPreConfigSettings = {
 };
 
 export const ForceFinancialManualSubSite : IPreConfigSettings = {
+    source: 'ForceFinancialManualSubSite',
     location: '/sites/financemanual/manual/',
     props: {
 
@@ -163,6 +182,7 @@ export const ForceFinancialManualSubSite : IPreConfigSettings = {
 };
 
 export const PresetFinancialManual : IPreConfigSettings = {
+    source: 'PresetFinancialManual',
     location: '/sites/financemanual/',
     props: {
         homeParentGearAudience: 'Everyone',
@@ -170,6 +190,7 @@ export const PresetFinancialManual : IPreConfigSettings = {
 };
 
 export const PresetSomeRandomSite : IPreConfigSettings = {
+    source: 'PresetSomeRandomSite',
     location: '/sites/SomeRandomSite/',
     props: {
         homeParentGearAudience: 'Some Test Value',
@@ -177,6 +198,6 @@ export const PresetSomeRandomSite : IPreConfigSettings = {
 };
 
 export const PreConfiguredProps : IAllPreConfigSettings = {
-    forced: [ ForceFinancialManualColl, ForceFinancialManualSubSite, ForceEverywhere ],
-    preset: [ PresetFinancialManual, PresetSomeRandomSite, PresetEverywhere ],
+    forced: [ ForceFinancialManualColl, ForceFinancialManualSubSite, WPForceEverywhere ],
+    preset: [ PresetFinancialManual, PresetSomeRandomSite, PresetFPSBanner, WPPresetEverywhere ],
 };

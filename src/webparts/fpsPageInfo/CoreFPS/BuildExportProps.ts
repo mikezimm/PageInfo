@@ -49,12 +49,14 @@
 import { IFpsPageInfoWebPartProps } from '../IFpsPageInfoWebPartProps';
 import { exportIgnoreProps, importBlockProps, } from '../IFpsPageInfoWebPartProps';
 
-import { changeVisitor, changeExpando, changeBanner, changefpsOptions1, changefpsOptions2, exportIgnorePropsFPS, importBlockPropsFPS, } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
+import { changeCustomHelp, changeExpando, changeBanner, changePageStyle, changefpsOptions2, exportIgnorePropsFPS, importBlockPropsFPS, } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/BannerSetup';
 
-import { changeBannerBasics, changeBannerNav, changeBannerTheme, changeBannerOther,  } from '@mikezimm/npmfunctions/dist/WebPartInterfaces/ImportProps';
+import { changeBannerBasics, changeBannerNav, changeBannerTheme, changeBannerUtility,  } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/BannerSetup';
+import { changePinMe,  } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/BannerSetup';
+
 import { changeRelated1, changeRelated2, changePageLinks,  } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedWebPartProps';
 import { changeHeadingStyleProps,  } from '@mikezimm/npmfunctions/dist/HeadingCSS/FPSHeadingFunctions';
-import { changePinMe,  } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/BannerSetup';
+
 
 // import { ILoadPerformanceALVFM, IPerformanceOp } from './components/Performance/IFpsPageInfoWebPartProps';
 
@@ -119,11 +121,11 @@ import { changeTOC, changeProperties, changeWebPartStyles, } from '../IFpsPageIn
 
     // exportStructure.Script = changeScript;
 
-    exportStructure.Visitor = changeVisitor;
+    exportStructure.Visitor = changeCustomHelp;
 
     exportStructure.Banner = changeBanner;
 
-    exportStructure.fpsOptions1 = changefpsOptions1;
+    exportStructure.fpsOptions1 = changePageStyle;
     
     exportStructure.Expando = changeExpando;
 
@@ -142,17 +144,17 @@ import { changeTOC, changeProperties, changeWebPartStyles, } from '../IFpsPageIn
     exportStructure.wpInstanceID = wpInstanceID;
     exportStructure.currentWeb = currentWeb;
 
-    exportStructure.Visitor = changeVisitor;
+    exportStructure.Visitor = changeCustomHelp;
 
     exportStructure.BannerBasics = changeBannerBasics;
     exportStructure.BannerNav = changeBannerNav;
 
     exportStructure.BannerTheme = changeBannerTheme;
-    exportStructure.BannerOther = changeBannerOther;
+    exportStructure.BannerOther = changeBannerUtility;
 
     // exportStructure.Expando = changeExpando;
 
-    exportStructure.fpsOptions1 = changefpsOptions1;
+    exportStructure.fpsOptions1 = changePageStyle;
     exportStructure.fpsOptions2 = changefpsOptions2;
 
     let exportObject = createExportObject( exportStructure, wpProps, exportIgnoreProps, false );
