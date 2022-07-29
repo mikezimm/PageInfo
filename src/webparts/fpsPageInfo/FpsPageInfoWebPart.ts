@@ -131,6 +131,7 @@ import { buildImageLinksGroup } from './PropPaneGroups/ImageLinks';
 
 import { buildTOCGroup } from './PropPaneGroups/TOC';
 import { buildPageInfoStylesGroup } from './PropPaneGroups/PageInfoStyles';
+import { updateBannerStyles } from './CoreFPS/BannerStyleFunctions';
 
 
 export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageInfoWebPartProps> {
@@ -307,7 +308,13 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
       // DEFAULTS SECTION:  Banner   <<< ================================================================
       //This updates unlocks styles only when bannerStyleChoice === custom.  Rest are locked in the ui.
-      if ( this.properties.bannerStyleChoice === 'custom' ) { this.properties.lockStyles = false ; } else { this.properties.lockStyles = true; }
+
+      updateBannerStyles( this.properties, this.context.pageContext.site.serverRelativeUrl , 'corpDark1' );
+
+      if ( this.properties.bannerStyleChoice === 'custom' ) { 
+        this.properties.lockStyles = false ; 
+
+      } else { this.properties.lockStyles = true; }
 
       // if ( this.properties.bannerHoverEffect === undefined ) { this.properties.bannerHoverEffect = false; }
 
