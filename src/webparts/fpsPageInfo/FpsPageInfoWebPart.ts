@@ -309,31 +309,31 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       // DEFAULTS SECTION:  Banner   <<< ================================================================
       //This updates unlocks styles only when bannerStyleChoice === custom.  Rest are locked in the ui.
 
-      // updateBannerStyles( this.properties, this.context.pageContext.web.serverRelativeUrl , 'corpDark1' );
+      updateBannerStyles( this.properties, this.context.pageContext.site.serverRelativeUrl , 'corpDark1' );
 
-      // if ( this.properties.bannerStyleChoice === 'custom' ) { 
-      //   this.properties.lockStyles = false ; 
+      if ( this.properties.bannerStyleChoice === 'custom' ) { 
+        this.properties.lockStyles = false ; 
 
-      // } else { this.properties.lockStyles = true; }
+      } else { this.properties.lockStyles = true; }
 
-      // // if ( this.properties.bannerHoverEffect === undefined ) { this.properties.bannerHoverEffect = false; }
+      // if ( this.properties.bannerHoverEffect === undefined ) { this.properties.bannerHoverEffect = false; }
 
-      // let defBannerTheme = 'corpDark1';
-      // if ( this.context.pageContext.site.serverRelativeUrl.toLowerCase().indexOf( '/sites/lifenet') === 0 ) {
-      //     defBannerTheme = 'corpWhite1'; }
+      let defBannerTheme = 'corpDark1';
+      if ( this.context.pageContext.site.serverRelativeUrl.toLowerCase().indexOf( '/sites/lifenet') === 0 ) {
+          defBannerTheme = 'corpWhite1'; }
 
-      // if ( !this.properties.bannerStyle ) { this.properties.bannerStyle = createBannerStyleStr( defBannerTheme, 'banner') ; }
+      if ( !this.properties.bannerStyle ) { this.properties.bannerStyle = createBannerStyleStr( defBannerTheme, 'banner') ; }
 
-      // if ( !this.properties.bannerCmdStyle ) { 
+      if ( !this.properties.bannerCmdStyle ) { 
 
-      //   //Adjust the default size down compared to PinMe buttons which are primary functions in the web part
-      //   let bannerCmdStyle = createBannerStyleStr( defBannerTheme, 'cmd').replace('"fontSize":20,', '"fontSize":16,') ;
-      //   bannerCmdStyle = bannerCmdStyle.replace('"marginRight":"9px"', '"marginRight":"0px"') ;
-      //   bannerCmdStyle = bannerCmdStyle.replace('"padding":"7px"', '"padding":"7px 4px"') ;
+        //Adjust the default size down compared to PinMe buttons which are primary functions in the web part
+        let bannerCmdStyle = createBannerStyleStr( defBannerTheme, 'cmd').replace('"fontSize":20,', '"fontSize":16,') ;
+        bannerCmdStyle = bannerCmdStyle.replace('"marginRight":"9px"', '"marginRight":"0px"') ;
+        bannerCmdStyle = bannerCmdStyle.replace('"padding":"7px"', '"padding":"7px 4px"') ;
 
-      //   this.properties.bannerCmdStyle = bannerCmdStyle;
+        this.properties.bannerCmdStyle = bannerCmdStyle;
 
-      //  }
+       }
 
       // DEFAULTS SECTION:  Panel   <<< ================================================================
       // Moved to PresetFPSBanner in src\PropPaneHelp\PreConfiguredConstants.ts

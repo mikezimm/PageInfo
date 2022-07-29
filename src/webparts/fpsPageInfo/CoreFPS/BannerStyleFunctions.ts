@@ -4,10 +4,9 @@ import { bannerThemes, bannerThemeKeys, makeCSSPropPaneString, createBannerStyle
 //Move this to @mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/defaults
 export const DefaultBannerThemes : any = {
     '/sites/lifenet': 'corpWhite1',
-    '/financemanual/manual': 'greenLight',
-    '/financemanual/test': 'redDark',
-    '/financemanual/help': 'Ukraine',
-};
+    '/financemanual/manual': 'corpWhite1',
+    '/financemanual/test': 'corpWhite1',
+}
 
 /**
  * 
