@@ -124,6 +124,7 @@ import { FPSApplyHeadingCSS, FPSApplyTagCSSAndStyles, FPSApplyHeadingStyle } fro
 import { HTMLRegEx, IHTMLRegExKeys } from '../../Service/htmlTags';
 import { css } from 'office-ui-fabric-react';
 import { PreConfiguredProps } from './CoreFPS/PreConfiguredSettings';
+import { validateDocumentationUrl } from './CoreFPS/OnPropPaneChangedFunctions';
 import { getThisSitesPreConfigProps, IConfigurationProp, ISitePreConfigProps, IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
 import { applyPresetCollectionDefaults } from '@mikezimm/npmfunctions/dist/PropPaneHelp/ApplyPresets';
 import { IRelatedItemsProps, IRelatedKey } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedItemsProps';
@@ -763,15 +764,15 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       this.properties.selectedProperties[index] = newValue;
     }
 
+    await validateDocumentationUrl ( this.properties, propertyPath , newValue );
+    // if ( propertyPath === 'documentationLinkUrl' || propertyPath === 'fpsImportProps' ) {
+    //   this.properties.documentationIsValid = await _LinkIsValid( newValue ) === "" ? true : false;
+    //   console.log( `${ newValue ? newValue : 'Empty' } Docs Link ${ this.properties.documentationIsValid === true ? ' IS ' : ' IS NOT ' } Valid `);
 
-    if ( propertyPath === 'documentationLinkUrl' || propertyPath === 'fpsImportProps' ) {
-      this.properties.documentationIsValid = await _LinkIsValid( newValue ) === "" ? true : false;
-      console.log( `${ newValue ? newValue : 'Empty' } Docs Link ${ this.properties.documentationIsValid === true ? ' IS ' : ' IS NOT ' } Valid `);
+    // } else {
+    //   if ( !this.properties.documentationIsValid ) { this.properties.documentationIsValid = false; }
 
-    } else {
-      if ( !this.properties.documentationIsValid ) { this.properties.documentationIsValid = false; }
-
-    }
+    // }
 
     this.properties.webpartHistory = updateWebpartHistoryV2( this.properties.webpartHistory , propertyPath , newValue, this.context.pageContext.user.displayName, [], [] );
 
@@ -865,119 +866,6 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       ]
     };
   }
-
-  /***
- *    d88888b d8888b. .d8888.       .d88b.  d8888b. d888888b d888888b  .d88b.  d8b   db .d8888. 
- *    88'     88  `8D 88'  YP      .8P  Y8. 88  `8D `~~88~~'   `88'   .8P  Y8. 888o  88 88'  YP 
- *    88ooo   88oodD' `8bo.        88    88 88oodD'    88       88    88    88 88V8o 88 `8bo.   
- *    88~~~   88~~~     `Y8b.      88    88 88~~~      88       88    88    88 88 V8o88   `Y8b. 
- *    88      88      db   8D      `8b  d8' 88         88      .88.   `8b  d8' 88  V888 db   8D 
- *    YP      88      `8888Y'       `Y88P'  88         YP    Y888888P  `Y88P'  VP   V8P `8888Y' 
- *                                                                                              
- *                                                                                              
- */
-
-  // private renderCustomStyles( doHeadings: boolean = true ) {
-
-  //   if ( doHeadings === true ) this.applyHeadingCSS();
-
-  //   //Used with FPS Options Functions
-  //   this.setQuickLaunch( this.properties.quickLaunchHide );
-  //   minimizeHeader( document, this.properties.pageHeaderHide, false, true );
-  //   this.setThisPageFormatting( this.properties.fpsPageStyle );
-  //   this.setToolbar( this.properties.toolBarHide );
-  //   this.updateSectionStyles( );
-  // }
-
-  // /**
-  //  * Used with FPS Options Functions
-  //  * @param quickLaunchHide 
-  //  */
-  //  private setQuickLaunch( quickLaunchHide: boolean ) {
-  //   if ( quickLaunchHide === true && this.minQuickLaunch === false ) {
-  //     minimizeQuickLaunch( document , quickLaunchHide );
-  //     this.minQuickLaunch = true;
-  //   }
-  // }
-
-  // /**
-  //  * Used with FPS Options Functions
-  //  * @param quickLaunchHide 
-  //  */
-  // private setToolbar( hideToolbar: boolean ) {
-  //     if(this.displayMode == DisplayMode.Read && this.urlParameters.tool !== 'true' ){
-  //       let value = hideToolbar === true ? 'none' : null;
-  //       let toolBarStyle: IFPSSectionStyle = initializeMinimalStyle( 'Miminze Toolbar', this.wpInstanceID, 'display', value );
-  //       minimizeToolbar( document, toolBarStyle, false, true );
-  //       this.minHideToolbar = true;
-  //     }
-  // }
-
-  // /**
-  //  * Used with FPS Options Functions
-  //  * @param fpsPageStyle 
-  //  */
-  // private setThisPageFormatting( fpsPageStyle: string ) {
-
-  //   let fpsPage: IFPSPage = initializeFPSPage( this.wpInstanceID, this.fpsPageDone, fpsPageStyle, this.fpsPageArray  );
-  //   fpsPage = setPageFormatting( this.domElement, fpsPage );
-  //   this.fpsPageArray = fpsPage.Array;
-  //   this.fpsPageDone = fpsPage.do;
-
-  // }
-
-
-  // private updateSectionStyles( ) {
-
-  //   let allSectionMaxWidth = this.properties.allSectionMaxWidthEnable !== true ? null : this.properties.allSectionMaxWidth;
-  //   let allSectionMargin = this.properties.allSectionMarginEnable !== true ? null : this.properties.allSectionMargin;
-  //   let sectionStyles = initializeFPSSection( this.wpInstanceID, allSectionMaxWidth, allSectionMargin,  );
-
-  //   setSectionStyles( document, sectionStyles, true, true );
-
-  // }
-
-  // private applyHeadingCSS() {
-
-  //   if ( this.properties.h1Style ) {
-  //     let pieces = this.properties.h1Style.split(';');
-  //     let classes = [];
-  //     let cssStyles = [];
-  //     pieces.map( piece => {
-  //       piece = piece.trim();
-  //       if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
-  //     });
-
-  //     if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyTagCSSAndStyles( HTMLRegEx.h2, cssStyles.join( ';' ) , classes, true, false, );
-  //   }
-
-  //   if ( this.properties.h2Style ) {
-  //     let pieces = this.properties.h2Style.split(';');
-  //     let classes = [];
-  //     let cssStyles = [];
-  //     pieces.map( piece => {
-  //       piece = piece.trim();
-  //       if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
-  //     });
-
-  //     if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyTagCSSAndStyles( HTMLRegEx.h3, cssStyles.join( ';' ) , classes, true, false, );
-
-  //   }
-
-  //   if ( this.properties.h3Style ) {
-  //     let pieces = this.properties.h3Style.split(';');
-  //     let classes = [];
-  //     let cssStyles = [];
-  //     pieces.map( piece => {
-  //       piece = piece.trim();
-  //       if ( piece.indexOf('.') === 0 ) { classes.push( piece.replace('.','') ) ; } else { cssStyles.push( piece ) ; }
-  //     });
-
-  //     if ( cssStyles.length > 0 || classes.length > 0 ) FPSApplyTagCSSAndStyles( HTMLRegEx.h4, cssStyles.join( ';' ) , classes, true, false, );
-
-  //   }
-  // }
-
 
 /***
  *     .d8b.  d8b   db  .d8b.  db      db    db d888888b d888888b  .o88b. .d8888. 
