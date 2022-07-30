@@ -59,8 +59,6 @@ import { FPSOptionsExpando, expandAudienceChoicesAll } from '@mikezimm/npmfuncti
 
 import { WebPartInfoGroup, JSON_Edit_Link } from '@mikezimm/npmfunctions/dist/Services/PropPane/zReusablePropPane';
 
-
-import { _LinkIsValid } from '@mikezimm/npmfunctions/dist/Links/AllLinks';
 import * as links from '@mikezimm/npmfunctions/dist/Links/LinksRepos';
 
 import { importProps, FPSImportPropsGroup } from '@mikezimm/npmfunctions/dist/Services/PropPane/ImportFunctions';
@@ -124,7 +122,10 @@ import { FPSApplyHeadingCSS, FPSApplyTagCSSAndStyles, FPSApplyHeadingStyle } fro
 import { HTMLRegEx, IHTMLRegExKeys } from '../../Service/htmlTags';
 import { css } from 'office-ui-fabric-react';
 import { PreConfiguredProps } from './CoreFPS/PreConfiguredSettings';
-import { validateDocumentationUrl } from './CoreFPS/OnPropPaneChangedFunctions';
+import { refreshBannerStylesOnPropChange,  } from '@mikezimm/npmfunctions/dist/WebPartFunctions/BannerThemeFunctions';
+import { updateFpsImportProps,  } from '@mikezimm/npmfunctions/dist/Services/PropPane/ImportFunctions';
+import { validateDocumentationUrl,  } from '@mikezimm/npmfunctions/dist/Links/ValidateLinks';
+
 import { getThisSitesPreConfigProps, IConfigurationProp, ISitePreConfigProps, IPreConfigSettings, IAllPreConfigSettings } from '@mikezimm/npmfunctions/dist/PropPaneHelp/PreConfigFunctions';
 import { applyPresetCollectionDefaults } from '@mikezimm/npmfunctions/dist/PropPaneHelp/ApplyPresets';
 import { IRelatedItemsProps, IRelatedKey } from '@mikezimm/npmfunctions/dist/RelatedItems/IRelatedItemsProps';
@@ -765,38 +766,21 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     }
 
     await validateDocumentationUrl ( this.properties, propertyPath , newValue );
-    // if ( propertyPath === 'documentationLinkUrl' || propertyPath === 'fpsImportProps' ) {
-    //   this.properties.documentationIsValid = await _LinkIsValid( newValue ) === "" ? true : false;
-    //   console.log( `${ newValue ? newValue : 'Empty' } Docs Link ${ this.properties.documentationIsValid === true ? ' IS ' : ' IS NOT ' } Valid `);
-
-    // } else {
-    //   if ( !this.properties.documentationIsValid ) { this.properties.documentationIsValid = false; }
-
-    // }
 
     this.properties.webpartHistory = updateWebpartHistoryV2( this.properties.webpartHistory , propertyPath , newValue, this.context.pageContext.user.displayName, [], [] );
 
     if ( propertyPath === 'fpsImportProps' ) {
 
-      if ( this.exitPropPaneChanged === true ) {//Added to prevent re-running this function on import.  Just want re-render. )
-        this.exitPropPaneChanged = false;  //Added to prevent re-running this function on import.  Just want re-render.
+      updateFpsImportProps( this.properties, importBlockProps, propertyPath, newValue,
+        this.context.propertyPane.refresh,
+        this.onPropertyPaneConfigurationStart,
+        this.exitPropPaneChanged,
+        this.importErrorMessage, 
+      );
 
-      } else {
-        let result = importProps( this.properties, newValue, [], importBlockProps );
+     } else if ( propertyPath === 'bannerStyle' || propertyPath === 'bannerCmdStyle' )  {
 
-        this.importErrorMessage = result.errMessage;
-        if ( result.importError === false ) {
-          this.properties.fpsImportProps = '';
-          this.context.propertyPane.refresh();
-        }
-        this.exitPropPaneChanged = true;  //Added to prevent re-running this function on import.  Just want re-render.
-        this.onPropertyPaneConfigurationStart();
-        // this.render();
-      }
-
-    } else if ( propertyPath === 'bannerStyle' || propertyPath === 'bannerCmdStyle' )  {
-      this.properties[ propertyPath ] = newValue;
-      this.context.propertyPane.refresh();
+      refreshBannerStylesOnPropChange( this.properties, propertyPath, newValue, this.context.propertyPane.refresh );
 
     } else if (propertyPath === 'bannerStyleChoice')  {
       // bannerThemes, bannerThemeKeys, makeCSSPropPaneString
