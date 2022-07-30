@@ -123,7 +123,11 @@ import { changeTOC, changeProperties, changeWebPartStyles, } from '../IFpsPageIn
 
     exportStructure.Visitor = changeCustomHelp;
 
-    exportStructure.Banner = changeBanner;
+    exportStructure.BannerBasics = changeBannerBasics;
+    exportStructure.BannerNav = changeBannerNav;
+
+    exportStructure.BannerTheme = changeBannerTheme;
+    exportStructure.BannerOther = changeBannerUtility;
 
     exportStructure.fpsOptions1 = changePageStyle;
     

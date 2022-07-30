@@ -44,6 +44,7 @@ import { minimizeToolbar } from '@mikezimm/npmfunctions/dist/Services/DOM/minimz
 import { minimizeQuickLaunch } from '@mikezimm/npmfunctions/dist/Services/DOM/quickLaunch';
 import { applyHeadingCSS } from '@mikezimm/npmfunctions/dist/HeadingCSS/FPSHeadingFunctions';
 import { renderCustomStyles } from '@mikezimm/npmfunctions/dist/WebPartFunctions/MainWebPartStyleFunctions';
+import { updateBannerThemeStyles } from '@mikezimm/npmfunctions/dist/WebPartFunctions/BannerThemeFunctions';
 
 import { replaceHandleBars } from '@mikezimm/npmfunctions/dist/Services/Strings/handleBars';
 
@@ -131,7 +132,6 @@ import { buildImageLinksGroup } from './PropPaneGroups/ImageLinks';
 
 import { buildTOCGroup } from './PropPaneGroups/TOC';
 import { buildPageInfoStylesGroup } from './PropPaneGroups/PageInfoStyles';
-import { updateBannerStyles } from './CoreFPS/BannerStyleFunctions';
 
 
 export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageInfoWebPartProps> {
@@ -148,7 +148,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
   private sitePresets : ISitePreConfigProps = null;
 
   private _unqiueId;
-  private validDocsContacts: string = '';
+  private _validDocsContacts: string = '';
 
   private trickyApp = 'FPS PageInfo';
   private wpInstanceID: any = webpartInstance( this.trickyApp );
@@ -309,7 +309,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
       // DEFAULTS SECTION:  Banner   <<< ================================================================
       //This updates unlocks styles only when bannerStyleChoice === custom.  Rest are locked in the ui.
 
-      // updateBannerStyles( this.properties, this.context.pageContext.web.serverRelativeUrl , 'corpDark1' );
+      updateBannerThemeStyles( this.properties, 'corpDark1', false, this.properties.defPinState );
 
       // if ( this.properties.bannerStyleChoice === 'custom' ) { 
       //   this.properties.lockStyles = false ; 
@@ -324,7 +324,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
       // if ( !this.properties.bannerStyle ) { this.properties.bannerStyle = createBannerStyleStr( defBannerTheme, 'banner') ; }
 
-      // if ( !this.properties.bannerCmdStyle ) { 
+      // if ( !this.properties.bannerCmdStyle ) {
 
       //   //Adjust the default size down compared to PinMe buttons which are primary functions in the web part
       //   let bannerCmdStyle = createBannerStyleStr( defBannerTheme, 'cmd').replace('"fontSize":20,', '"fontSize":16,') ;
@@ -420,10 +420,18 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     let renderAsReader = this.displayMode === DisplayMode.Read && this.beAReader === true ? true : false;
 
     let errMessage = '';
-    this.validDocsContacts = ''; //This may no longer be needed if links below are commented out.
+    this._validDocsContacts = ''; //This may no longer be needed if links below are commented out.
 
-    // if ( this.properties.documentationIsValid !== true ) { errMessage += ' Invalid Support Doc Link: ' + ( this.properties.documentationLinkUrl ? this.properties.documentationLinkUrl : 'Empty.  ' ) ; this.validDocsContacts += 'DocLink,'; }
-    // if ( !this.properties.supportContacts || this.properties.supportContacts.length < 1 ) { errMessage += ' Need valid Support Contacts' ; this.validDocsContacts += 'Contacts,'; }
+    if ( ( this.properties.documentationIsValid !== true && this.properties.documentationLinkUrl ) //This means it failed the url ping test... throw error
+    || ( this.properties.requireDocumentation === true && !this.properties.documentationLinkUrl ) ) {//This means docs are required but there isn't one provided
+        errMessage += ' Invalid Support Doc Link: ' + ( this.properties.documentationLinkUrl ? this.properties.documentationLinkUrl : 'Empty.  ' ) ; this._validDocsContacts += 'DocLink,'; 
+    }
+
+    if ( this.properties.requireContacts === true ) {
+      if ( !this.properties.supportContacts || this.properties.supportContacts.length < 1 ) { 
+        errMessage += ' Need valid Support Contacts' ; this._validDocsContacts += 'Contacts,'; 
+      }
+    }
 
     let errorObjArray :  any[] =[];
 
@@ -792,26 +800,12 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     } else if (propertyPath === 'bannerStyleChoice')  {
       // bannerThemes, bannerThemeKeys, makeCSSPropPaneString
 
-      if ( newValue === 'custom' ) {
-        this.properties.lockStyles = false;
+      updateBannerThemeStyles( this.properties , newValue, true, this.properties.defPinState );
 
-      } else if ( newValue === 'lock') {
-        this.properties.lockStyles = true;
-
-      } else {
-        this.properties.lockStyles = true;
-
-        let bannerStyle = createBannerStyleStr( newValue, 'banner' );
+      if ( newValue === 'custom' || newValue === 'lock' ) {
+        //Do nothing for these cases.
         
-        //Adjust the default size down compared to PinMe buttons which are primary functions in the web part
-        let bannerCmdStyle = createBannerStyleStr( newValue, 'cmd' ).replace('"fontSize":20,', '"fontSize":16,');  
-        bannerCmdStyle = bannerCmdStyle.replace('"marginRight":"9px"', '"marginRight":"0px"') ;
-        bannerCmdStyle = bannerCmdStyle.replace('"padding":"7px"', '"padding":"7px 4px"') ;
-
-
-        this.properties.bannerStyle = bannerStyle;
-        this.properties.bannerCmdStyle = bannerCmdStyle;
-
+      } else {
         //Reset main web part styles to defaults
         this.properties.pageInfoStyle = '"paddingBottom":"20px","backgroundColor":"#d3d3d3"';
         this.properties.tocStyle = "";

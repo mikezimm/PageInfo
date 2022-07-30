@@ -7,6 +7,7 @@ import { encrptMeOriginalTest } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM
 import { ContALVFMContent, ContALVFMWebP } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/constants';
 
 import * as strings from 'FpsPageInfoWebPartStrings';
+import { createBannerStyleStr } from "@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/defaults";
 
 const FinancialManualContacts: IPropertyFieldGroupOrPerson = {
     id: '1',
@@ -89,7 +90,7 @@ export const WPPresetEverywhere : IPreConfigSettings = {
 
 export const ForceFinancialManualColl : IPreConfigSettings = {
     source: 'ForceFinancialManualColl',
-    location: '/sites/financemanual/',
+    location: '/sites/financemanual/'.toLowerCase(),
     props: {
         // Pin Me props that are not preset in manifest.json
         defPinState: "pinFull",
@@ -142,7 +143,7 @@ export const ForceFinancialManualColl : IPreConfigSettings = {
 
 export const ForceFinancialManualSubSite : IPreConfigSettings = {
     source: 'ForceFinancialManualSubSite',
-    location: '/sites/financemanual/manual/',
+    location: '/sites/financemanual/manual/'.toLowerCase(),
     props: {
 
         selectedProperties: [
@@ -183,7 +184,7 @@ export const ForceFinancialManualSubSite : IPreConfigSettings = {
 
 export const PresetFinancialManual : IPreConfigSettings = {
     source: 'PresetFinancialManual',
-    location: '/sites/financemanual/',
+    location: '/sites/financemanual/'.toLowerCase(),
     props: {
         homeParentGearAudience: 'Everyone',
     }
@@ -191,13 +192,36 @@ export const PresetFinancialManual : IPreConfigSettings = {
 
 export const PresetSomeRandomSite : IPreConfigSettings = {
     source: 'PresetSomeRandomSite',
-    location: '/sites/SomeRandomSite/',
+    location: '/sites/FPSPageInfoSite/'.toLowerCase(),
     props: {
-        homeParentGearAudience: 'Some Test Value',
+        // homeParentGearAudience: 'Some Test Value',
+        // requireDocumentation: false,
+        // requireDocumentation: 'redDark',
     }
 };
 
+export const ForceSomeRandomSite : IPreConfigSettings = {
+    source: 'ForceSomeRandomSite',
+    location: '/sites/FPSPageInfoSite/'.toLowerCase(),
+    props: {
+        // homeParentGearAudience: 'Some Test Value',
+        // requireDocumentation: false,
+        // requireContacts: true,
+        // bannerStyleChoice: 'redDark',
+        // bannerStyle: createBannerStyleStr( 'redDark', 'banner'),
+        // bannerCmdStyle: createBannerStyleStr( 'redDark', 'cmd'),
+    }
+};
+
+
 export const PreConfiguredProps : IAllPreConfigSettings = {
-    forced: [ ForceFinancialManualColl, ForceFinancialManualSubSite, WPForceEverywhere ],
-    preset: [ PresetFinancialManual, PresetSomeRandomSite, PresetFPSBanner, WPPresetEverywhere ],
+    //Forced over-ride presets.
+    //Forced and presets are applied in order of this array....
+    //  This means the final preset in the array takes precedance.
+
+    //For Forced, generally speaking put because this web part may have specific needs.
+    forced: [ WPForceEverywhere, ForceFinancialManualColl, ForceFinancialManualSubSite, ForceSomeRandomSite,  ],
+
+    //For Presets, Order should be:  PresetFPSBanner, WPPresetEverywhere, CUSTOM Sites,
+    preset: [ PresetFPSBanner, WPPresetEverywhere, PresetFinancialManual, PresetSomeRandomSite, ],
 };
