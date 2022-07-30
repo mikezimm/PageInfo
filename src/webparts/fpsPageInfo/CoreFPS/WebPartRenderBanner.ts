@@ -17,7 +17,8 @@ import { buildExportProps, buildFPSAnalyticsProps } from '../CoreFPS/BuildExport
 import { IFPSUser } from "@mikezimm/npmfunctions/dist/Services/Users/IUserInterfaces";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 
-export function mainWebPartRenderBannerSetup( displayMode:DisplayMode, beAReader: boolean, FPSUser: IFPSUser, 
+export function mainWebPartRenderBannerSetup( 
+    displayMode:DisplayMode, beAReader: boolean, FPSUser: IFPSUser, panelTitle: string,
     thisProps: IMinWPBannerProps, repoLink: IRepoLinks, exportProps: IBuildBannerSettings, strings: any,
     clientWidth: number,
     thisContext: WebPartContext,
@@ -27,7 +28,6 @@ export function mainWebPartRenderBannerSetup( displayMode:DisplayMode, beAReader
 
     // expandoErrorObj has not yet been set up properly in this function since FPSPageInfo did not use it.
     let expandoErrorObj: any = {};
-
 
     let renderAsReader = displayMode === DisplayMode.Read && beAReader === true ? true : false;
 
@@ -71,7 +71,7 @@ export function mainWebPartRenderBannerSetup( displayMode:DisplayMode, beAReader
       exportProps: exportProps,
 
       //Webpart related info
-      panelTitle: 'FPS Page Info',
+      panelTitle: panelTitle,
       modifyBannerTitle: modifyBannerTitle,
       repoLinks: repoLink,
 
