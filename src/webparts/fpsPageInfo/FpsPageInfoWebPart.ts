@@ -97,6 +97,7 @@ import { getFPSUser } from '@mikezimm/npmfunctions/dist/Services/Users/FPSUser';
 // import { IPerformanceOp, ILoadPerformanceALVFM, IHistoryPerformance } from './components/Performance/IPerformance';
 import { IWebpartBannerProps } from '@mikezimm/npmfunctions/dist/HelpPanelOnNPM/onNpm/bannerProps';
 
+import { mainWebPartRenderBannerSetup } from './CoreFPS/WebPartRenderBanner';
 import { ISupportedHost } from "@mikezimm/npmfunctions/dist/Services/PropPane/FPSInterfaces";
 
 export const repoLink: IRepoLinks = links.gitRepoPageInfoSmall;
@@ -416,110 +417,121 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
     // if ( !this.properties.infoElementChoice ) { this.properties.infoElementChoice = 'IconName=Unknown'; }  //May not be normally needed if in the presets
     // if ( !this.properties.infoElementText ) { this.properties.infoElementText = 'Question mark circle'; }  //May not be normally needed if in the presets
 
-    this._unqiueId = this.context.instanceId;
+    // this._unqiueId = this.context.instanceId;
 
-    // quickRefresh is used for SecureScript for when caching html file.  <<< ================================================================
-    let renderAsReader = this.displayMode === DisplayMode.Read && this.beAReader === true ? true : false;
 
-    let errMessage = '';
-    this._validDocsContacts = ''; //This may no longer be needed if links below are commented out.
+    let exportProps = buildExportProps( this.properties , this.wpInstanceID, this.context.pageContext.web.serverRelativeUrl );
 
-    if ( ( this.properties.documentationIsValid !== true && this.properties.documentationLinkUrl ) //This means it failed the url ping test... throw error
-    || ( this.properties.requireDocumentation === true && !this.properties.documentationLinkUrl ) ) {//This means docs are required but there isn't one provided
-        errMessage += ' Invalid Support Doc Link: ' + ( this.properties.documentationLinkUrl ? this.properties.documentationLinkUrl : 'Empty.  ' ) ; this._validDocsContacts += 'DocLink,'; 
-    }
+    let bannerProps: IWebpartBannerProps = mainWebPartRenderBannerSetup( this.displayMode, this.beAReader, this.FPSUser,
+        this.properties, repoLink, exportProps, strings , this.domElement.clientWidth, this.context, this.modifyBannerTitle, this.forceBanner );
 
-    if ( this.properties.requireContacts === true ) {
-      if ( !this.properties.supportContacts || this.properties.supportContacts.length < 1 ) { 
-        errMessage += ' Need valid Support Contacts' ; this._validDocsContacts += 'Contacts,'; 
-      }
-    }
 
-    let errorObjArray :  any[] =[];
+    // // quickRefresh is used for SecureScript for when caching html file.  <<< ================================================================
+    // let renderAsReader = this.displayMode === DisplayMode.Read && this.beAReader === true ? true : false;
 
-    /***
-      *    d8888b.  .d8b.  d8b   db d8b   db d88888b d8888b. 
-      *    88  `8D d8' `8b 888o  88 888o  88 88'     88  `8D 
-      *    88oooY' 88ooo88 88V8o 88 88V8o 88 88ooooo 88oobY' 
-      *    88~~~b. 88~~~88 88 V8o88 88 V8o88 88~~~~~ 88`8b   
-      *    88   8D 88   88 88  V888 88  V888 88.     88 `88. 
-      *    Y8888P' YP   YP VP   V8P VP   V8P Y88888P 88   YD 
-      *                                                      
-      *                                                      
-      */
+    // let errMessage = '';
+    // this._validDocsContacts = ''; //This may no longer be needed if links below are commented out.
 
-    let replacePanelWarning = `Anyone with lower permissions than '${this.properties.fullPanelAudience}' will ONLY see this content in panel`;
+    // if ( ( this.properties.documentationIsValid !== true && this.properties.documentationLinkUrl ) //This means it failed the url ping test... throw error
+    // || ( this.properties.requireDocumentation === true && !this.properties.documentationLinkUrl ) ) {//This means docs are required but there isn't one provided
+    //     errMessage += ' Invalid Support Doc Link: ' + ( this.properties.documentationLinkUrl ? this.properties.documentationLinkUrl : 'Empty.  ' ) ; this._validDocsContacts += 'DocLink,'; 
+    // }
 
-    console.log('mainWebPart: buildBannerSettings ~ 387',   );
+    // if ( this.properties.requireContacts === true ) {
+    //   if ( !this.properties.supportContacts || this.properties.supportContacts.length < 1 ) { 
+    //     errMessage += ' Need valid Support Contacts' ; this._validDocsContacts += 'Contacts,'; 
+    //   }
+    // }
 
-    let buildBannerSettings : IBuildBannerSettings = {
+    // let errorObjArray :  any[] =[];
 
-      FPSUser: this.FPSUser,
-      //this. related info
-      context: this.context as any,
-      clientWidth: ( this.domElement.clientWidth - ( this.displayMode === DisplayMode.Edit ? 250 : 0) ),
-      exportProps: buildExportProps( this.properties, this.wpInstanceID, this.context.pageContext.web.serverRelativeUrl ),
+    // /***
+    //   *    d8888b.  .d8b.  d8b   db d8b   db d88888b d8888b. 
+    //   *    88  `8D d8' `8b 888o  88 888o  88 88'     88  `8D 
+    //   *    88oooY' 88ooo88 88V8o 88 88V8o 88 88ooooo 88oobY' 
+    //   *    88~~~b. 88~~~88 88 V8o88 88 V8o88 88~~~~~ 88`8b   
+    //   *    88   8D 88   88 88  V888 88  V888 88.     88 `88. 
+    //   *    Y8888P' YP   YP VP   V8P VP   V8P Y88888P 88   YD 
+    //   *                                                      
+    //   *                                                      
+    //   */
 
-      //Webpart related info
-      panelTitle: 'FPS Page Info',
-      modifyBannerTitle: this.modifyBannerTitle,
-      repoLinks: repoLink,
+    // let replacePanelWarning = `Anyone with lower permissions than '${this.properties.fullPanelAudience}' will ONLY see this content in panel`;
 
-      //Hard-coded Banner settings on webpart itself
-      forceBanner: this.forceBanner,
-      earyAccess: false,
-      wideToggle: false,
-      expandAlert: false,
-      expandConsole: false,
+    // console.log('mainWebPart: buildBannerSettings ~ 387',   );
 
-      replacePanelWarning: replacePanelWarning,
-      //Error info
-      errMessage: errMessage,
-      errorObjArray: errorObjArray, //In the case of Pivot Tiles, this is manualLinks[],
-      expandoErrorObj: this.expandoErrorObj,
+    // let buildBannerSettings : IBuildBannerSettings = {
 
-      beAUser: renderAsReader,
-      showBeAUserIcon: false,
+    //   FPSUser: this.FPSUser,
+    //   //this. related info
+    //   context: this.context as any,
+    //   clientWidth: ( this.domElement.clientWidth - ( this.displayMode === DisplayMode.Edit ? 250 : 0) ),
+    //   exportProps: buildExportProps( this.properties, this.wpInstanceID, this.context.pageContext.web.serverRelativeUrl ),
 
-    };
+    //   //Webpart related info
+    //   panelTitle: 'FPS Page Info',
+    //   modifyBannerTitle: this.modifyBannerTitle,
+    //   repoLinks: repoLink,
 
-    // console.log('mainWebPart: showTricks ~ 322',   );
-    let showTricks: any = false;
-    links.trickyEmails.map( getsTricks => {
-      if ( this.context.pageContext.user && this.context.pageContext.user.loginName && this.context.pageContext.user.loginName.toLowerCase().indexOf( getsTricks ) > -1 ) { 
-        showTricks = true ;
-        this.properties.showRepoLinks = true; //Always show these users repo links
-      }
-      } );
+    //   //Hard-coded Banner settings on webpart itself
+    //   forceBanner: this.forceBanner,
+    //   earyAccess: false,
+    //   wideToggle: false,
+    //   expandAlert: false,
+    //   expandConsole: false,
 
-    // console.log('mainWebPart: verifyAudienceVsUser ~ 341',   );
-    this.properties.showBannerGear = verifyAudienceVsUser( this.FPSUser , showTricks, this.properties.homeParentGearAudience, null, renderAsReader );
+    //   replacePanelWarning: replacePanelWarning,
+    //   //Error info
+    //   errMessage: errMessage,
+    //   errorObjArray: errorObjArray, //In the case of Pivot Tiles, this is manualLinks[],
+    //   expandoErrorObj: this.expandoErrorObj,
 
-    let bannerSetup = buildBannerProps( this.properties , this.FPSUser, buildBannerSettings, showTricks, renderAsReader, this.displayMode );
-    if ( !this.properties.bannerTitle || this.properties.bannerTitle === '' ) { 
-      if ( this.properties.defPinState !== 'normal' ) {
-        bannerSetup.bannerProps.title = strings.bannerTitle ;
-      } else {
-        bannerSetup.bannerProps.title = 'hide' ;
-      }
-    }
+    //   beAUser: renderAsReader,
+    //   showBeAUserIcon: false,
 
-    errMessage = bannerSetup.errMessage;
-    this.bannerProps = bannerSetup.bannerProps;
-    let expandoErrorObj = bannerSetup.errorObjArray;
+    // };
 
-    this.bannerProps.enableExpandoramic = false; //Hard code this option for FPS PageInfo web part only because of PinMe option
+    // // console.log('mainWebPart: showTricks ~ 322',   );
+    // let showTricks: any = false;
+    // links.trickyEmails.map( getsTricks => {
+    //   if ( this.context.pageContext.user && this.context.pageContext.user.loginName && this.context.pageContext.user.loginName.toLowerCase().indexOf( getsTricks ) > -1 ) { 
+    //     showTricks = true ;
+    //     this.properties.showRepoLinks = true; //Always show these users repo links
+    //   }
+    //   } );
 
-    //Add this to force a title because when pinned by default, users may not know it's there.
-    if ( this.properties.forcePinState === true && this.properties.defPinState !== 'normal' ) {
-      if ( !this.properties.bannerTitle || this.properties.bannerTitle.length < 3 ) { this.bannerProps.title = 'Page Contents' ; }
-    }
-    // if ( this.bannerProps.showBeAUserIcon === true ) { this.bannerProps.beAUserFunction = this.beAUserFunction.bind(this); }
+    // // console.log('mainWebPart: verifyAudienceVsUser ~ 341',   );
+    // this.properties.showBannerGear = verifyAudienceVsUser( this.FPSUser , showTricks, this.properties.homeParentGearAudience, null, renderAsReader );
 
-    // console.log('mainWebPart: visitorPanelInfo ~ 405',   );
-    this.properties.replacePanelHTML = visitorPanelInfo( this.properties, repoLink, '', '' );
+    // let bannerSetup = buildBannerProps( this.properties , this.FPSUser, buildBannerSettings, showTricks, renderAsReader, this.displayMode );
+    // if ( !this.properties.bannerTitle || this.properties.bannerTitle === '' ) { 
+    //   if ( this.properties.defPinState !== 'normal' ) {
+    //     bannerSetup.bannerProps.title = strings.bannerTitle ;
+    //   } else {
+    //     bannerSetup.bannerProps.title = 'hide' ;
+    //   }
+    // }
 
-    this.bannerProps.replacePanelHTML = this.properties.replacePanelHTML;
+    // errMessage = bannerSetup.errMessage;
+    // this.bannerProps = bannerSetup.bannerProps;
+    // let expandoErrorObj = bannerSetup.errorObjArray;
+
+    // this.bannerProps.enableExpandoramic = false; //Hard code this option for FPS PageInfo web part only because of PinMe option
+
+    // //Add this to force a title because when pinned by default, users may not know it's there.
+    // if ( this.properties.forcePinState === true && this.properties.defPinState !== 'normal' ) {
+    //   if ( !this.properties.bannerTitle || this.properties.bannerTitle.length < 3 ) { this.bannerProps.title = 'Page Contents' ; }
+    // }
+    // // if ( this.bannerProps.showBeAUserIcon === true ) { this.bannerProps.beAUserFunction = this.beAUserFunction.bind(this); }
+
+    // // console.log('mainWebPart: visitorPanelInfo ~ 405',   );
+    // this.properties.replacePanelHTML = visitorPanelInfo( this.properties, repoLink, '', '' );
+
+    // this.bannerProps.replacePanelHTML = this.properties.replacePanelHTML;
+
+
+
+
 
     const OOTBProps = this.properties.showOOTBProps === true ? ['ID', 'Modified', 'Editor' , 'Created', 'Author' ] : [];
     const ApprovalProps = []; //this.properties.showApprovalProps === true ? ['ID', 'Created', 'Modified'] : [];
@@ -557,7 +569,7 @@ export default class FpsPageInfoWebPart extends BaseClientSideWebPart<IFpsPageIn
 
         //Banner related props
         errMessage: 'any',
-        bannerProps: this.bannerProps,
+        bannerProps: bannerProps,
         webpartHistory: this.properties.webpartHistory,
 
         sitePresets: this.sitePresets,
